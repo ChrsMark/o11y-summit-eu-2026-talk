@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 68" role="img">
+  <title>Observability Summit Europe 2026</title>
+  <!-- Node-network icon (matches brand) -->
+  <line x1="14" y1="54" x2="28" y2="26" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="28" y1="26" x2="46" y2="10" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Nodes: large bottom-left, medium middle, small top-right -->
+  <circle cx="14" cy="54" r="9" fill="white"/>
+  <circle cx="28" cy="26" r="6" fill="white"/>
+  <circle cx="46" cy="10" r="4.5" fill="white"/>
+  <!-- Text: event name -->
+  <text x="62" y="30" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="700" fill="white" letter-spacing="-0.2">Observability Summit</text>
+  <text x="62" y="52" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="400" fill="rgba(255,255,255,0.72)">Europe · October 2026</text>
+</svg>

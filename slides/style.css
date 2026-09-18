@@ -1063,6 +1063,432 @@ html:not(.dark) .demo-inner-arrow::after {
   font-size: 10em;
 }
 
+/* OTel Ecosystem diagram */
+.otel-eco {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.7rem;
+  width: 100%;
+  min-height: 0;
+}
+
+.otel-eco-main {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  gap: 0;
+  min-height: 0;
+}
+
+.eco-left {
+  flex: 1.15;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(96, 165, 250, 0.08);
+  border: 2px solid rgba(96, 165, 250, 0.35);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.eco-section-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.45;
+  text-align: center;
+}
+
+.eco-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.eco-signal {
+  padding: 0.18rem 0.55rem;
+  border-radius: 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1.5px solid;
+}
+
+.sig-t { background: rgba(59, 130, 246, 0.14); border-color: #3b82f6; color: #60a5fa; }
+.sig-m { background: rgba(34, 197, 94, 0.14); border-color: #22c55e; color: #4ade80; }
+.sig-l { background: rgba(245, 158, 11, 0.14); border-color: #f59e0b; color: #fbbf24; }
+.sig-p { background: rgba(168, 85, 247, 0.14); border-color: #a855f7; color: #c084fc; }
+
+html:not(.dark) .sig-t { color: #1d4ed8; }
+html:not(.dark) .sig-m { color: #15803d; }
+html:not(.dark) .sig-l { color: #b45309; }
+html:not(.dark) .sig-p { color: #7e22ce; }
+
+.eco-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.eco-layer-box {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(148, 163, 184, 0.25);
+  border-radius: 0.45rem;
+  padding: 0.38rem 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+html:not(.dark) .eco-layer-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(100, 116, 139, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.eco-layer-api { border-color: rgba(96, 165, 250, 0.4) !important; }
+.eco-layer-sdk { border-color: rgba(96, 165, 250, 0.4) !important; }
+
+.eco-h-arrow {
+  flex-shrink: 0;
+  width: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.eco-h-arrow-line {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(139, 162, 236, 0.7);
+}
+
+.eco-h-arrow-line::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-left: 7px solid rgba(139, 162, 236, 0.7);
+}
+
+.eco-h-arrow-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0.55;
+  text-transform: uppercase;
+}
+
+.eco-collector {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 2px solid rgba(99, 102, 241, 0.45);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.eco-collector-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #818cf8;
+  letter-spacing: 0.01em;
+}
+
+.eco-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.eco-pipe-seg {
+  background: rgba(99, 102, 241, 0.14);
+  border: 1.5px solid rgba(99, 102, 241, 0.35);
+  border-radius: 0.4rem;
+  padding: 0.28rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.eco-pipe-conn {
+  opacity: 0.45;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.eco-right {
+  flex: 1.15;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: rgba(34, 197, 94, 0.06);
+  border: 2px solid rgba(34, 197, 94, 0.28);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.eco-backend-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(52, 211, 153, 0.25);
+  border-radius: 0.45rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+html:not(.dark) .eco-backend-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.eco-semconv {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  background: rgba(245, 158, 11, 0.07);
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.9rem;
+  flex-shrink: 0;
+}
+
+.eco-semconv-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f59e0b;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.eco-semconv code {
+  font-size: 0.68rem !important;
+  background: rgba(245, 158, 11, 0.1) !important;
+  border: 1px solid rgba(245, 158, 11, 0.22) !important;
+  border-radius: 0.3rem;
+  padding: 0.08rem 0.32rem !important;
+  color: #fbbf24 !important;
+}
+
+html:not(.dark) .eco-semconv code {
+  color: #92400e !important;
+}
+
+.eco-semconv-dots {
+  opacity: 0.45;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+html:not(.dark) .eco-left {
+  background: rgba(96, 165, 250, 0.08);
+}
+
+html:not(.dark) .eco-collector {
+  background: rgba(99, 102, 241, 0.07);
+}
+
+html:not(.dark) .eco-right {
+  background: rgba(34, 197, 94, 0.06);
+}
+
+html:not(.dark) .eco-semconv {
+  background: rgba(245, 158, 11, 0.06);
+}
+
+/* Speaker roles list */
+.speaker-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  opacity: 0.65;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Pain/quote slide */
+.pain-quote {
+  max-width: 80%;
+  margin: 0 auto;
+  font-size: 1.8rem;
+  line-height: 1.7;
+}
+
+.pain-emphasis {
+  color: var(--slidev-theme-primary);
+  font-weight: 700;
+  font-size: 2rem;
+  margin-top: 0.75rem;
+}
+
+/* Two Sides of the Coin */
+.two-sides-grid {
+  display: grid;
+  grid-template-columns: 1fr 12rem 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  align-items: center;
+  width: 100%;
+}
+
+.coin-bridge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.coin-rule {
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.6;
+  border: 1.5px dashed rgba(141, 141, 255, 0.45);
+  border-radius: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.side-semconv h3 { color: #818cf8; }
+.side-collector h3 { color: #22d3ee; }
+
+html:not(.dark) .coin-rule {
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Migration mechanism */
+.migration-slide {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+}
+
+.migration-gates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: rgba(54, 56, 85, 0.4);
+  border: 1.5px solid rgba(141, 141, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+
+.gate-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.gate {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.78rem !important;
+  font-family: 'Fira Code', monospace;
+}
+
+.gate-arrow { opacity: 0.45; flex-shrink: 0; }
+
+.gate-desc {
+  opacity: 0.75;
+  font-size: 0.88rem;
+}
+
+.lifecycle-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.lifecycle-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+}
+
+.step-badge {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.step-desc {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+.lifecycle-arrow {
+  font-size: 1.4rem;
+  opacity: 0.4;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.step-alpha { border-color: #94a3b8; background: rgba(148, 163, 184, 0.07); }
+.step-alpha .step-badge { color: #94a3b8; }
+
+.step-beta { border-color: #f59e0b; background: rgba(245, 158, 11, 0.07); }
+.step-beta .step-badge { color: #f59e0b; }
+
+.step-stable { border-color: #22c55e; background: rgba(34, 197, 94, 0.07); }
+.step-stable .step-badge { color: #22c55e; }
+
+.step-removed { border-color: #ef4444; background: rgba(239, 68, 68, 0.07); }
+.step-removed .step-badge { color: #ef4444; }
+
+.migration-note {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  text-align: center;
+}
+
+html:not(.dark) .migration-gates {
+  background: rgba(240, 240, 255, 0.7);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Colored icon variants for status indicators */
+.icon-stable { color: #22c55e !important; }
+.icon-rc     { color: #f59e0b !important; }
+.icon-progress { color: var(--slidev-theme-primary) !important; }
+
 /* KubeCon EU logo on title slide */
 .kceu-logo {
   position: absolute;
@@ -1077,6 +1503,413 @@ html:not(.dark) .kceu-logo {
 }
 
 /* Light theme: demo slide */
+/* OTel Ecosystem — clean block-based layout (slide 4) */
+.eco-arch {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 0;
+  padding-top: 0.4rem;
+}
+
+.eco-arch-main {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  gap: 0;
+  min-height: 0;
+}
+
+.eco-arch-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 2px solid;
+  border-radius: 0.75rem;
+  padding: 0.85rem 0.9rem;
+  text-align: center;
+}
+
+.eco-arch-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+}
+
+.eco-arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.eco-arch-arrow {
+  flex-shrink: 0;
+  width: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.eco-arch-services {
+  border-color: rgba(96, 165, 250, 0.45);
+  background: rgba(96, 165, 250, 0.07);
+}
+
+.eco-arch-collector {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.09);
+  flex: 1.35;
+}
+
+.eco-arch-backends {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.06);
+}
+
+html:not(.dark) .eco-arch-services { background: rgba(96, 165, 250, 0.08); }
+html:not(.dark) .eco-arch-collector { background: rgba(99, 102, 241, 0.07); }
+html:not(.dark) .eco-arch-backends  { background: rgba(34, 197, 94, 0.06); }
+
+/* EcoSystem 2-row grid (row1: Applications→Gateway→Backends, row2: Agent) */
+/* Agent directly below Gateway — row 2 col 3 */
+.eco-main-grid {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr 3rem 1.4fr 3rem 1fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "svc ar-sg gw    ar-gb be"
+    ".   .     agent .     .";
+  row-gap: 2rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.eco-g-svc   { grid-area: svc; }
+.eco-g-ar-sg { grid-area: ar-sg; }
+.eco-g-gw    { grid-area: gw; }
+.eco-g-ar-gb { grid-area: ar-gb; }
+.eco-g-be    { grid-area: be; }
+.eco-g-agent { grid-area: agent; }
+
+/* Connector overlay */
+.eco-connections {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.eco-cline {
+  position: absolute;
+}
+
+/*
+  Column estimates: Gateway right=68.3%, Backends center=87%
+  Row 2 center ≈ 89.5%
+*/
+
+/* Agent block needs position:relative so the connector can anchor to it */
+.eco-g-agent {
+  position: relative;
+  overflow: visible;
+}
+
+/* Agent → Gateway: connector lives inside Agent block, floats up into the gap.
+   top: -2rem matches row-gap exactly — never enters either block. */
+.eco-agw-connector {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.eco-agw-line {
+  width: 2px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(59, 130, 246, 0.7) 0px,
+    rgba(59, 130, 246, 0.7) 5px,
+    transparent 5px,
+    transparent 9px
+  );
+  position: relative;
+  flex-shrink: 0;
+}
+
+.eco-agw-line::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -3.5px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid rgba(59, 130, 246, 0.7);
+}
+
+.eco-agw-label {
+  margin-left: 0.35rem;
+  font-size: 0.48rem;
+  font-weight: 700;
+  color: rgba(59, 130, 246, 0.9);
+  white-space: nowrap;
+  letter-spacing: 0.06em;
+}
+
+/* Agent → Backends: horizontal from Agent right edge to Backends column */
+.eco-cline-abe-h {
+  left: 68.3%;
+  top: 89.5%;
+  width: 18.7%;
+  height: 0;
+  border-top: 2px dashed rgba(59, 130, 246, 0.5);
+}
+
+/* Agent → Backends: vertical rising from horizontal level up into Backends */
+.eco-cline-abe-v {
+  left: 87%;
+  top: 71.2%;
+  height: 18.3%;
+  width: 0;
+  border-left: 2px dashed rgba(59, 130, 246, 0.5);
+}
+
+.eco-cline-abe-v::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid rgba(59, 130, 246, 0.5);
+}
+
+/* Connector OTLP labels */
+.eco-clabel {
+  position: absolute;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: rgba(59, 130, 246, 0.9);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* Label below the horizontal connector line */
+.eco-clabel-h {
+  top: 0.18rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* OTel icon inside Collector blocks */
+.eco-otel-icon {
+  width: 1.9rem;
+  height: auto;
+  opacity: 0.88;
+  flex-shrink: 0;
+}
+
+/* Language icons in Services block */
+.eco-lang-icons {
+  display: flex;
+  gap: 0.45rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0.05rem 0;
+}
+
+.eco-lang-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+  font-size: 1.65rem;
+}
+
+/* Edge / Agent Collector */
+.eco-arch-edge-collector {
+  flex: 0.82;
+  border-color: rgba(59, 130, 246, 0.42);
+  background: rgba(59, 130, 246, 0.07);
+}
+
+html:not(.dark) .eco-arch-edge-collector { background: rgba(59, 130, 246, 0.06); }
+
+.eco-arch-subtitle {
+  font-size: 0.59rem;
+  opacity: 0.5;
+  font-style: italic;
+  margin-top: -0.45rem;
+  letter-spacing: 0.03em;
+}
+
+.eco-pipeline-compact {
+  gap: 0.18rem;
+}
+
+.eco-pipe-seg-sm {
+  padding: 0.18rem 0.32rem !important;
+  font-size: 0.6rem !important;
+}
+
+/* Vendor icon grid in Backends block */
+.eco-vendor-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.1rem;
+}
+
+.eco-vendor-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.56rem;
+  opacity: 0.85;
+  width: 2.5rem;
+  letter-spacing: 0.01em;
+}
+
+.eco-vendor-icon {
+  width: 1.55rem;
+  height: 1.55rem;
+  font-size: 1.55rem;
+  flex-shrink: 0;
+}
+
+.eco-vendor-elastic {
+  color: #00BFB3;
+}
+
+.eco-vendor-jaeger {
+  color: #60a5fa;
+}
+
+/* OTel icon on What is OpenTelemetry slide */
+/* Slide 3 — side-by-side: big icon left, bullets right */
+.otel-slide-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex: 1;
+  width: 100%;
+}
+
+.otel-big-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+}
+
+.otel-icon-main {
+  width: 8.5rem;
+  height: auto;
+  filter: drop-shadow(0 0 18px rgba(96, 165, 250, 0.25));
+}
+
+.otel-slide-bullets {
+  flex: 1;
+}
+
+/* Focus boxes for "Two Components That Must Be Stable Together" */
+.focus-semconv-box {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.04)) !important;
+}
+
+.focus-semconv-box h3 {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.08)) !important;
+  border-bottom-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.focus-collector-box {
+  border-color: rgba(129, 140, 248, 0.4) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05)) !important;
+}
+
+.focus-codes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0 1.2rem 0.9rem;
+}
+
+.focus-codes code {
+  font-size: 0.8rem !important;
+  opacity: 0.65;
+}
+
+/* Pablo placeholder slides */
+.pablo-stub {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border: 2px dashed rgba(251, 191, 36, 0.4);
+  border-radius: 0.75rem;
+  padding: 1.4rem 2rem;
+  background: rgba(251, 191, 36, 0.03);
+}
+
+.pablo-stub-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  width: fit-content;
+  margin-bottom: 0.1rem;
+}
+
+.pablo-stub ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pablo-stub li {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  font-size: 1.25rem !important;
+  line-height: 1.55 !important;
+  opacity: 0.72;
+  margin-top: 0 !important;
+}
+
+.pablo-stub li::before {
+  content: '→';
+  color: #fbbf24;
+  opacity: 0.5;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
 html:not(.dark) .collector-logs-header {
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.08));
   color: #1a1a1a;

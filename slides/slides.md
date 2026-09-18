@@ -1,7 +1,7 @@
 ---
 theme: apple-basic
 background: https://cover.sli.dev
-title: Observability Without Borders
+title: From Schema to Shipping Data
 class: text-center
 transition: slide-left
 mdc: true
@@ -11,26 +11,28 @@ fonts:
   mono: 'Fira Code'
 ---
 
-# Observability Without Borders
+# From Schema to Shipping Data
 
-<p class="intro-subtitle">The OpenTelemetry Collector in a WebAssembly World</p>
+<p class="intro-subtitle">Making OpenTelemetry Stable by Default</p>
 
 <div class="intro-meta">
-  <p class="intro-speakers">Pablo Baeyens <span class="intro-org">(Datadog)</span> · Evan Bradley <span class="intro-org">(Dynatrace)</span></p>
-  <p class="intro-conference">Observability Day Europe 2026</p>
+  <p class="intro-speakers">Christos Markou <span class="intro-org">(Elastic)</span> · Pablo Baeyens <span class="intro-org">(Datadog)</span></p>
+  <p class="intro-conference">Observability Summit Europe 2026</p>
 </div>
 
 <QrArrow />
 
-<img src="/kceu26.svg" class="kceu-logo" />
+<img src="/o11y-summit.svg" class="kceu-logo" />
 
-<!-- PABLO 
+<!-- PABLO
 
-Welcome to Observability Without Borders.
+Welcome everyone, and thank you for joining this session.
 
-If you want to follow along, this presentation is available as a webpage on the QR code on the bottom left corner which will appear later and at the end as well.
+Today we're going to talk about one of the most impactful challenges in the OpenTelemetry project right now: how do you make a project this large, this widely deployed, truly stable by default?
 
-We have added some links to interesting tidbits throughout the slides that you can click to learn more.
+Not just "stable as in the project won't crash" — but stable as in: your users can upgrade with confidence that nothing will silently break.
+
+I'm Pablo, and this is Christos. Let us introduce ourselves.
 
 -->
 
@@ -40,931 +42,622 @@ We have added some links to interesting tidbits throughout the slides that you c
 
 <div class="speakers-grid">
   <div class="speaker">
+    <img src="/chrismark.jpeg" class="speaker-pic" />
+    <div class="speaker-name"><a href="https://github.com/ChrsMark">Christos Markou</a></div>
+    <div class="speaker-org">Elastic</div>
+    <div class="speaker-roles">
+      <span>Principal Software Engineer</span>
+      <span>OTel Collector Contrib Maintainer</span>
+      <span>SemConv Approver (system, k8s, containers)</span>
+      <span>CNCF Ambassador</span>
+    </div>
+  </div>
+  <div class="speaker">
     <img src="/pablo.jpeg" class="speaker-pic" />
     <div class="speaker-name"><a href="https://github.com/mx-psi">Pablo Baeyens</a></div>
     <div class="speaker-org">Datadog</div>
-  </div>
-  <div class="speaker">
-    <img src="/evan.jpg" class="speaker-pic" />
-    <div class="speaker-name"><a href="https://github.com/evan-bradley">Evan Bradley</a></div>
-    <div class="speaker-org">Dynatrace</div>
+    <div class="speaker-roles">
+      <span>Senior Software Engineer</span>
+      <span>OTel Collector Maintainer</span>
+      <span>OpenTelemetry GC member</span>
+    </div>
   </div>
 </div>
 
-<!-- PABLO: 
-I am Pablo and this is Evan, we are both maintainers in the Collector SIG.
+<!-- PABLO/CHRISTOS
 
-We are going to talk today about the OpenTelemetry Collector, WebAssembly, and how you can mix the two together.
+[PABLO] I'm Pablo — Senior Software Engineer at Datadog. I maintain the OpenTelemetry Collector and serve on the Governance Committee.
+
+[CHRISTOS] And I'm Christos — Principal Software Engineer at Elastic. I maintain the Collector Contrib project and serve as a Semantic Conventions Approver for system, Kubernetes, and container metrics. I'm also a CNCF Ambassador.
+
 -->
 
 ---
 
-# What is the OpenTelemetry Collector?
+# What is OpenTelemetry?
 
-<img src="/otel-diagram.svg" style="flex: 1; min-height: 0; max-width: 100%; object-fit: contain; display: block; margin: auto;" />
-
-<!-- PABLO: As most of you know OpenTelemetry is the open standard for telemetry.
-
-The Collector is an OpenTelemetry tool written in Go that allows you to build telemetry pipelines to receive, process and export your telemetry from any source to any backend.-->
-
----
-
-# What is WebAssembly?
-
-<div class="icon-grid">
-  <carbon-code class="icon" />
-  <span>Portable compilation target available since 2017, 3.0 in 2025.</span>
-  <carbon-devices class="icon" />
-  <span>Can be run on browsers, embeddable and standalone runtimes.</span>
-  <carbon-scale class="icon" />
-  <span><a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/advanced/wasm">Envoy</a>, <a href="https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/">Istio</a>, <a href="https://www.openpolicyagent.org/docs/wasm">OPA</a> and <a href="https://github.com/kubernetes-sigs/kube-scheduler-wasm-extension/tree/main">k8s</a> all use it for plugins.</span>
-  <carbon-pen-fountain class="icon" />
-  <span><a href="https://www.figma.com/blog/webassembly-cut-figmas-load-time-by-3x/">Figma</a>, <a href="https://youtu.be/48ORmla7mak">Adobe</a>  and <a href="https://youtu.be/2En8cj6xlv4">Google</a> use it for thick-client apps and cross-platform code sharing.</span>
+<div class="otel-slide-wrap">
+<div class="otel-big-icon"><img src="/otel-icon.png" class="otel-icon-main" /></div>
+<div class="icon-grid otel-slide-bullets">
+<carbon-chart-multitype v-click="1" class="icon" />
+<span v-click="1">An <strong>observability framework</strong></span>
+<carbon-document-multiple-01 v-click="2" class="icon" />
+<span v-click="2">A set of <strong>specifications and implementations</strong> for observability</span>
+<carbon-trophy v-click="3" class="icon" />
+<span v-click="3"><strong>2nd largest CNCF project</strong></span>
+<carbon-partnership v-click="4" class="icon" />
+<span v-click="4"><strong>CNCF graduated</strong> project</span>
+</div>
 </div>
 
+<!-- CHRISTOS
 
-<!-- 
+I'll start with a quick two-minute overview — most of you know what OpenTelemetry is, so I'll keep it brief.
 
-  PABLO:
+OpenTelemetry is the open standard for observability. It defines how applications emit telemetry data — traces, metrics, logs, and profiles — and how that data flows to your observability tools.
 
-  WebAssembly has already been in use for large thick-client apps for a long time now.
+It's the second-largest CNCF project, with contributions from virtually every major vendor in the space. And as a graduated project, it's considered production-ready by the foundation.
 
-  1. Some other cloud-native projects like Envoy, Istio, OPA and Kubernetes use it in a limited way to provide filters and plugins.
-  2. Figma is written in C++, and switched their C++ to JavaScript compilation target
-     from asm.js to WebAssembly and saw a significant gain in document loading speed.
-  3. Adobe also has long-standing software written for desktops and has leveraged
-     WebAssembly to support running some of their suite in the browser.
-  4. Google applications that require heavy processing also offload heavy computations
-     to WebAssembly modules to keep their applications performant.
-
- Source: https://leaddev.com/technical-direction/webassembly-still-waiting-its-moment -->
-
-
+-->
 
 ---
 
-# Why WebAssembly + OTel Collector?
+# The OpenTelemetry Ecosystem
 
-<div class="icon-grid">
-  <carbon-devices class="icon" />
-  <span>Wasm expands devices the Collector can run on, including user devices.</span>
-  <carbon-code class="icon" />
-  <span>You can compile to Wasm from Go, Rust, C++ and many other languages.</span>
-  <carbon-flash class="icon" />
-  <span>Wasm provides performance for computationally-intensive workloads.</span>
+<EcoSystem />
+
+<!-- CHRISTOS
+
+<click> The four signals: traces, metrics, logs, and profiles.
+
+<click> Your application connects via auto-instrumentation agents or the OTel SDK and API.
+
+<click> Everything flows to the OTel Collector — a vendor-neutral pipeline that receives, processes, and exports your telemetry.
+
+<click> And the Collector forwards to your observability backends.
+
+<click> Underneath everything — the layer that ties the whole ecosystem together — are Semantic Conventions. Standard names like system.cpu.time, host.name, and k8s.pod.name that every tool in the ecosystem agrees on.
+
+And these two — the Collector and Semantic Conventions — are exactly what today's talk is about.
+
+-->
+
+---
+
+# Two Components That Must Be Stable Together
+
+<div class="comparison-grid">
+  <div v-click="1" class="info-box focus-semconv-box">
+    <h3>Semantic Conventions</h3>
+    <p>Standard <strong>names</strong> for every telemetry attribute — shared across all vendors and implementations.</p>
+    <div class="focus-codes">
+      <code>system.cpu.time</code>
+      <code>host.name</code>
+      <code>k8s.pod.name</code>
+    </div>
+  </div>
+  <div v-click="2" class="info-box focus-collector-box">
+    <h3>The Collector</h3>
+    <p>The vendor-neutral <strong>pipeline</strong> at the heart of most OTel deployments.</p>
+    <div class="focus-codes">
+      <code>kubeletstats receiver</code>
+      <code>hostmetrics receiver</code>
+      <code>k8sattributes processor</code>
+    </div>
+  </div>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-PABLO:
+The Collector receivers and processors are what actually produce metrics — they emit telemetry attributes using the names defined in Semantic Conventions.
 
-WebAssembly has wide support, both in terms of runtime implementations
-and in programming language support. All major browsers have supported
-WebAssembly for years now, and if you want to run some software on
-a device with a browser, chances are it will work. There are also
-server-side WebAssembly runtimes that can run wherever you might think.
-One of the more compelling use-cases is probably in edge functions
-that run close to users.
+If the Semantic Conventions rename an attribute, every Collector component that emits it has to change too.
 
-A number of languages can compile to WebAssembly, meaning if you can
-operate within some of it's constraints, you should be able to easy
-port existing code or work in your favorite language.
+And if that change isn't handled carefully, your users silently see different data on the next upgrade.
 
-WebAssembly is performant, meaning it's useful as a target for
-computationally-intensive workloads. Many companies have used it
-in their thick client web apps with success as we'll discuss later.
+That's the core challenge. Let me show you what it looks like in practice.
 
- -->
+-->
 
 ---
 
-# What is WebAssembly? Wasm and WASI
+# Story 1 — Kubelet Stats: Four Years of Wrong Metric Names
 
-WASI extends provides standardized interfaces for filesystem, networking...
+<div class="icon-grid">
+  <carbon-warning-alt v-click="1" class="icon" />
+  <span v-click="1"><code>k8s.node.cpu.utilization</code> — "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanosecond</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
+  <carbon-misuse v-click="2" class="icon" />
+  <span v-click="2">Silent disappearance on upgrade — no compile error, no Collector warning.</span>
+  <carbon-breaking-change v-click="3" class="icon" />
+  <span v-click="3">Real user pain: old name gone, new dashboards not yet ready → actual <strong>observability gap</strong> mid-migration.</span>
+  <carbon-time v-click="4" class="icon" />
+  <span v-click="4">Multi-release migration starting <code>v0.111.0</code> (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
+</div>
+
+<!-- CHRISTOS
+
+Let me start with a concrete story.
+
+The kubeletstats receiver had been emitting metrics with "utilization" in their names. In OpenTelemetry's semantic conventions, "utilization" means a ratio between 0 and 1. But these metrics were actually raw nanosecond CPU values. The names were semantically wrong.
+
+The fix was to rename them to "usage." But here's where it gets painful.
+
+When users upgraded their Collector, the old metric names silently disappeared. No warning, no error — just gone.
+
+Some users were mid-migration: they had removed the old dashboard panels but hadn't added the new ones yet. A real observability gap.
+
+The responsible fix required over 10 releases. This became one of the canonical examples for why we needed a proper migration system.
+
+-->
+
+---
+
+# Story 2 — HTTP Semantic Conventions: One Rename, Dozens of Breakages
+
+<div class="icon-grid">
+  <carbon-data-share v-click="1" class="icon" />
+  <span v-click="1">Massive rename: <code>http.method</code> → <code>http.request.method</code>, <code>http.url</code> → <code>url.full</code>, <code>http.status_code</code> → <code>http.response.status_code</code>, <code>net.peer.name</code> → <code>server.address</code>, and more.</span>
+  <carbon-scales v-click="2" class="icon" />
+  <span v-click="2">Not one receiver — every HTTP library, every Collector component, every downstream dashboard hit simultaneously.</span>
+  <carbon-settings-adjust v-click="3" class="icon" />
+  <span v-click="3">First attempt: <code>OTEL_SEMCONV_STABILITY_OPT_IN=http</code> env var. Worked, but: global (not per-component), no rollback, not Collector-native.</span>
+  <carbon-idea v-click="4" class="icon" />
+  <span v-click="4">This experience directly shaped the RFC for a proper, per-component migration mechanism.</span>
+</div>
+
+<!-- CHRISTOS
+
+The HTTP semantic convention migration was even more painful because of its scope.
+
+This wasn't one receiver. Renaming http.method, http.url, and http.status_code touched every HTTP instrumentation library, every Collector component, and every dashboard users had built.
+
+The first attempt was a global environment variable. It worked — barely — but it was blunt: you couldn't control it per-component, you couldn't roll back, and it wasn't native to the Collector's config model.
+
+This experience proved that the old approach wasn't enough — and directly shaped what we'll talk about next.
+
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<div class="pain-quote">
+  <p>"Breaking changes from semantic conventions are so difficult because</p>
+  <p class="pain-emphasis">a user could upgrade the Collector and not realize it just started emitting new telemetry."</p>
+</div>
+
+<!-- CHRISTOS
+
+This is the core of the problem. There's no compile-time check. No test failure. No alert.
+
+A user upgrades their Collector on a Tuesday, and their dashboards quietly start showing different data — or nothing at all.
+
+This is what we set out to fix. And before I show you what we did, let me hand over to Pablo to explain the framework we're working within.
+
+-->
+
+---
+
+# What Stability Means in OpenTelemetry
 
 <div class="comparison-grid">
   <div class="info-box">
-    <h3 class="opacity-100">WebAssembly (Wasm)</h3>
+    <h3>Specifications &amp; SemConv</h3>
     <ul>
-      <li v-click="1">Binary format targeted for browsers.</li>
-      <li v-click="2">Can only see what the host allows.</li>
-      <li v-click="3">Stable (3.0) specification.</li>
-      <li v-click="4">Widely supported.</li>
+      <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
+      <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
+      <li v-click="3">Users can rely on names never silently changing</li>
     </ul>
   </div>
   <div class="info-box">
-    <h3 class="opacity-100">WASI</h3>
+    <h3>Collector Components</h3>
     <ul>
-      <li v-click="1">Wasm interfaces for OS interaction.</li>
-      <li v-click="2">Standardized but controlled access.</li>
-      <li v-click="3">Unstable (WASIp2) specification.</li>
-      <li v-click="4">Less widely supported.</li>
-    </ul>
-  </div>
-</div>
-
-<!-- 
-
-  PABLO:
-
-  As we mentioned, WebAssembly can also be run server-side and not just in the browser.
-  This means its possible to do certain things (e.g. filesystem access) that aren't
-  possible in the browser, which is where The WebAssembly System Interface, or WASI,
-  comes in.
-
-  It provides a standard way of providing resources to Wasm applications, but unlike Wasm itself,
-  it is unstable and less widely supported.
-
- -->
-
----
-
-# What is WebAssembly? WASI previews
-
-<Timeline :items="[
-  { year: '~2020', desc: '<div class=tl-card-title>WASIp1</div><ul><li>Single API.</li><li>Limited Go support.</li></ul>' },
-  { year: '2024', desc: '<div class=tl-card-title>WASIp2</div><ul><li>Component model.</li><li>Full HTTP support.</li><li>Only TinyGo support.</li></ul>' },
-  { year: '<i>2026?</i>', desc: '<div class=tl-card-title>WASIp3</div><ul><li>Async I/O.</li><li>Concurrency support.</li><li>Planned Go support.</li></ul>' },
-]" />
-
-<!-- PABLO 
-
-WASI is unstable and has released so far two previews and a release candidate for a third preview.
-
-Go supports WASIp1 but does not natively support WASIp2. There is planned WASIp3 support in Go.
-WASIp3 unblocks key features needed for using it for I/O and network-heavy applications.
-
--->
-
----
-transition: fade
----
-
-# Wasm plugins inside the Collector
-
-<div class="arch-slide">
-  <div class="arch-diagram">
-    <div class="arch-box-root arch-block collector-block">
-      <span class="arch-label-left">Collector</span>
-      <span class="arch-label-right arch-native">Native</span>
-      <div class="arch-block runtime-block">
-        <span class="arch-label-left">Wasm runtime</span>
-        <span class="arch-label-right arch-native">Native (Go library)</span>
-        <div class="arch-block plugin-block">
-          <span class="arch-label-left">Plugin</span>
-          <span class="arch-label-right arch-wasm">Wasm</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="arch-details">
-    <ul>
-      <li>Runtime plugins.</li>
-      <li><a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/11772">wasmprocessor</a>.</li>
-      <li>OTTL custom functions.</li>
-      <li><a href="https://github.com/otelwasm/otelwasm">otelwasm project</a>.</li>
+      <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
+      <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
+      <li v-click="3">Most heavily-used components are still Beta</li>
     </ul>
   </div>
 </div>
 
 <!-- PABLO
 
-There are two main things you may think about when combining Wasm and the Collector.
+The key insight is that "stable" means something specific in OpenTelemetry — and it's different for specs vs. implementations.
 
-The first one is to run plugins inside the Collector. There have been prior proposals to 
-do this including the wasmprocessor or OTTL custom functions, although there is no official upstream support for this so far.
+For Semantic Conventions: once stable, attribute names are guaranteed not to change. You build dashboards on system.cpu.time and they're there forever.
 
- -->
+For Collector components: stable means configuration won't silently break, and there's a defined migration path for any changes.
 
----
-
-# Wasm plugins inside the Collector: the vision
-
-<div class="icon-grid">
-  <carbon-api class="icon" />
-  <span>Dynamically load components distributed as OCI artifacts.</span>
-  <carbon-settings class="icon" />
-  <span>Don't be constrained by your distro's component offering.</span>
-  <carbon-security class="icon" />
-  <span>Sandboxed execution with controlled access to networking or filesystem.</span>
-  <carbon-plug class="icon" />
-  <span>Write your Collector components in any* language.</span>
-</div>
-
-<!-- PABLO 
-
-There is no support for Wasm plugins today in the upstream Collector.
-General support for using Wasm for plugins could look like this in the future: 
-
-1. You could dynamically load components that you can pull from a registry, distributed as OCI artifacts on any distro.
-2. You could control on a fine-grained way what your component has access to, allowing you to confidently access a greater array of components.
-3. You would be able to write your Collector components on any language you want with a single Component Model.
--->
-
----
-
-# Wasm plugins inside the Collector: PoC today
-
-<div class="arch-slide">
-<div class="arch-details">
-
-* <a href="https://github.com/otelwasm/otelwasm">otelwasm</a> allows you to run existing components in Wasm.
-* It relies on the <a href="https://github.com/WasmEdge/WasmEdge">WasmEdge</a> to provide HTTP support.
-* Limited by WASM features today, e.g. no support for true parallelism.
-
-</div>
-<div>
-
-```go
-type Stack struct {
-	CurrentTraces     ptrace.Traces
-	CurrentMetrics    pmetric.Metrics
-	CurrentLogs       plog.Logs
-	ResultTraces      ptrace.Traces
-	ResultMetrics     pmetric.Metrics
-	ResultLogs        plog.Logs
-	StatusReason      string
-	RequestedShutdown atomic.Bool
-
-	OnResultMetricsChange func(pmetric.Metrics)
-	OnResultLogsChange    func(plog.Logs)
-	OnResultTracesChange  func(ptrace.Traces)
-
-	PluginConfigJSON []byte
-}
-```
-
-</div>
-</div>
-
-<!-- PABLO 
-
-The most interesting project out there combining the Collector and Wasm today is the otelwasm project.
-
-It uses a thin wrapper to pass pdata data to components, and relies on unofficial extensions from WasmEdge, a CNCF Sandbox project, to provide full HTTP support.
-
-We think it is very interesting, and, at the same time it shows that it is challenging to provide Wasm plugin support today that meets upstream's standards of performance and correctness. We look forward to see how WASIp3 developments allow otelwasm to evolve.
+The problem: most of the most heavily-used components — kubeletstats, hostmetrics — are still Beta. Even though they're running in production at thousands of companies.
 
 -->
 
 ---
 
-# Collector running in Wasm
+# The Migration Mechanism
 
-<div class="arch-slide">
-  <div class="arch-diagram">
-    <div class="arch-box-root arch-block runtime-block">
-      <span class="arch-label-left">Wasm runtime</span>
-      <span class="arch-label-right arch-native">Native</span>
-      <div class="arch-block collector-block">
-        <span class="arch-label-left">Collector</span>
-        <span class="arch-label-right arch-wasm">Wasm</span>
-      </div>
+<div class="migration-slide">
+  <div class="migration-gates">
+    <div v-click="1" class="gate-pair">
+      <code class="gate">&lt;kind&gt;.&lt;id&gt;.EmitV1&lt;Area&gt;Conventions</code>
+      <span class="gate-arrow">→</span>
+      <span class="gate-desc">opt into new names</span>
+    </div>
+    <div v-click="2" class="gate-pair">
+      <code class="gate">&lt;kind&gt;.&lt;id&gt;.DontEmitV0&lt;Area&gt;Conventions</code>
+      <span class="gate-arrow">→</span>
+      <span class="gate-desc">stop emitting old names</span>
     </div>
   </div>
-  <div class="arch-details">
+  <div class="lifecycle-steps">
+    <div v-click="3" class="lifecycle-step step-alpha">
+      <div class="step-badge">Alpha</div>
+      <div class="step-desc">Default: old names only. Users opt in to new or both.</div>
+    </div>
+    <span v-click="4" class="lifecycle-arrow">→</span>
+    <div v-click="4" class="lifecycle-step step-beta">
+      <div class="step-badge">Beta</div>
+      <div class="step-desc">Default: v1 only (opt-in: double-publish). Triggered when semconv reaches stable.</div>
+    </div>
+    <span v-click="5" class="lifecycle-arrow">→</span>
+    <div v-click="5" class="lifecycle-step step-stable">
+      <div class="step-badge">Stable</div>
+      <div class="step-desc">New names only. After X minor releases at beta; enabling v0 errors.</div>
+    </div>
+    <span v-click="6" class="lifecycle-arrow">→</span>
+    <div v-click="6" class="lifecycle-step step-removed">
+      <div class="step-badge">Removed</div>
+      <div class="step-desc">After 4 more minor releases.</div>
+    </div>
+  </div>
+  <p v-click="7" class="migration-note">
+    RFC: <a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/rfcs/semconv-feature-gates.md">semconv-feature-gates.md</a>
+    &nbsp;·&nbsp; minimum 8 minor releases of warning
+    &nbsp;·&nbsp; shaped by <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/45592">collector-contrib#45592</a>
+  </p>
+</div>
+
+<!-- CHRISTOS
+
+The HTTP semconv migration showed us that a global env var wasn't enough. So we designed a proper, per-component mechanism.
+
+Each component gets two paired feature gates. The first lets you opt into the new names early. The second lets you turn off the old names when you're ready. You control each independently — you can run both in parallel during your migration window.
+
+The lifecycle has four stages:
+
+Alpha: nothing changes by default. You can opt in to test the new names.
+
+Beta: triggered automatically once the associated semconv area reaches stable. The default flips — new names emitted by default. You can still emit both.
+
+Stable: old names are gone. Trying to enable them results in an error.
+
+Removed: the gates themselves are removed after 4 more releases.
+
+Minimum warning window across all stages: 8 minor releases. That's a real runway for users to migrate safely.
+
+-->
+
+---
+
+# The Trigger: CNCF ToC Feedback
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
+    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
+    <li>An external body pushing the project to take stability seriously — and publicly</li>
+    <li>This was the forcing function that aligned the community around a concrete plan</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Add slides covering the CNCF ToC feedback:
+- When it happened and what was specifically said
+- The concerns raised (Beta components in production, SemConv churn)
+- How the community received it and what changed as a result
+- Why external accountability matters for a project at this scale
+
+-->
+
+---
+
+# Surveys
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>Community surveys conducted to understand user pain around stability</li>
+    <li>Key findings: users want upgrade confidence, dashboard stability, SemConv guarantees</li>
+    <li>Survey results informed which components to prioritize first</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Add survey results and key data points here:
+- Survey methodology and reach
+- Top user pain points identified
+- How survey data mapped to the 7-component priority list
+
+-->
+
+---
+
+# The Response: Two Sides of the Same Coin
+
+<div class="two-sides-grid">
+  <div v-click="1" class="info-box side-semconv">
+    <h3>Schema Side</h3>
+    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">System &amp; K8s SemConv SIGs</p>
     <ul>
-      <li>Filtering, sampling and transforming in the browser.</li>
-      <li>Run it on a Wasm runtime for sandboxing.</li>
-      <li>Run only some parts: <a href="https://ottl.run/">ottl.run</a>.</li>
+      <li>Rigorous promotion criteria before declaring stable</li>
+      <li>K8s attributes → stable in semconv v1.42.0</li>
+      <li>System &amp; process metrics → RC in progress</li>
+    </ul>
+  </div>
+  <div v-click="2" class="coin-bridge">
+    <div class="coin-rule">A convention is not<br>called <strong>stable</strong> until<br>the Collector has a<br><strong>migration path ready</strong></div>
+  </div>
+  <div v-click="3" class="info-box side-collector">
+    <h3>Implementation Side</h3>
+    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">Collector SIG</p>
+    <ul>
+      <li>Per-component feature gates for safe migration</li>
+      <li>7 priority components for first-wave stabilization</li>
+      <li>k8sattributes processor → v1 (September 2026)</li>
     </ul>
   </div>
 </div>
 
-<!-- PABLO 
+<!-- CHRISTOS
 
-An alternative way to combine both is to run a whole Collector on Wasm runtime.
+Here's how the community responded. Two parallel efforts, working in lockstep.
 
-This could be on the browser, where you could leverage its processing capabilities, on your preferred Wasm runtime.
+On the schema side: the System and K8s SemConv SIGs adopted rigorous promotion criteria. A metric can't be called stable until it's been reviewed, tested, and approved.
 
-A small example of this can be seen today on the ottl.run website, which uses WebAssembly to run a small part of the Collector.
+On the implementation side: the Collector SIG created an RFC for per-component feature gates. Each component gets a pair of gates — users migrate on their own timeline.
 
--->
+The key constraint that ties these together: we don't call a convention "stable" until the Collector has a migration path ready. Schema stability and implementation stability are coupled.
 
----
-
-# Where can I run my Collector today?
-
-The Collector supports a variety of compilation targets today:
-
-<div class="platforms">
-  <div v-click="1" class="tier-group tier1-group">
-    <div class="tier1"><code>linux/amd64</code></div>
-  </div>
-  <div v-click="2" class="tier-group tier2-group">
-    <div class="tier2"><code>darwin/arm64</code></div>
-    <div class="tier2"><code>linux/arm64</code></div>
-    <div class="tier2"><code>windows/amd64</code></div>
-  </div>
-  <div v-click="3" class="tier-group tier3-group">
-    <div class="tier3"><code>darwin/amd64</code></div>
-    <div class="tier3"><code>linux/386</code></div>
-    <div class="tier3 wasm-special"><code>js/wasm</code></div>
-    <div class="tier3"><code>linux/arm</code></div>
-    <div class="tier3"><code>linux/ppc64le</code></div>
-    <div class="tier3"><code>linux/riscv64</code></div>
-    <div class="tier3"><code>linux/s390x</code></div>
-    <div class="tier3"><code>windows/386</code></div>
-  </div>
-  <div v-click="4" class="tier-group unofficial-group">
-    <div class="unofficial"><code>aix/ppc64</code></div>
-    <div class="unofficial"><code>plan9/amd64</code></div>
-    <div class="unofficial"><code>wasip1/wasm</code></div>
-    <div class="unofficial"><code>...</code></div>
-  </div>
-</div>
-
-<!-- PABLO 
-
-What is the level of support for this upstream today?
-
-Collector compilation targets are organized by tiers depending on the level of support we provide for them. 
-
-Linux on amd64 belongs to our highest tier, <click>
-followed by macOS, Windows and arm architectures <click>,
-with a long tail of more niche architectures and since recently js/wasm <click>
-
-This means any Collector release is 'guaranteed to build' on js/wasm, corresponding to browser Wasm runtimes.
-
-There are some platforms that are not officially supported but that some people are using today, like Plan9 or AIX (that will change very soon). WASIp1 is one of these not officially supported platforms, although there are projects like otelwasm that use it today.
--->
-
----
-
-# Collector running in Wasm: Upstream developments
-
-<div class="icon-grid">
-  <carbon-add-alt class="icon" />
-  <span><code>js/wasm</code> added as a <a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/platform-support.md#tier-3---community-support">Tier-3 platform</a> (Feb 2026).</span>
-  <carbon-cut class="icon" />
-  <span>Custom telemetry provider to strip down binary. (Feb 2026)</span>
-  <carbon-chart-bar class="icon" />
-  <span>244 of 271 (~90%) Collector components already compile to <code>js/wasm</code>.</span>
-</div>
-
-<!-- PABLO 
-
-In particular, in preparation for this talk we focused on the js/wasm support, 
-as well as building upon a feature for custom telemetry providers to be able to strip down Wasm binaries.
-
-We can also happily report that about 90% of Collector components already compile to js/wasm.
--->
-
-
----
-
-# Collector running in Wasm: OCB manifest
-
-```yaml{all|1-2,6-8|1,3-4,10-12|14-16}
-exporters:
-  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.148.0
-  - gomod: github.com/evan-bradley/kceu-2026-wasm-talk/jsexporter v0.0.0
-    path: ../jsexporter
-
-processors:
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatorateprocessor v0.148.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor v0.148.0
-
-receivers:
-  - gomod: github.com/evan-bradley/kceu-2026-wasm-talk/jsreceiver v0.0.0
-    path: ../jsreceiver
-
-providers:
-  - gomod: go.opentelemetry.io/collector/confmap/provider/httpprovider v1.54.0
-  - gomod: go.opentelemetry.io/collector/confmap/provider/httpsprovider v1.54.0
-```
-
-<!-- 
-
-  EVAN:
-
-  Here's the build manifest used by the OpenTelemetry Collector Builder, which we call OCB.
-  This is a slightly cut-down version of the manifest we use to build the Collector you'll
-  see later in the slides.
-
-  1. First: as you can see, many of the upstream components you know and love are supported.
-  2. However, when running the Collector in Wasm, there's a good chance you may want or need
-     custom components. We have these two components to communicate data to and from the
-     JavaScript runtime the Collector is running alongside.
-  3. It's also worth noting that you'll need to pay close attention with how to configure
-     your Collectors. Since in the browser there is no filesystem access, we cut out those
-     providers and only use two that get config using an HTTP request. You could write a
-     custom one too, if you had another way you wanted to grab the config.
-  4. One important note if you use this, our environment variable substitution syntax
-     inside Collector configs is customizable, but defaults to reading environment
-     variables. You will want to change this for Collectors running in the browser.
-
- -->
-
----
-
-# Collector running in Wasm: Creating a Wasm binary
-
-<div class="icon-grid">
-  <carbon-terminal class="icon" />
-  <span><code>GOOS=js GOARCH=wasm ocb --config manifest.yaml</code></span>
-  <carbon-terminal class="icon" />
-  <span><code>GOOS=wasip1 GOARCH=wasm ocb --config manifest.yaml</code></span>
-</div>
-
-<!-- 
-
-EVAN: 
-Cross-architecture compilation with Go is a breeze, so simply specify
-the GOOS environment variable for your desired Wasm target and a GOARCH
-of `wasm` to compile to a wasm binary.
- -->
-
----
-
-# Collector running in Wasm: <a href="https://www.datadoghq.com/blog/engineering/agent-go-binaries/">gsa</a> analysis
-
-<img src="/gsa.png" class="h-100 mx-auto" />
-
-<!--
-  EVAN
-
-  Since we're talking about running in constrainted environments,
-  we used the Go size analyzer tool to examine the binary and
-  see if we could understand what's consuming space in the binary.
-
-  We found it's mostly due to the Go runtime, which is the large
-  pink box in the lower right.
-
-  Next you have dependencies: all the Collector dependencies and
-  its transitive dependencies. These are the dark purple and the
-  light green in the upper left.
-
-  Finally, the Go standard library modules are shown on the right,
-  which consume a meaningful amount of space, but not as much
-  as the other two.
-
-  Ref:
-  
-  https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#data-section
-  
-  https://blog.tangrs.id.au/2022/02/15/notes-on-go-binary-metadata/
--->
-
----
-
-# Collector running in Wasm: Limitations
-
-<div class="icon-grid">
-  <carbon-scale class="icon" />
-  <span>Binaries are ≥ 38 MiB: 45% runtime and 55% dependencies</span>
-  <carbon-archive class="icon" />
-  <span>Our demo Wasm Collector is 66 MiB, but <b>13 MiB</b> compressed</span>
-  <carbon-misuse class="icon" />
-  <span>Limited TinyGo support: lack of complete stdlib.</span>
-  <carbon-settings class="icon" />
-  <!-- Source: https://webassembly.org/features/ -->
-  <span>Limited Go support: no network (in WASI), concurrency, or Wasm GC.</span>
-</div>
-
-<!-- 
-
-EVAN
-
-Overall, binaries come out to 38 MiB uncompressed at a minimum.
-
-The one in this demo is 66 MiB uncompressed. Compression helps: gzip reduces
-the size to 13 MiB.
-
-Most of this is in the Go runtime, and the rest of it either in standard library modules
-or in dependencies.
-
-TinyGo can help reduce binary sizes: it's an alternative compiler compliant with
-the Go language spec targeting restricted platforms like Wasm. However, its
-implementation of the Go standard library isn't complete enough to compile
-the Collector.
-
-Likewise, Go doesn't support all Wasm features, so some things need to happen
-on the Go side before the Collector is able to benefit from them.
-
+Let me walk through each side in detail.
 
 -->
 
 ---
 
-# Computing on the edge
-
-<div class="edge-continuum">
-  <div class="edge-track-label">Far edge</div>
-  <div class="edge-track-label">Core</div>
-  <div class="edge-track">
-    <div class="edge-stage far-edge">
-      <carbon-mobile class="stage-icon" />
-      <div class="stage-title">User Device</div>
-      <div class="stage-subtitle">Browser, mobile app, desktop app</div>
-    </div>
-    <div class="edge-arrow" aria-hidden="true"></div>
-    <div class="edge-stage platform-edge">
-      <carbon-edge-node class="stage-icon" />
-      <div class="stage-title">Edge Platform</div>
-      <div class="stage-subtitle">Edge function</div>
-    </div>
-    <div class="edge-arrow" aria-hidden="true"></div>
-    <div class="edge-stage gateway-edge">
-      <carbon-router class="stage-icon" />
-      <div class="stage-title">Middleware / Gateway</div>
-      <div class="stage-subtitle">Gateway, message broker, regional hub</div>
-    </div>
-    <div class="edge-arrow" aria-hidden="true"></div>
-    <div class="edge-stage core-edge">
-      <carbon-data-center class="stage-icon" />
-      <div class="stage-title">Core Infrastructure</div>
-      <div class="stage-subtitle">Central services, control plane, storage</div>
-    </div>
-  </div>
-</div>
-
-<!-- EVAN -->
-
-
----
-transition: fade
----
-
-# Computing on the edge
-
-<div class="edge-fanin">
-  <div class="edge-track-label">Far edge</div>
-  <div class="edge-track-label">Core</div>
-  <div class="edge-fanin-grid">
-    <div class="fanin-col devices">
-      <div class="edge-stage far-edge row-1 fan-arrow arrow-down-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Browser app</div>
-      </div>
-      <div class="edge-stage far-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Mobile app</div>
-      </div>
-      <div class="edge-stage far-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Desktop app</div>
-      </div>
-      <div class="edge-stage far-edge row-4 fan-arrow arrow-up-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">IoT device</div>
-      </div>
-    </div>
-    <div class="fanin-col platforms">
-      <div class="edge-stage platform-edge row-p1 fan-arrow arrow-down-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p2 fan-arrow arrow-flat">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p3 fan-arrow arrow-up-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-    </div>
-    <div class="fanin-col gateways">
-      <div class="edge-stage gateway-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Gateway</div>
-      </div>
-      <div class="edge-stage gateway-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Middleware</div>
-      </div>
-    </div>
-    <div class="fanin-col core">
-      <div class="edge-stage core-edge row-core">
-        <carbon-data-center class="stage-icon" />
-        <div class="stage-title">Core Infrastructure</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- EVAN -->
-
----
-transition: fade
----
-
-# Computing on the edge
-
-<div class="edge-fanin">
-  <div class="edge-track-label">Far edge</div>
-  <div class="edge-track-label">Core</div>
-  <div class="edge-fanin-grid">
-    <div class="fanin-col devices fanin-dimmed">
-      <div class="edge-stage far-edge row-1 fan-arrow arrow-down-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Browser app</div>
-      </div>
-      <div class="edge-stage far-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Mobile app</div>
-      </div>
-      <div class="edge-stage far-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Desktop app</div>
-      </div>
-      <div class="edge-stage far-edge row-4 fan-arrow arrow-up-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">IoT device</div>
-      </div>
-    </div>
-    <div class="fanin-col platforms fanin-dimmed">
-      <div class="edge-stage platform-edge row-p1 fan-arrow arrow-down-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p2 fan-arrow arrow-flat">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p3 fan-arrow arrow-up-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-    </div>
-    <div class="fanin-col gateways">
-      <div class="edge-stage gateway-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Gateway</div>
-      </div>
-      <div class="edge-stage gateway-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Middleware</div>
-      </div>
-    </div>
-    <div class="fanin-col core">
-      <div class="edge-stage core-edge row-core">
-        <carbon-data-center class="stage-icon" />
-        <div class="stage-title">Core Infrastructure</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- EVAN -->
-
----
-transition: slide-left
----
-
-# Computing on the edge
-
-<div class="edge-fanin">
-  <div class="edge-track-label">Far edge</div>
-  <div class="edge-track-label">Core</div>
-  <div class="edge-fanin-grid">
-    <div class="fanin-col devices">
-      <div class="edge-stage far-edge row-1 fan-arrow arrow-down-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Browser app</div>
-      </div>
-      <div class="edge-stage far-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Mobile app</div>
-      </div>
-      <div class="edge-stage far-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">Desktop app</div>
-      </div>
-      <div class="edge-stage far-edge row-4 fan-arrow arrow-up-strong">
-        <carbon-mobile class="stage-icon" />
-        <div class="stage-title">IoT device</div>
-      </div>
-    </div>
-    <div class="fanin-col platforms">
-      <div class="edge-stage platform-edge row-p1 fan-arrow arrow-down-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p2 fan-arrow arrow-flat">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-      <div class="edge-stage platform-edge row-p3 fan-arrow arrow-up-soft">
-        <carbon-edge-node class="stage-icon" />
-        <div class="stage-title">Edge function</div>
-      </div>
-    </div>
-    <div class="fanin-col gateways">
-      <div class="edge-stage gateway-edge row-2 fan-arrow arrow-down-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Gateway</div>
-      </div>
-      <div class="edge-stage gateway-edge row-3 fan-arrow arrow-up-soft">
-        <carbon-router class="stage-icon" />
-        <div class="stage-title">Middleware</div>
-      </div>
-    </div>
-    <div class="fanin-col core">
-      <div class="edge-stage core-edge row-core">
-        <carbon-data-center class="stage-icon" />
-        <div class="stage-title">Core Infrastructure</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- EVAN -->
-
----
-transition: slide-left
----
-
-# Observability without borders: browser
+# Collector SIG: Systematic Stabilization Plan
 
 <div class="icon-grid">
-  <carbon-folder-off class="icon" />
-  <span>No FS access.</span>
-  <carbon-close-outline class="icon" />
-  <span>Can't open ports.</span>
-  <carbon-application class="icon" />
-  <span>Uses: JS SDK processing supplement, Electron/thick-client apps.</span>
+  <carbon-document v-click="1" class="icon" />
+  <span v-click="1">RFC: paired feature gates per component — <code>EmitV1&lt;Area&gt;Conventions</code> / <code>DontEmitV0&lt;Area&gt;Conventions</code> — explicit, per-component control over migration timing.</span>
+  <carbon-group v-click="2" class="icon" />
+  <span v-click="2"><strong>7 priority components</strong> identified for first-wave stabilization — covering the most widely deployed K8s and system metric sources in the ecosystem.</span>
+  <carbon-checkmark-filled v-click="3" class="icon icon-stable" />
+  <span v-click="3"><strong>k8sattributes processor</strong> — first to complete both the Collector stability checklist <em>and</em> the K8s SemConv compatibility checklist. Shipped v1 September 2026.</span>
+  <carbon-progress-bar v-click="4" class="icon icon-progress" />
+  <span v-click="4"><strong>kubeletstats</strong> and <strong>hostmetrics</strong> receivers in active stabilization — feature gates live, SemConv coordination ongoing.</span>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-EVAN: Running in the browser puts the Collector directly on your user's device.
-It doesn't get more on the edge than this.
+The Collector SIG's response was a systematic plan — not "let's fix these one by one as they come up" but a deliberate, RFC-backed approach.
 
-There's no filesystem access at this layer, and you can't open ports,
-but you can still make network calls to send or receive data.
+The technical mechanism: each component that needs a SemConv migration gets a pair of feature gates. Users independently control when they start emitting new conventions and when they stop emitting old ones.
 
-You can use this to supplement processing in your JS SDK if you're
-working with a JS-based webapp, or possibly for another language's
-SDK if you're running your app in Wasm!
+We identified 7 priority components for the first wave — the ones most widely deployed that still had SemConv debt.
 
-We think this will most likely find use in thick-client applications
-like Electron apps, where there applications are large and more likely
-to want to use the Collector for local processing.
+And k8sattributes is the first to cross the finish line. I'll show you what that took.
 
- -->
+-->
 
 ---
 
-# Observability without borders: Wasm runtime
+# K8s SemConv SIG
 
 <div class="icon-grid">
-  <carbon-wifi-off class="icon" />
-  <span>Limited/no networking currently (Go only supports WASIp1).</span>
-  <carbon-folder class="icon" />
-  <span>Filesystem access is available if the host grants it.</span>
-  <carbon-edge-node-alt class="icon" />
-  <span>For use alongside other Wasm applications or in edge functions.</span>
-  <carbon-code class="icon" />
-  <span>Also can use in an in-process Wasm runtime.</span>
+  <carbon-kubernetes-ip-address v-click="1" class="icon" />
+  <span v-click="1">Completed defining all K8s metrics from the Collector into Semantic Conventions.</span>
+  <carbon-group v-click="2" class="icon" />
+  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
+  <carbon-idea v-click="3" class="icon" />
+  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>unblocks</strong> <code>k8sattributes</code> processor stability.</span>
+  <carbon-checkmark v-click="4" class="icon" />
+  <span v-click="4"><strong>First target:</strong> K8s attributes → stable. K8s container and pod metrics following.</span>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-EVAN
+On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
 
-The Collector can be run inside a non-browser Wasm runtime.
+At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
 
-It's important to note that as of today, Go only supports compiling
-to WASIp1, which doesn't incude networking capabilities. You can still
-read from the filesystem or export functions to be called from a Wasm
-runtime.
+K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
 
-This is going to be most useful if you include the Collector as part of
-a Wasm application composed of multiple modules, or for use in edge
-function runtimes.
-
-You can also use it for in-process processing as part of another
-application. Many languages, including Java and Rust, have libraries
-that are Wasm runtimes, and can let you call a Collector pipeline
-like you would a function. This is an advanced use case, but could
-be used for a custom telemetry pipeline application or to supplement
-an SDK like we've shown for the JS SDK.
-
-Further reading: https://go.dev/blog/wasmexport
-
- -->
+-->
 
 ---
 
-# Observability without borders: what it's not
+# System SemConv SIG
 
 <div class="icon-grid">
-  <carbon-code class="icon" />
-  <span>Doesn't replace OTel SDKs.</span>
-  <carbon-container-software class="icon" />
-  <span>Unlikely to replace most existing Collector deployments.</span>
-  <carbon-floorplan class="icon" />
-  <span>Not a working solution, just a blueprint.</span>
+  <carbon-function v-click="1" class="icon" />
+  <span v-click="1">SIG had been working on system metrics stabilization for <strong>over a year</strong> already.</span>
+  <carbon-collaborate v-click="2" class="icon" />
+  <span v-click="2">More focused now: tightly aligned with the <code>hostmetrics</code> receiver stability goal.</span>
+  <carbon-progress-bar v-click="3" class="icon icon-rc" />
+  <span v-click="3"><code>process</code> namespace → Release Candidate (<a href="https://github.com/open-telemetry/semantic-conventions/pull/3758">PR #3758</a>)</span>
+  <carbon-document v-click="4" class="icon icon-rc" />
+  <span v-click="4"><code>system</code> metrics → RC in progress (<a href="https://github.com/open-telemetry/semantic-conventions/pull/4055">PR #4055</a>)</span>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-EVAN: Since this is an advanced use case, we want to very clearly call out what
-this is NOT.
+The System SemConv SIG had already been working on stabilizing system metrics for over a year.
 
-First, you're not going to replace OTel SDKs with this, and in most cases
-should simplify and stick with an SDK and use SDK processors if possible.
+After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
 
-You're also not going to likely want to go and switch your Collector
-deployment architecture after seeing this presentation. We have tested
-ourselves and seen architectures used by users that are battle-tested
-in production environments that should be the default recommendations
-for most users. Think of this as a way to open possibilities for
-maximizing your telemetry pipeline's capabilities.
+The process namespace is at Release Candidate. System metrics are on their way. Both are prerequisites for declaring hostmetrics receiver stable.
 
-Finally, nothing we've shown here is a working solution ready for
-production right now. While Wasm is currently used in production
-environments for large, established applications as we've shown,
-what we're showing you today is on the bleeding edge of what's
-possible. Again, there is official support for this, so we would
-love to get your ideas and contributions for what comes next!
-
- -->
+-->
 
 ---
 
-# Looking ahead
+# Semantic Conventions: Progress Report
 
 <div class="icon-grid">
-  <carbon-in-progress class="icon" />
-  <span>Go WASIp3 support still under active discussion.</span>
-  <carbon-package class="icon" />
-  <span>Wider TinyGo stdlib support could allow for smaller binaries.</span>
-  <carbon-microphone class="icon" />
-  <span>WASI OTel (<a href="https://sched.co/2DY17">WasmCon talk earlier today</a>).</span>
-  <carbon-group class="icon" />
-  <span>Contributions from YOU in the audience!</span>
+  <carbon-checkmark-filled v-click="1" class="icon icon-stable" />
+  <span v-click="1">K8s attributes → <strong>stable</strong> in <a href="https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.42.0">semconv v1.42.0</a> (June 2026)</span>
+  <carbon-in-progress v-click="2" class="icon icon-rc" />
+  <span v-click="2"><code>process</code> namespace → Release Candidate (<a href="https://github.com/open-telemetry/semantic-conventions/pull/3758">PR #3758</a>, <a href="https://github.com/open-telemetry/semantic-conventions/pull/3564">#3564</a>)</span>
+  <carbon-in-progress v-click="3" class="icon icon-rc" />
+  <span v-click="3"><code>system</code> metrics → RC in progress (<a href="https://github.com/open-telemetry/semantic-conventions/pull/4055">PR #4055</a>)</span>
+  <carbon-progress-bar v-click="4" class="icon icon-progress" />
+  <span v-click="4">K8s and container metrics → RC, <strong>33 metrics</strong> already promoted</span>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-EVAN: Looking ahead, here are some areas where we have seen active development,
-or where there needs to be active developments to take this further.
+Here's the current state of the SemConv work.
 
- -->
+K8s attributes: done — stable since June in semconv v1.42.0.
+
+Process metrics: Release Candidate.
+
+System metrics: on their way to RC.
+
+33 K8s and container metrics already promoted to RC.
+
+-->
 
 ---
 
-# Demo
+# <span style="color: #22c55e">✓</span> k8sattributes Processor — Stable
 
 <div class="icon-grid">
-  <carbon-assembly-reference class="icon" />
-  <span>We compiled a basic Collector that communicates with the OTel JS SDK.</span>
-  <carbon-mobile class="icon" />
-  <span>It runs on any modern browser, so try it on your phone!</span>
-  <QrArrow />
+  <carbon-list-checked v-click="1" class="icon" />
+  <span v-click="1">Required two checklists: Collector component stability criteria <strong>and</strong> K8s semconv compatibility.</span>
+  <carbon-plug v-click="2" class="icon" />
+  <span v-click="2">Feature gates shipped in <code>v0.147.0</code>:<br><code>processor.k8sattributes.EmitV1K8sConventions</code><br><code>processor.k8sattributes.DontEmitV0K8sConventions</code></span>
+  <carbon-rocket v-click="3" class="icon icon-stable" />
+  <span v-click="3">Shipped as <strong>v1</strong> on September 15th — part of <code>v0.161.0</code> contrib distro.</span>
+  <carbon-link v-click="4" class="icon" />
+  <span v-click="4">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44483">#44483</a></span>
 </div>
 
-<!-- 
+<!-- CHRISTOS
 
-BOTH: To hopefully help demonstrate the cool factor of what's possible
-with Wasm, we created a small demo that runs right inside these slides.
+And we have our first finish line.
 
- -->
+The k8sattributes processor shipped as v1 — stable — on September 15th, as part of the v0.161.0 Collector contrib release.
+
+It required satisfying two checklists: the standard Collector component stability criteria, and a new K8s SemConv compatibility checklist. First component to complete both.
+
+If you're on v0.161.0 or later, you have access to stable Kubernetes attribute enrichment — guaranteed not to break silently on the next upgrade.
+
+-->
 
 ---
 
-# Demo
+# Timeline
 
-<div class="arch-slide">
-  <div class="arch-diagram">
-    <div class="arch-box-root arch-block browser-block">
-      <span class="arch-label-left">Browser</span>
-      <div class="demo-grid">
-        <div class="demo-sdk-group arch-block demo-node-ui">
-          <div class="demo-node demo-node-ui">👆 Button</div>
-          <div class="demo-vert-arrow"></div>
-          <div class="demo-node demo-node-ui">OTel JS SDK</div>
-        </div>
-        <div class="demo-pipe-arrow">
-          <div class="demo-pipe-label">OTLP metrics</div>
-        </div>
-        <div class="demo-collector-wrapper arch-block wasm-col-block">
-          <span class="arch-label-left">Collector</span>
-          <span class="arch-label-right arch-wasm">Wasm</span>
-          <div class="demo-collector-inner">
-            <div class="demo-subcomp">JS Receiver</div>
-            <div class="demo-inner-arrow"></div>
-            <div class="demo-subcomp">JS Exporter</div>
-          </div>
-        </div>
-        <div class="demo-pipe-arrow">
-          <div class="demo-pipe-label">OTLP metrics</div>
-        </div>
-        <div class="demo-node demo-node-ui">📊 Chart</div>
-      </div>
-    </div>
-  </div>
-</div>
+<Timeline :items="[
+  { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><ul><li>K8s SIG completes K8s metrics in Semantic Conventions</li></ul>' },
+  { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><ul><li>Collector SIG + K8s SIG align on stabilization priorities</li></ul>' },
+  { year: 'Apr 2026', desc: '<div class=tl-card-title>hostmetrics Decision</div><ul><li>Dual-schema @ notation decision; PR #15309 merged</li></ul>' },
+  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><ul><li>semconv v1.42.0 released — 33 metrics promoted to RC</li></ul>', highlight: true },
+  { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1 ✓</div><ul><li>First Collector component ships as v1</li></ul>', highlight: true },
+  { year: 'Mar 2027', desc: '<div class=tl-card-title>Target: Wave 1 Complete</div><ul><li>Remaining 6 priority components ship as v1</li></ul>' },
+]" />
 
-<!-- BOTH -->
+<!-- CHRISTOS
+
+Here's the journey and where we're heading.
+
+October 2025: K8s SIG finishes the K8s metrics spec work.
+
+November 2025: After KubeCon NA, the two SIGs align on priorities.
+
+April 2026: The hostmetrics team makes a key technical decision on schema notation.
+
+June 2026: K8s attributes reach stable in semconv v1.42.0 — 33 metrics promoted.
+
+September 2026 — this month — k8sattributes ships as v1. First Collector component to complete the full journey.
+
+Target: all 7 priority components at v1 by March 2027.
+
+Now, back to Pablo for what comes next.
+
+-->
 
 ---
 
-<WasmDemo />
+# What's Next and the End Goal
 
-<!-- BOTH -->
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>6 remaining priority components on the path to v1 (target: March 2027)</li>
+    <li>The end goal: "stable by default" — no configuration needed to get stable telemetry on upgrade</li>
+    <li>What the world looks like when all critical Collector components are v1</li>
+    <li>The roadmap for the next major OTel Collector release</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Add slides covering the roadmap and end state:
+- The remaining 6 components and expected timelines
+- What "stable by default" looks like for end users
+- How this connects to the next major Collector release
+- The broader vision: every widely-used component is v1
+
+-->
+
+---
+
+# Other Components Coming Up
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>Which other Collector components are in the stabilization queue beyond the 7 priority ones</li>
+    <li>Community effort: how other maintainers are adopting the same RFC and checklist pattern</li>
+    <li>The template is open — any component team can use it</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Brief slide covering the broader component ecosystem:
+- Components beyond the 7 priority ones
+- How the RFC and checklist pattern scales across the full contrib repo
+- Invitation for other component maintainers to adopt the process
+
+-->
+
+---
+
+# Telemetry Schemas
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>The OTel Telemetry Schema spec — machine-readable migration definitions</li>
+    <li>How schemas complement the feature gate approach for SemConv migrations</li>
+    <li>Future direction: schema-driven automatic migration in the Collector</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Brief slide on Telemetry Schemas:
+- What they are and how they relate to SemConv stability
+- Current state of the schema spec
+- How they enable tooling to help users migrate automatically
+
+-->
 
 ---
 layout: center
@@ -974,6 +667,17 @@ layout: center
 
 <QrArrow />
 
-<img src="/kceu26.svg" class="kceu-logo" />
+<img src="/o11y-summit.svg" class="kceu-logo" />
 
-<!-- BOTH -->
+<!-- BOTH
+
+Thank you! Happy to take questions.
+
+If you want to get involved:
+- Collector SIG: every other Thursday (check the OTel community calendar)
+- SemConv SIG: weekly on Fridays
+- GitHub: open-telemetry/semantic-conventions and open-telemetry/opentelemetry-collector-contrib
+
+The slides are available via the QR code — includes all links referenced today.
+
+-->
