@@ -274,6 +274,157 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
 
 ---
 
+# The Trigger: CNCF ToC Feedback
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
+    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
+    <li>An external body pushing the project to take stability seriously — and publicly</li>
+    <li>This was the forcing function that aligned the community around a concrete plan</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Add slides covering the CNCF ToC feedback:
+- When it happened and what was specifically said
+- The concerns raised (Beta components in production, SemConv churn)
+- How the community received it and what changed as a result
+- Why external accountability matters for a project at this scale
+
+-->
+
+---
+
+# Surveys
+
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <ul>
+    <li>Community surveys conducted to understand user pain around stability</li>
+    <li>Key findings: users want upgrade confidence, dashboard stability, SemConv guarantees</li>
+    <li>Survey results informed which components to prioritize first</li>
+  </ul>
+</div>
+
+<!-- PABLO
+
+Add survey results and key data points here:
+- Survey methodology and reach
+- Top user pain points identified
+- How survey data mapped to the 7-component priority list
+
+-->
+
+---
+
+# The Response: Two Sides of the Same Coin
+
+<div class="two-sides-grid">
+  <div v-click="1" class="info-box side-semconv">
+    <h3>Schema Side</h3>
+    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">System &amp; K8s SemConv SIGs</p>
+    <ul>
+      <li>Rigorous promotion criteria before declaring stable</li>
+      <li>System &amp; process metrics stabilization</li>
+    </ul>
+  </div>
+  <div v-click="2" class="coin-bridge">
+    <div class="coin-rule">A convention is not<br>called <strong>stable</strong> until<br>the Collector has a<br><strong>migration path ready</strong></div>
+  </div>
+  <div v-click="3" class="info-box side-collector">
+    <h3>Implementation Side</h3>
+    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">Collector SIG</p>
+    <ul>
+      <li>Per-component feature gates for safe migration</li>
+      <li>7 priority components for first-wave stabilization</li>
+    </ul>
+  </div>
+</div>
+
+<!-- CHRISTOS
+
+Here's how the community responded. Two parallel efforts, working in lockstep.
+
+On the schema side: the System and K8s SemConv SIGs adopted rigorous promotion criteria. A metric can't be called stable until it's been reviewed, tested, and approved.
+
+On the implementation side: the Collector SIG created an RFC for per-component feature gates. Each component gets a pair of gates — users migrate on their own timeline.
+
+The key constraint that ties these together: we don't call a convention "stable" until the Collector has a migration path ready. Schema stability and implementation stability are coupled.
+
+Let me walk through each side in detail.
+
+-->
+
+---
+
+# Collector SIG: Systematic Stabilization Plan
+
+<div class="icon-grid">
+  <carbon-function v-click="1" class="icon" />
+  <span v-click="1">Collector Core was already working towards stabilizing the core libraries and APIs.</span>
+  <carbon-idea v-click="2" class="icon" />
+  <span v-click="2">What about the components that collect the telemetry?</span>
+  <carbon-chart-multitype v-click="3" class="icon" />
+  <span v-click="3">Driven by 2024 + 2025 Collector survey data + vendor specific feedback.</span>
+  <carbon-group v-click="4" class="icon" />
+  <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
+  <carbon-link v-click="5" class="icon" />
+  <span v-click="5">Goal issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
+</div>
+
+<!-- PABLO
+
+-->
+
+---
+
+# K8s SemConv SIG
+
+<div class="icon-grid">
+  <carbon-kubernetes-ip-address v-click="1" class="icon" />
+  <span v-click="1">Completed defining all K8s metrics from the Collector into Semantic Conventions.</span>
+  <carbon-group v-click="2" class="icon" />
+  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
+  <carbon-idea v-click="3" class="icon" />
+  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>unblocks</strong> <code>k8sattributes</code> processor stability.</span>
+  <carbon-checkmark v-click="4" class="icon" />
+  <span v-click="4"><strong>First target:</strong> K8s attributes → stable. K8s container and pod metrics following.</span>
+</div>
+
+<!-- CHRISTOS
+
+On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
+
+At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
+
+K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
+
+-->
+
+---
+
+# System SemConv SIG
+
+<div class="icon-grid">
+  <carbon-function v-click="1" class="icon" />
+  <span v-click="1">SIG had been working on system metrics stabilization for <strong>over a year</strong> already.</span>
+  <carbon-collaborate v-click="2" class="icon" />
+  <span v-click="2">More focused now: tightly aligned with the <code>hostmetrics</code> receiver stability goal.</span>
+</div>
+
+<!-- CHRISTOS
+
+The System SemConv SIG had already been working on stabilizing system metrics for over a year.
+
+After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
+
+-->
+
+---
+
 # The Migration Mechanism
 
 <div class="migration-slide">
@@ -334,171 +485,6 @@ Stable: old names are gone. Trying to enable them results in an error.
 Removed: the gates themselves are removed after 4 more releases.
 
 Minimum warning window across all stages: 8 minor releases. That's a real runway for users to migrate safely.
-
--->
-
----
-
-# The Trigger: CNCF ToC Feedback
-
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
-    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
-    <li>An external body pushing the project to take stability seriously — and publicly</li>
-    <li>This was the forcing function that aligned the community around a concrete plan</li>
-  </ul>
-</div>
-
-<!-- PABLO
-
-Add slides covering the CNCF ToC feedback:
-- When it happened and what was specifically said
-- The concerns raised (Beta components in production, SemConv churn)
-- How the community received it and what changed as a result
-- Why external accountability matters for a project at this scale
-
--->
-
----
-
-# Surveys
-
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>Community surveys conducted to understand user pain around stability</li>
-    <li>Key findings: users want upgrade confidence, dashboard stability, SemConv guarantees</li>
-    <li>Survey results informed which components to prioritize first</li>
-  </ul>
-</div>
-
-<!-- PABLO
-
-Add survey results and key data points here:
-- Survey methodology and reach
-- Top user pain points identified
-- How survey data mapped to the 7-component priority list
-
--->
-
----
-
-# The Response: Two Sides of the Same Coin
-
-<div class="two-sides-grid">
-  <div v-click="1" class="info-box side-semconv">
-    <h3>Schema Side</h3>
-    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">System &amp; K8s SemConv SIGs</p>
-    <ul>
-      <li>Rigorous promotion criteria before declaring stable</li>
-      <li>K8s attributes → stable in semconv v1.42.0</li>
-      <li>System &amp; process metrics → RC in progress</li>
-    </ul>
-  </div>
-  <div v-click="2" class="coin-bridge">
-    <div class="coin-rule">A convention is not<br>called <strong>stable</strong> until<br>the Collector has a<br><strong>migration path ready</strong></div>
-  </div>
-  <div v-click="3" class="info-box side-collector">
-    <h3>Implementation Side</h3>
-    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">Collector SIG</p>
-    <ul>
-      <li>Per-component feature gates for safe migration</li>
-      <li>7 priority components for first-wave stabilization</li>
-      <li>k8sattributes processor → v1 (September 2026)</li>
-    </ul>
-  </div>
-</div>
-
-<!-- CHRISTOS
-
-Here's how the community responded. Two parallel efforts, working in lockstep.
-
-On the schema side: the System and K8s SemConv SIGs adopted rigorous promotion criteria. A metric can't be called stable until it's been reviewed, tested, and approved.
-
-On the implementation side: the Collector SIG created an RFC for per-component feature gates. Each component gets a pair of gates — users migrate on their own timeline.
-
-The key constraint that ties these together: we don't call a convention "stable" until the Collector has a migration path ready. Schema stability and implementation stability are coupled.
-
-Let me walk through each side in detail.
-
--->
-
----
-
-# Collector SIG: Systematic Stabilization Plan
-
-<div class="icon-grid">
-  <carbon-document v-click="1" class="icon" />
-  <span v-click="1">RFC: paired feature gates per component — <code>EmitV1&lt;Area&gt;Conventions</code> / <code>DontEmitV0&lt;Area&gt;Conventions</code> — explicit, per-component control over migration timing.</span>
-  <carbon-group v-click="2" class="icon" />
-  <span v-click="2"><strong>7 priority components</strong> identified for first-wave stabilization — covering the most widely deployed K8s and system metric sources in the ecosystem.</span>
-  <carbon-checkmark-filled v-click="3" class="icon icon-stable" />
-  <span v-click="3"><strong>k8sattributes processor</strong> — first to complete both the Collector stability checklist <em>and</em> the K8s SemConv compatibility checklist. Shipped v1 September 2026.</span>
-  <carbon-progress-bar v-click="4" class="icon icon-progress" />
-  <span v-click="4"><strong>kubeletstats</strong> and <strong>hostmetrics</strong> receivers in active stabilization — feature gates live, SemConv coordination ongoing.</span>
-</div>
-
-<!-- CHRISTOS
-
-The Collector SIG's response was a systematic plan — not "let's fix these one by one as they come up" but a deliberate, RFC-backed approach.
-
-The technical mechanism: each component that needs a SemConv migration gets a pair of feature gates. Users independently control when they start emitting new conventions and when they stop emitting old ones.
-
-We identified 7 priority components for the first wave — the ones most widely deployed that still had SemConv debt.
-
-And k8sattributes is the first to cross the finish line. I'll show you what that took.
-
--->
-
----
-
-# K8s SemConv SIG
-
-<div class="icon-grid">
-  <carbon-kubernetes-ip-address v-click="1" class="icon" />
-  <span v-click="1">Completed defining all K8s metrics from the Collector into Semantic Conventions.</span>
-  <carbon-group v-click="2" class="icon" />
-  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
-  <carbon-idea v-click="3" class="icon" />
-  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>unblocks</strong> <code>k8sattributes</code> processor stability.</span>
-  <carbon-checkmark v-click="4" class="icon" />
-  <span v-click="4"><strong>First target:</strong> K8s attributes → stable. K8s container and pod metrics following.</span>
-</div>
-
-<!-- CHRISTOS
-
-On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
-
-At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
-
-K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
-
--->
-
----
-
-# System SemConv SIG
-
-<div class="icon-grid">
-  <carbon-function v-click="1" class="icon" />
-  <span v-click="1">SIG had been working on system metrics stabilization for <strong>over a year</strong> already.</span>
-  <carbon-collaborate v-click="2" class="icon" />
-  <span v-click="2">More focused now: tightly aligned with the <code>hostmetrics</code> receiver stability goal.</span>
-  <carbon-progress-bar v-click="3" class="icon icon-rc" />
-  <span v-click="3"><code>process</code> namespace → Release Candidate (<a href="https://github.com/open-telemetry/semantic-conventions/pull/3758">PR #3758</a>)</span>
-  <carbon-document v-click="4" class="icon icon-rc" />
-  <span v-click="4"><code>system</code> metrics → RC in progress (<a href="https://github.com/open-telemetry/semantic-conventions/pull/4055">PR #4055</a>)</span>
-</div>
-
-<!-- CHRISTOS
-
-The System SemConv SIG had already been working on stabilizing system metrics for over a year.
-
-After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
-
-The process namespace is at Release Candidate. System metrics are on their way. Both are prerequisites for declaring hostmetrics receiver stable.
 
 -->
 
