@@ -1341,6 +1341,7 @@ html:not(.dark) .eco-semconv {
   color: var(--slidev-theme-primary);
   font-weight: 700;
   font-size: 2rem;
+  line-height: 2.2;
   margin-top: 2.5rem;
 }
 

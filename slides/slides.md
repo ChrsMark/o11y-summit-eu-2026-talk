@@ -1,5 +1,5 @@
 ---
-theme: apple-basic
+theme: dracula
 background: https://cover.sli.dev
 title: From Schema to Shipping Data
 class: text-center
@@ -129,7 +129,7 @@ And these two — the Collector and Semantic Conventions — are exactly what to
 <div class="comparison-grid">
   <div v-click="1" class="info-box focus-semconv-box">
     <h3>Semantic Conventions</h3>
-    <p>Standard <strong>names</strong> for every telemetry attribute — shared across all vendors and implementations.</p>
+    <p>Standard <strong>names</strong> for every telemetry attribute, shared across all vendors and implementations.</p>
     <div class="focus-codes">
       <code>system.cpu.time</code>
       <code>host.name</code>
@@ -138,7 +138,7 @@ And these two — the Collector and Semantic Conventions — are exactly what to
   </div>
   <div v-click="2" class="info-box focus-collector-box">
     <h3>The Collector</h3>
-    <p>The vendor-neutral <strong>pipeline</strong> at the heart of most OTel deployments.</p>
+    <p>The vendor-neutral <strong>pipeline/agent</strong> at the heart of most OTel deployments.</p>
     <div class="focus-codes">
       <code>kubeletstats receiver</code>
       <code>hostmetrics receiver</code>
@@ -161,13 +161,13 @@ That's the core challenge. Let me show you what it looks like in practice.
 
 ---
 
-# Story 1 — Kubelet Stats: Four Years of Wrong Metric Names
+# Story 1 > Kubelet Stats: Four Years of Wrong Metric Names
 
 <div class="icon-grid">
   <carbon-warning-alt v-click="1" class="icon" />
-  <span v-click="1"><code>k8s.node.cpu.utilization</code> — "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanosecond</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
+  <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanosecond</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
   <carbon-misuse v-click="2" class="icon" />
-  <span v-click="2">Silent disappearance on upgrade — no compile error, no Collector warning.</span>
+  <span v-click="2">Silent disappearance on upgrade, no compile error, no Collector warning.</span>
   <carbon-breaking-change v-click="3" class="icon" />
   <span v-click="3">Real user pain: old name gone, new dashboards not yet ready → actual <strong>observability gap</strong> mid-migration.</span>
   <carbon-time v-click="4" class="icon" />
@@ -192,13 +192,13 @@ The responsible fix required over 10 releases. This became one of the canonical 
 
 ---
 
-# Story 2 — HTTP Semantic Conventions: One Rename, Dozens of Breakages
+# Story 2 > HTTP Semantic Conventions: One Rename, Dozens of Breakages
 
 <div class="icon-grid">
   <carbon-data-share v-click="1" class="icon" />
   <span v-click="1">Massive rename: <code>http.method</code> → <code>http.request.method</code>, <code>http.url</code> → <code>url.full</code>, <code>http.status_code</code> → <code>http.response.status_code</code>, <code>net.peer.name</code> → <code>server.address</code>, and more.</span>
   <carbon-scales v-click="2" class="icon" />
-  <span v-click="2">Not one receiver — every HTTP library, every Collector component, every downstream dashboard hit simultaneously.</span>
+  <span v-click="2">Not one receiver: every HTTP library, every Collector component, every downstream dashboard hit simultaneously.</span>
   <carbon-settings-adjust v-click="3" class="icon" />
   <span v-click="3">First attempt: <code>OTEL_SEMCONV_STABILITY_OPT_IN=http</code> env var. Worked, but: global (not per-component), no rollback, not Collector-native.</span>
   <carbon-idea v-click="4" class="icon" />
@@ -241,22 +241,25 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 
 # What Stability Means in OpenTelemetry
 
-<div class="comparison-grid">
-  <div class="info-box">
-    <h3>Specifications &amp; SemConv</h3>
-    <ul>
-      <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
-      <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
-      <li v-click="3">Users can rely on names never silently changing</li>
-    </ul>
-  </div>
-  <div class="info-box">
-    <h3>Collector Components</h3>
-    <ul>
-      <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
-      <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
-      <li v-click="3">Most heavily-used components are still Beta</li>
-    </ul>
+<div class="pablo-stub">
+  <div class="pablo-stub-badge">PABLO</div>
+  <div class="comparison-grid">
+    <div class="info-box">
+      <h3>Specifications &amp; SemConv</h3>
+      <ul>
+        <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
+        <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
+        <li v-click="3">Users can rely on names never silently changing</li>
+      </ul>
+    </div>
+    <div class="info-box">
+      <h3>Collector Components</h3>
+      <ul>
+        <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
+        <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
+        <li v-click="3">Most heavily-used components are still Beta</li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -320,7 +323,28 @@ Add survey results and key data points here:
 
 ---
 
-# The Response: Two Sides of the Same Coin
+# The Response: Collector SIG → Systematic Stabilization Plan
+
+<div class="icon-grid">
+  <carbon-function v-click="1" class="icon" />
+  <span v-click="1">Collector Core was already working towards stabilizing the core libraries and APIs.</span>
+  <carbon-idea v-click="2" class="icon" />
+  <span v-click="2">What about the components that collect the telemetry?</span>
+  <carbon-chart-multitype v-click="3" class="icon" />
+  <span v-click="3">Driven by 2024 + 2025 Collector survey data + vendor specific feedback.</span>
+  <carbon-group v-click="4" class="icon" />
+  <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
+  <carbon-link v-click="5" class="icon" />
+  <span v-click="5">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
+</div>
+
+<!-- CHRISTOS
+
+-->
+
+---
+
+# Two Sides of the Same Coin
 
 <div class="two-sides-grid">
   <div v-click="1" class="info-box side-semconv">
@@ -355,27 +379,6 @@ On the implementation side: the Collector SIG created an RFC for per-component f
 The key constraint that ties these together: we don't call a convention "stable" until the Collector has a migration path ready. Schema stability and implementation stability are coupled.
 
 Let me walk through each side in detail.
-
--->
-
----
-
-# Collector SIG: Systematic Stabilization Plan
-
-<div class="icon-grid">
-  <carbon-function v-click="1" class="icon" />
-  <span v-click="1">Collector Core was already working towards stabilizing the core libraries and APIs.</span>
-  <carbon-idea v-click="2" class="icon" />
-  <span v-click="2">What about the components that collect the telemetry?</span>
-  <carbon-chart-multitype v-click="3" class="icon" />
-  <span v-click="3">Driven by 2024 + 2025 Collector survey data + vendor specific feedback.</span>
-  <carbon-group v-click="4" class="icon" />
-  <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
-  <carbon-link v-click="5" class="icon" />
-  <span v-click="5">Goal issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
-</div>
-
-<!-- PABLO
 
 -->
 
@@ -519,7 +522,7 @@ System metrics: on their way to RC.
 
 ---
 
-# <span style="color: #22c55e">✓</span> k8sattributes Processor — Stable
+# <span style="color: #22c55e">✓</span> k8sattributes Processor → Stable
 
 <div class="icon-grid">
   <carbon-list-checked v-click="1" class="icon" />
