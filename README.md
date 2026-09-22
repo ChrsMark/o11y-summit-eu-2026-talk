@@ -27,5 +27,5 @@ npm run build
 
 ## Speakers
 
-- **Christos Markou** — Principal Software Engineer, Elastic · [@ChrsMark](https://github.com/ChrsMark)
-- **Pablo Baeyens** — Software Engineer, Datadog
+- **Christos Markou** — Software Engineer, Elastic · [@ChrsMark](https://github.com/ChrsMark)
+- **Pablo Baeyens** — Software Engineer, Datadog · [@mx-psi](https://github.com/mx-psi)
