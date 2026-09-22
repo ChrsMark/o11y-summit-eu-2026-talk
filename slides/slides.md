@@ -85,7 +85,7 @@ I'm Pablo, and this is Christos. Let us introduce ourselves.
 <span v-click="2">A set of <strong>specifications and implementations</strong> for observability</span>
 <carbon-trophy v-click="3" class="icon" />
 <span v-click="3"><strong>2nd largest CNCF project</strong></span>
-<carbon-partnership v-click="4" class="icon" />
+<carbon-education v-click="4" class="icon" />
 <span v-click="4"><strong>CNCF graduated</strong> project</span>
 </div>
 </div>
@@ -124,7 +124,7 @@ And these two — the Collector and Semantic Conventions — are exactly what to
 
 ---
 
-# Two Components That Must Be Stable Together
+# Components That Must Be Stable Together (need it?)
 
 <div class="comparison-grid">
   <div v-click="1" class="info-box focus-semconv-box">
@@ -167,11 +167,9 @@ That's the core challenge. Let me show you what it looks like in practice.
   <carbon-warning-alt v-click="1" class="icon" />
   <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanosecond</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
   <carbon-misuse v-click="2" class="icon" />
-  <span v-click="2">Silent disappearance on upgrade, no compile error, no Collector warning.</span>
-  <carbon-breaking-change v-click="3" class="icon" />
-  <span v-click="3">Real user pain: old name gone, new dashboards not yet ready → actual <strong>observability gap</strong> mid-migration.</span>
+  <span v-click="2">Real user pain: Silent disappearance on upgrade, no compile error?</span>
   <carbon-time v-click="4" class="icon" />
-  <span v-click="4">Multi-release migration starting <code>v0.111.0</code> (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
+  <span v-click="4">Multi-release migration/deprecation process. (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
 </div>
 
 <!-- CHRISTOS
@@ -199,10 +197,6 @@ The responsible fix required over 10 releases. This became one of the canonical 
   <span v-click="1">Massive rename: <code>http.method</code> → <code>http.request.method</code>, <code>http.url</code> → <code>url.full</code>, <code>http.status_code</code> → <code>http.response.status_code</code>, <code>net.peer.name</code> → <code>server.address</code>, and more.</span>
   <carbon-scales v-click="2" class="icon" />
   <span v-click="2">Not one receiver: every HTTP library, every Collector component, every downstream dashboard hit simultaneously.</span>
-  <carbon-settings-adjust v-click="3" class="icon" />
-  <span v-click="3">First attempt: <code>OTEL_SEMCONV_STABILITY_OPT_IN=http</code> env var. Worked, but: global (not per-component), no rollback, not Collector-native.</span>
-  <carbon-idea v-click="4" class="icon" />
-  <span v-click="4">This experience directly shaped the RFC for a proper, per-component migration mechanism.</span>
 </div>
 
 <!-- CHRISTOS
@@ -334,8 +328,8 @@ Add survey results and key data points here:
   <span v-click="3">Driven by 2024 + 2025 Collector survey data + vendor specific feedback.</span>
   <carbon-group v-click="4" class="icon" />
   <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
-  <carbon-link v-click="5" class="icon" />
-  <span v-click="5">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
+  <carbon-link v-click="5" class="icon" style="font-size:2rem; margin-top:-0.5rem" />
+  <span v-click="5" style="font-size:1.1rem; margin-top:-0.5rem">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
 </div>
 
 <!-- CHRISTOS
