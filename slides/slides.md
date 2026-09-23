@@ -17,12 +17,14 @@ fonts:
 
 <div class="intro-meta">
   <p class="intro-speakers">Christos Markou <span class="intro-org">(Elastic)</span> · Pablo Baeyens <span class="intro-org">(Datadog)</span></p>
-  <p class="intro-conference">Observability Summit Europe 2026</p>
 </div>
 
 <QrArrow />
 
-<img src="/o11y-summit.svg" class="kceu-logo" />
+<div class="kceu-logo-block">
+  <img src="/observability-summit-eu-logo-color-2.svg" class="kceu-logo" />
+  <span class="kceu-logo-year">2026</span>
+</div>
 
 <!-- PABLO
 
@@ -161,7 +163,7 @@ That's the core challenge. Let me show you what it looks like in practice.
 
 ---
 
-# Story 1 > Kubelet Stats: Four Years of Wrong Metric Names
+# Story 1 > Kubelet Stats
 
 <div class="icon-grid">
   <carbon-warning-alt v-click="1" class="icon" />
@@ -190,7 +192,7 @@ The responsible fix required over 10 releases. This became one of the canonical 
 
 ---
 
-# Story 2 > HTTP Semantic Conventions: One Rename, Dozens of Breakages
+# Story 2 > HTTP Semantic Conventions
 
 <div class="icon-grid">
   <carbon-data-share v-click="1" class="icon" />
@@ -317,15 +319,13 @@ Add survey results and key data points here:
 
 ---
 
-# The Response: Collector SIG → Systematic Stabilization Plan
+# The Response: Collector Stabilization Plan
 
 <div class="icon-grid">
   <carbon-function v-click="1" class="icon" />
-  <span v-click="1">Collector Core was already working towards stabilizing the core libraries and APIs.</span>
+  <span v-click="1">Collector was already stabilizing core libraries and APIs.</span>
   <carbon-idea v-click="2" class="icon" />
   <span v-click="2">What about the components that collect the telemetry?</span>
-  <carbon-chart-multitype v-click="3" class="icon" />
-  <span v-click="3">Driven by 2024 + 2025 Collector survey data + vendor specific feedback.</span>
   <carbon-group v-click="4" class="icon" />
   <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
   <carbon-link v-click="5" class="icon" style="font-size:2rem; margin-top:-0.5rem" />
@@ -382,13 +382,13 @@ Let me walk through each side in detail.
 
 <div class="icon-grid">
   <carbon-kubernetes-ip-address v-click="1" class="icon" />
-  <span v-click="1">Completed defining all K8s metrics from the Collector into Semantic Conventions.</span>
+  <span v-click="1">Described all K8s metrics from the Collector in Semantic Conventions.</span>
   <carbon-group v-click="2" class="icon" />
   <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
   <carbon-idea v-click="3" class="icon" />
   <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>unblocks</strong> <code>k8sattributes</code> processor stability.</span>
   <carbon-checkmark v-click="4" class="icon" />
-  <span v-click="4"><strong>First target:</strong> K8s attributes → stable. K8s container and pod metrics following.</span>
+  <span v-click="4">First target: Stabilize K8s <strong>attributes</strong>.</span>
 </div>
 
 <!-- CHRISTOS
@@ -440,17 +440,17 @@ After our alignment with the Collector SIG, the effort became more focused: ever
   <div class="lifecycle-steps">
     <div v-click="3" class="lifecycle-step step-alpha">
       <div class="step-badge">Alpha</div>
-      <div class="step-desc">Default: old names only. Users opt in to new or both.</div>
+      <div class="step-desc">v0 names only. Users opt in to v1 or both.</div>
     </div>
     <span v-click="4" class="lifecycle-arrow">→</span>
     <div v-click="4" class="lifecycle-step step-beta">
       <div class="step-badge">Beta</div>
-      <div class="step-desc">Default: v1 only (opt-in: double-publish). Triggered when semconv reaches stable.</div>
+      <div class="step-desc">v1 only (opt-in: double-publish). Triggered when semconv reaches stable.</div>
     </div>
     <span v-click="5" class="lifecycle-arrow">→</span>
     <div v-click="5" class="lifecycle-step step-stable">
       <div class="step-badge">Stable</div>
-      <div class="step-desc">New names only. After X minor releases at beta; enabling v0 errors.</div>
+      <div class="step-desc">v1 names only.</div>
     </div>
     <span v-click="6" class="lifecycle-arrow">→</span>
     <div v-click="6" class="lifecycle-step step-removed">
@@ -650,7 +650,10 @@ layout: center
 
 <QrArrow />
 
-<img src="/o11y-summit.svg" class="kceu-logo" />
+<div class="kceu-logo-block">
+  <img src="/observability-summit-eu-logo-color-2.svg" class="kceu-logo" />
+  <span class="kceu-logo-year">2026</span>
+</div>
 
 <!-- BOTH
 

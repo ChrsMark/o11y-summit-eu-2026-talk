@@ -2,6 +2,12 @@ html:root {
   --slidev-theme-primary: hsl(244, 25%, 47%);
 }
 
+/* Theme adds decorative backticks around inline code via ::before/::after; drop them everywhere */
+:not(pre) > code::before,
+:not(pre) > code::after {
+  content: none;
+}
+
 .platforms {
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -180,14 +186,6 @@ html:root {
 .intro-org {
   opacity: 0.5;
   font-weight: 400;
-}
-
-.intro-conference {
-  font-size: 0.95rem;
-  opacity: 0.4;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
 }
 
 /* Global slide centering and list sizing */
@@ -1167,16 +1165,26 @@ html:not(.dark) .eco-layer-box {
   position: relative;
   width: 100%;
   height: 2px;
+}
+
+.eco-h-arrow-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 7px;
+  top: 0;
+  bottom: 0;
   background: rgba(139, 162, 236, 0.7);
 }
 
 .eco-h-arrow-line::after {
   content: '';
   position: absolute;
-  right: -1px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
-  border: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
   border-left: 7px solid rgba(139, 162, 236, 0.7);
 }
 
@@ -1491,7 +1499,7 @@ html:not(.dark) .migration-gates {
 .icon-progress { color: var(--slidev-theme-primary) !important; }
 
 /* KubeCon EU logo on title slide */
-.kceu-logo {
+.kceu-logo-block {
   position: absolute;
   bottom: 2rem;
   right: 2rem;
@@ -1499,20 +1507,39 @@ html:not(.dark) .migration-gates {
   pointer-events: none;
 }
 
-html:not(.dark) .kceu-logo {
+.kceu-logo-block .kceu-logo {
+  position: static;
+  height: 100%;
+  display: block;
+}
+
+.kceu-logo-year {
+  position: absolute;
+  left: 42.5%;
+  bottom: 8%;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: white;
+}
+
+html:not(.dark) .kceu-logo-block {
   filter: invert(1);
 }
 
 /* Light theme: demo slide */
 /* OTel Ecosystem — clean block-based layout (slide 4) */
 .eco-arch {
+  --eco-block-border-w: 2px;
   display: flex;
   flex-direction: column;
   flex: 1;
   gap: 0.85rem;
   width: 100%;
   min-height: 0;
-  padding-top: 0.4rem;
+  padding-top: 0.1rem;
 }
 
 .eco-arch-main {
@@ -1530,9 +1557,9 @@ html:not(.dark) .kceu-logo {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  border: 2px solid;
+  border: var(--eco-block-border-w) solid;
   border-radius: 0.75rem;
-  padding: 0.85rem 0.9rem;
+  padding: 0.7rem 0.9rem;
   text-align: center;
 }
 
@@ -1553,7 +1580,7 @@ html:not(.dark) .kceu-logo {
 
 .eco-arch-arrow {
   flex-shrink: 0;
-  width: 3.2rem;
+  width: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1591,7 +1618,7 @@ html:not(.dark) .eco-arch-backends  { background: rgba(34, 197, 94, 0.06); }
   grid-template-areas:
     "svc ar-sg gw    ar-gb be"
     ".   .     agent .     .";
-  row-gap: 2rem;
+  row-gap: 1.5rem;
   flex: 1;
   min-height: 0;
 }
@@ -1627,13 +1654,14 @@ html:not(.dark) .eco-arch-backends  { background: rgba(34, 197, 94, 0.06); }
 }
 
 /* Agent → Gateway: connector lives inside Agent block, floats up into the gap.
-   top: -2rem matches row-gap exactly — never enters either block. */
+   Absolute positioning is relative to the Agent block's padding box (inside its
+   border), so the border width must be added back to reach the true row-gap. */
 .eco-agw-connector {
   position: absolute;
-  top: -2rem;
+  top: calc(-1.5rem - var(--eco-block-border-w, 0px));
   left: 50%;
   transform: translateX(-50%);
-  height: 2rem;
+  height: calc(1.5rem + var(--eco-block-border-w, 0px));
   display: flex;
   align-items: center;
   z-index: 2;
@@ -1642,7 +1670,8 @@ html:not(.dark) .eco-arch-backends  { background: rgba(34, 197, 94, 0.06); }
 
 .eco-agw-line {
   width: 2px;
-  height: 100%;
+  height: calc(100% - 5px);
+  align-self: flex-end;
   background: repeating-linear-gradient(
     to bottom,
     rgba(59, 130, 246, 0.7) 0px,
@@ -1685,8 +1714,8 @@ html:not(.dark) .eco-arch-backends  { background: rgba(34, 197, 94, 0.06); }
 /* Agent → Backends: vertical rising from horizontal level up into Backends */
 .eco-cline-abe-v {
   left: 87%;
-  top: 52%;
-  height: 37.5%;
+  top: calc(56.7% + 5px);
+  height: calc(32.8% - 5px);
   width: 0;
   border-left: 2px dashed rgba(59, 130, 246, 0.5);
 }
@@ -1771,10 +1800,11 @@ html:not(.dark) .eco-arch-edge-collector { background: rgba(59, 130, 246, 0.06);
 .eco-vendor-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: 0.5rem;
   justify-content: center;
   align-items: flex-start;
   padding: 0.1rem;
+  max-width: 11.4rem;
 }
 
 .eco-vendor-item {
@@ -1784,7 +1814,7 @@ html:not(.dark) .eco-arch-edge-collector { background: rgba(59, 130, 246, 0.06);
   gap: 0.32rem;
   font-size: 0.56rem;
   opacity: 0.85;
-  width: 2.5rem;
+  width: 3.4rem;
   letter-spacing: 0.01em;
 }
 
