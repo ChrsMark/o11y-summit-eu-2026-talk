@@ -299,11 +299,36 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
   <span v-click="1">Collector was already stabilizing core libraries and APIs.</span>
   <carbon-idea v-click="2" class="icon" />
   <span v-click="2">What about the components that collect the telemetry?</span>
-  <carbon-group v-click="4" class="icon" />
-  <span v-click="4"><strong>7 highest-priority components:</strong> <code>filelog</code> · <code>k8sattributes</code> · <code>hostmetrics</code> · <code>prometheus</code> · <code>resourcedetection</code> · <code>transform</code> · <code>filter</code></span>
-  <carbon-link v-click="5" class="icon" style="font-size:2rem; margin-top:-0.5rem" />
-  <span v-click="5" style="font-size:1.1rem; margin-top:-0.5rem">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a></span>
 </div>
+
+<!-- CHRISTOS
+
+-->
+
+---
+
+# The 7 Highest-Priority Components
+
+<div class="priority-components">
+  <div class="priority-row row-2">
+    <div class="component-box"><code>filelog</code></div>
+    <div class="component-box"><code>k8sattributes</code></div>
+  </div>
+  <div class="priority-row row-3">
+    <div class="component-box"><code>hostmetrics</code></div>
+    <div class="component-box"><code>prometheus</code></div>
+    <div class="component-box"><code>resourcedetection</code></div>
+  </div>
+  <div class="priority-row row-2">
+    <div class="component-box"><code>transform</code></div>
+    <div class="component-box"><code>filter</code></div>
+  </div>
+</div>
+
+<p class="priority-tracking">
+  <carbon-link class="icon" />
+  Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a>
+</p>
 
 <!-- CHRISTOS
 
