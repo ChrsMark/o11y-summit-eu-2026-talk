@@ -85,7 +85,7 @@
       </div>
 
       <!-- Connectors: Agent→Backends L-shape (Agent→Gateway handled inside Agent block) -->
-      <div v-click="3" class="eco-connections">
+      <div v-click="4" class="eco-connections">
         <!-- Agent → Backends: horizontal right from Agent edge -->
         <div class="eco-cline eco-cline-abe-h">
           <span class="eco-clabel eco-clabel-h">OTLP</span>
