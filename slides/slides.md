@@ -235,7 +235,26 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 
 ---
 
-# What Stability Means in OpenTelemetry
+# Users want stability
+
+  <ul>
+    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
+    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
+    <li>Community surveys: what components and what people care about</li>
+  </ul>
+
+<!-- PABLO
+
+Add slides covering the CNCF ToC feedback:
+- When it happened and what was specifically said
+- The concerns raised (Beta components in production, SemConv churn)
+- How the community received it and what changed as a result
+- Why external accountability matters for a project at this scale
+
+-->
+---
+
+# Defining Stability in OpenTelemetry
 
 <div class="pablo-stub">
   <div class="pablo-stub-badge">PABLO</div>
@@ -273,53 +292,7 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
 
 ---
 
-# The Trigger: CNCF ToC Feedback
-
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
-    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
-    <li>An external body pushing the project to take stability seriously — and publicly</li>
-    <li>This was the forcing function that aligned the community around a concrete plan</li>
-  </ul>
-</div>
-
-<!-- PABLO
-
-Add slides covering the CNCF ToC feedback:
-- When it happened and what was specifically said
-- The concerns raised (Beta components in production, SemConv churn)
-- How the community received it and what changed as a result
-- Why external accountability matters for a project at this scale
-
--->
-
----
-
-# Surveys
-
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>Community surveys conducted to understand user pain around stability</li>
-    <li>Key findings: users want upgrade confidence, dashboard stability, SemConv guarantees</li>
-    <li>Survey results informed which components to prioritize first</li>
-  </ul>
-</div>
-
-<!-- PABLO
-
-Add survey results and key data points here:
-- Survey methodology and reach
-- Top user pain points identified
-- How survey data mapped to the 7-component priority list
-
--->
-
----
-
-# The Response: Collector Stabilization Plan
+# Coming up with a plan
 
 <div class="icon-grid">
   <carbon-function v-click="1" class="icon" />
