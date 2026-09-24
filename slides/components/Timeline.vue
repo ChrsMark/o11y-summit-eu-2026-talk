@@ -96,9 +96,7 @@ defineProps<{
   margin-top: 0.6rem;
   font-size: 0.85rem;
   color: #ccc;
-  text-align: left;
   line-height: 1.4;
-  padding: 0.5rem 0.6rem;
   background: linear-gradient(135deg, rgba(54, 56, 85, 0.5), rgba(26, 28, 44, 0.45));
   border: 1.5px solid rgba(141, 141, 255, 0.2);
   border-radius: 0.5rem;
@@ -109,26 +107,21 @@ defineProps<{
 
 .tl-card-title {
   font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
   background: linear-gradient(135deg, rgba(93, 93, 255, 0.25), rgba(141, 141, 255, 0.1));
   border-bottom: 1.5px solid rgba(141, 141, 255, 0.15);
   text-align: center;
   color: #f8f8f2;
 }
 
-.tl-desc ul {
-  margin: 0.35rem 0 0.45rem 0 !important;
-  padding-left: 1.4em;
-  padding-right: 0.5rem;
-  font-size: 0.82rem !important;
-  line-height: 1.5 !important;
-  text-align: left;
-  list-style: disc;
-}
-
-.tl-desc ul li + li {
-  margin-top: 0.15rem;
+.tl-body {
+  margin: 0 !important;
+  padding: 0.45rem 0.6rem 0.5rem !important;
+  font-size: 0.78rem !important;
+  line-height: 1.45 !important;
+  text-align: center;
+  color: inherit;
 }
 
 .tl-item.highlight .tl-dot {

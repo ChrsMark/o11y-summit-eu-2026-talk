@@ -534,12 +534,12 @@ If you're on v0.161.0 or later, you have access to stable Kubernetes attribute e
 # Timeline
 
 <Timeline :items="[
-  { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><ul><li>K8s SIG completes K8s metrics in Semantic Conventions</li></ul>' },
-  { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><ul><li>Collector SIG + K8s SIG align on stabilization priorities</li></ul>' },
-  { year: 'Apr 2026', desc: '<div class=tl-card-title>Migration Process</div><ul><li>Feature gate pair RFC adopted; per-component migration process defined</li></ul>' },
-  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><ul><li>semconv v1.42.0 released </li></ul>', highlight: true },
-  { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1 ✓</div><ul><li>First Collector component ships as v1</li></ul>', highlight: true },
-  { year: '2027', desc: '<div class=tl-card-title>More to Come</div><ul><li>More components and stability updates coming!</li></ul>' },
+  { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><p class=tl-body>K8s SIG completes K8s metrics in Semantic Conventions</p>' },
+  { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><p class=tl-body>Collector SIG + K8s SIG align on stabilization priorities</p>' },
+  { year: 'Apr 2026', desc: '<div class=tl-card-title>Migration Process</div><p class=tl-body>Feature gate pair RFC adopted; per-component migration process defined</p>' },
+  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><p class=tl-body>semconv v1.42.0 released</p>', highlight: true },
+  { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1 ✓</div><p class=tl-body>First Collector component ships as v1</p>', highlight: true },
+  { year: '2027', desc: '<div class=tl-card-title>More to Come</div><p class=tl-body>More components and stability updates coming!</p>' },
 ]" />
 
 <!-- CHRISTOS
