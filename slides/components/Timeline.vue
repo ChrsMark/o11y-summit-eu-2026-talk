@@ -53,8 +53,9 @@ defineProps<{
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #555 0%, var(--slidev-theme-primary) 100%);
+  background: linear-gradient(90deg, rgb(var(--primary)) 0%, rgb(var(--secondary)) 45%, rgb(var(--accent)) 100%);
   border-radius: 2px;
+  box-shadow: 0 0 12px rgb(var(--accent) / 35%);
 }
 
 .timeline-items {
@@ -76,7 +77,8 @@ defineProps<{
   height: 14px;
   border-radius: 50%;
   background: var(--slidev-theme-primary);
-  border: 2px solid #1e1e1e;
+  border: 2px solid #0b1130;
+  box-shadow: 0 0 10px 2px rgb(var(--primary) / 55%);
   z-index: 1;
   flex-shrink: 0;
 }
@@ -95,22 +97,23 @@ defineProps<{
 .tl-desc {
   margin-top: 0.6rem;
   font-size: 0.85rem;
-  color: #ccc;
+  color: rgb(var(--code-text));
   line-height: 1.4;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  border: 1.5px solid rgb(var(--primary) / 20%);
-  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 6%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: var(--radius-md);
   overflow: hidden;
   width: 90%;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%), 0 10px 26px rgb(0 0 0 / 30%);
 }
 
 .tl-card-title {
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
-  background: linear-gradient(135deg, rgb(var(--primary) / 25%), rgb(var(--primary) / 10%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 15%);
+  background: linear-gradient(135deg, rgb(var(--primary) / 32%), rgb(var(--primary) / 14%));
+  border-bottom: 1px solid rgb(255 255 255 / 14%);
   text-align: center;
   color: #f8f8f2;
 }
@@ -128,7 +131,7 @@ defineProps<{
   background: rgb(var(--success));
   width: 18px;
   height: 18px;
-  box-shadow: 0 0 8px rgb(var(--success) / 60%);
+  box-shadow: 0 0 16px 4px rgb(var(--success) / 55%);
   margin-top: -2px;
 }
 
@@ -140,6 +143,8 @@ defineProps<{
 .tl-item.highlight .tl-desc {
   color: #f8f8f2;
   font-weight: 600;
+  border-color: rgb(var(--success) / 45%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%), 0 0 30px rgb(var(--success) / 25%), 0 10px 26px rgb(0 0 0 / 30%);
 }
 
 

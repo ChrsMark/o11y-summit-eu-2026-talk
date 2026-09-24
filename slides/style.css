@@ -1,35 +1,48 @@
 html:root {
-  --slidev-theme-primary: hsl(244deg 25% 47%);
+  --slidev-theme-primary: hsl(228deg 54% 52%);
 
   /* Colors are space-separated RGB channels so each can be used at any
      alpha: rgb(var(--primary) / 12%). */
 
-  /* Roles */
-  --primary: 99 102 241; /* The Collector and generic cards */
-  --secondary: 96 165 250; /* Outside the Collector: apps, backends, receivers, OTLP */
-  --accent: 245 158 11; /* Semantic conventions, processors, highlights */
+  /* Dracula theme variable overrides — OTel aurora glass palette */
+  --background: #0b1130;
+  --foreground: #e8ecff;
+  --comment: #9aa6d6;
+  --purple: #f5f7ff;
+  --orange: #f5a800;
+  --yellow: #ffd27a;
+  --cyan: #8fa3ff;
+  --green: #9fb2ff;
+
+  /* Roles (official OpenTelemetry blue/amber brand colors) */
+  --primary: 66 92 199; /* OTel blue — the Collector and generic cards */
+  --secondary: 111 200 255; /* Outside the Collector: apps, backends, receivers, OTLP */
+  --accent: 245 168 0; /* OTel amber — semantic conventions, processors, highlights */
+
+  /* Decorative-only accent, used for the aurora mesh background glow */
+  --decor-violet: 139 92 246;
 
   /* Status */
-  --success: 34 197 94;
+  --success: 52 211 153;
   --warning: var(--accent);
-  --danger: 239 68 68;
+  --danger: 251 113 133;
   --neutral: 148 163 184;
 
   /* Lighter tints for text on dark backgrounds */
-  --primary-text: 165 180 252;
-  --accent-text: 251 191 36;
-  --danger-text: 248 113 113;
-  --code-text: 226 232 240;
+  --primary-text: 160 176 255;
+  --accent-text: 255 200 87;
+  --danger-text: 255 176 190;
+  --code-text: 232 236 255;
 
   /* Card backgrounds */
-  --surface: 54 56 85;
-  --surface-deep: 26 28 44;
+  --surface: 40 52 110;
+  --surface-deep: 16 22 58;
 
   /* Corner radii */
-  --radius-xs: 0.3rem;
-  --radius-sm: 0.4rem;
-  --radius-md: 0.45rem;
-  --radius-lg: 0.75rem;
+  --radius-xs: 0.4rem;
+  --radius-sm: 0.6rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
 
   /* Body text size for lists and prose-like blocks */
   --text-body: 1.4rem;
@@ -65,10 +78,11 @@ html:root {
 .component-box {
   padding: 1.9rem 0.54rem;
   text-align: center;
-  border-radius: 0.88rem;
+  border-radius: var(--radius-lg);
   border: 2px solid var(--slidev-theme-primary);
   background: linear-gradient(135deg, rgb(var(--primary) / 22%), rgb(var(--primary) / 6%));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 8px 24px rgb(0 0 0 / 30%);
   transition: transform 0.2s;
 }
 
@@ -107,22 +121,25 @@ html:root {
 }
 
 /* Intro slide */
-.slidev-layout.intro h1 {
-  font-family: Oswald, sans-serif;
+#app .slidev-layout.intro h1 {
+  font-family: Outfit, sans-serif;
   font-size: 5.5rem;
   padding-bottom: 2rem;
   text-align: center;
   font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.1;
-  transform: skewY(-7deg);
-  transform-origin: center center;
+  line-height: 1.15;
+  background: linear-gradient(100deg, #fff 0%, #a0b0ff 55%, #f5a800 100%);
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 30px rgb(66 92 199 / 35%));
 }
 
 .intro-subtitle {
   font-size: 1.6rem;
   font-weight: 400;
-  opacity: 0.7;
+  opacity: 0.78;
   margin-top: 0.5rem;
   letter-spacing: 0.01em;
 }
@@ -138,7 +155,7 @@ html:root {
 }
 
 .intro-org {
-  opacity: 0.5;
+  opacity: 0.58;
   font-weight: 400;
 }
 
@@ -148,6 +165,13 @@ html:root {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+
+  /* Aurora mesh: soft blue / violet / amber glows, painted behind slide
+     content as a plain background (no extra element or z-index needed). */
+  background:
+    radial-gradient(ellipse 58% 48% at 6% 6%, rgb(var(--primary) / 40%), transparent 62%),
+    radial-gradient(ellipse 52% 42% at 94% 8%, rgb(var(--decor-violet) / 26%), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 96% 96%, rgb(var(--accent) / 24%), transparent 62%);
 }
 
 .slidev-layout > h1:first-child + * {
@@ -190,16 +214,17 @@ html:root {
 
 /* Shared info box styles */
 .info-box {
-  border: 1.5px solid rgb(var(--primary) / 35%);
+  border: 1px solid rgb(255 255 255 / 14%);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  background: linear-gradient(135deg, rgb(var(--primary) / 18%), rgb(255 255 255 / 6%));
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 20px 50px rgb(0 0 0 / 30%);
 }
 
 .info-box h3 {
-  background: linear-gradient(135deg, rgb(var(--primary) / 30%), rgb(var(--primary) / 15%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 20%);
+  background: linear-gradient(135deg, rgb(var(--primary) / 35%), rgb(var(--primary) / 15%));
+  border-bottom: 1px solid rgb(255 255 255 / 14%);
   color: white;
   padding: 0.4rem 0.8rem;
   margin: 0;
@@ -229,7 +254,7 @@ html:root {
 .info-box li {
   margin-left: 0;
   line-height: 2;
-  border-bottom: 1px dashed rgb(var(--primary) / 20%);
+  border-bottom: 1px dashed rgb(255 255 255 / 16%);
   padding: 0.3rem 0;
 }
 
@@ -278,6 +303,10 @@ html:root {
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
+  box-shadow:
+    0 0 0 3px #425cc7,
+    0 0 0 6px rgb(245 168 0 / 60%),
+    0 0 36px 6px rgb(66 92 199 / 35%);
 }
 
 .speaker-name {
@@ -290,8 +319,10 @@ html:root {
   opacity: 0.7;
 }
 
-.slidev-layout h1.qa-title {
+#app .slidev-layout h1.qa-title {
   font-size: 10em;
+  color: #f5f7ff;
+  filter: drop-shadow(0 6px 40px rgb(66 92 199 / 45%)) drop-shadow(0 0 80px rgb(245 168 0 / 20%));
 }
 
 /* OTel Ecosystem diagram */
@@ -304,6 +335,7 @@ html:root {
   font-size: 0.74rem;
   font-weight: 500;
   text-align: center;
+  backdrop-filter: blur(8px);
 }
 
 .eco-layer-api { border-color: rgb(var(--secondary) / 40%) !important; }
@@ -375,9 +407,11 @@ html:root {
   flex-wrap: wrap;
   background: rgb(var(--accent) / 9%);
   border: 1.5px solid rgb(var(--accent) / 38%);
-  border-radius: 0.6rem;
+  border-radius: var(--radius-md);
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), 0 10px 26px rgb(0 0 0 / 25%);
 }
 
 .eco-semconv-title {
@@ -413,7 +447,10 @@ html:root {
   inset: 0;
   border-radius: inherit;
   border: 2px solid rgb(var(--accent) / 80%);
-  box-shadow: 0 0 0 2px rgb(var(--accent) / 70%), 0 0 18px 4px rgb(var(--accent) / 35%);
+  box-shadow:
+    0 0 0 2px rgb(var(--accent) / 70%),
+    0 0 28px 6px rgb(var(--accent) / 40%),
+    0 0 50px 16px rgb(var(--accent) / 18%);
   z-index: 3;
   pointer-events: none;
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
@@ -533,7 +570,7 @@ html:root {
   font-size: 0.95rem !important;
   background: rgb(var(--primary) / 12%) !important;
   border: 1px solid rgb(var(--primary) / 25%) !important;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-sm);
   padding: 0.12rem 0.5rem !important;
   color: rgb(var(--primary-text)) !important;
 }
@@ -579,10 +616,11 @@ html:root {
   font-size: 0.9rem;
   text-align: center;
   line-height: 1.6;
-  border: 1.5px dashed rgb(var(--primary) / 45%);
-  border-radius: 0.65rem;
+  border: 1.5px dashed rgb(var(--primary) / 55%);
+  border-radius: var(--radius-md);
   padding: 0.75rem 0.85rem;
-  background: rgb(var(--primary) / 6%);
+  background: rgb(var(--primary) / 10%);
+  backdrop-filter: blur(10px) saturate(140%);
 }
 
 .side-semconv h3 { color: rgb(var(--accent-text)); }
@@ -603,10 +641,12 @@ html:root {
   grid-template-columns: auto auto 1fr;
   align-items: center;
   gap: 0.6rem 0.75rem;
-  background: rgb(var(--surface) / 40%);
-  border: 1.5px solid rgb(var(--primary) / 20%);
+  background: linear-gradient(135deg, rgb(var(--surface) / 55%), rgb(var(--surface-deep) / 45%));
+  border: 1px solid rgb(255 255 255 / 14%);
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%), 0 16px 40px rgb(0 0 0 / 30%);
 }
 
 .gates-title {
@@ -625,7 +665,7 @@ html:root {
   text-align: left;
   color: rgb(var(--primary-text));
   font-size: 1rem !important;
-  font-family: 'Fira Code', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .gate-arrow {
@@ -650,17 +690,24 @@ html:root {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  border: 2px solid;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-top: 3px solid transparent;
   border-radius: var(--radius-lg);
-  padding: 1rem 0.75rem 1.3rem;
+  padding: 1.1rem 0.75rem 1.3rem;
   text-align: center;
+  background: rgb(255 255 255 / 6%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 14px 34px rgb(0 0 0 / 30%);
 }
 
 .step-badge {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 8%);
 }
 
 .step-desc {
@@ -687,23 +734,26 @@ html:root {
   align-self: center;
 }
 
-.step-alpha {
-  border-color: rgb(var(--neutral));
-  background: rgb(var(--neutral) / 7%);
-}
-.step-alpha .step-badge { color: rgb(var(--neutral)); }
+.step-alpha { border-top-color: rgb(var(--neutral)); }
 
-.step-beta {
-  border-color: rgb(var(--warning));
-  background: rgb(var(--warning) / 7%);
+.step-alpha .step-badge {
+  color: rgb(var(--neutral));
+  background: rgb(var(--neutral) / 18%);
 }
-.step-beta .step-badge { color: rgb(var(--warning)); }
 
-.step-stable {
-  border-color: rgb(var(--success));
-  background: rgb(var(--success) / 7%);
+.step-beta { border-top-color: rgb(var(--warning)); }
+
+.step-beta .step-badge {
+  color: rgb(var(--accent-text));
+  background: rgb(var(--warning) / 18%);
 }
-.step-stable .step-badge { color: rgb(var(--success)); }
+
+.step-stable { border-top-color: rgb(var(--success)); }
+
+.step-stable .step-badge {
+  color: rgb(var(--success));
+  background: rgb(var(--success) / 18%);
+}
 
 .migration-note {
   font-size: 0.85rem;
@@ -715,6 +765,9 @@ html:root {
 .icon-stable { color: rgb(var(--success)) !important; }
 .icon-rc     { color: rgb(var(--warning)) !important; }
 .icon-progress { color: var(--slidev-theme-primary) !important; }
+
+/* Inline checkmark on the k8sattributes slide heading — recolored to match palette */
+#app h1 span[style] { color: rgb(var(--success)) !important; }
 
 /* KubeCon EU logo on title slide */
 .kceu-logo-block {
@@ -769,6 +822,8 @@ html:root {
   border-radius: var(--radius-lg);
   padding: 0.7rem 0.9rem;
   text-align: center;
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), 0 12px 30px rgb(0 0 0 / 25%);
 }
 
 .eco-arch-title {
@@ -1025,7 +1080,7 @@ html:root {
 }
 
 .eco-vendor-jaeger {
-  color: rgb(var(--secondary));
+  color: rgb(96 165 250) !important;
 }
 
 /* Slide 3 — side-by-side: big icon left, bullets right */
@@ -1048,7 +1103,7 @@ html:root {
 .otel-icon-main {
   width: 8.5rem;
   height: auto;
-  filter: drop-shadow(0 0 18px rgb(var(--secondary) / 25%));
+  filter: drop-shadow(0 0 22px rgb(var(--secondary) / 35%)) drop-shadow(0 0 40px rgb(var(--accent) / 18%));
 }
 
 .otel-slide-bullets {
