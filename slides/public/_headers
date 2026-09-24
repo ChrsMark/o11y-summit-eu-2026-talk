@@ -1,5 +1,0 @@
-# We have to compress the Wasm binary before uploading it to Cloudflare
-# to keep the blob under their 25MiB limit. We therefore need to add
-# a header to ensure it isn't recompressed somehow.
-/otelwasmcol.wasm.gzip
-  Cache-Control: no-transform

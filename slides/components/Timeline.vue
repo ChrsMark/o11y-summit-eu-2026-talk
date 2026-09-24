@@ -97,20 +97,20 @@ defineProps<{
   font-size: 0.85rem;
   color: #ccc;
   line-height: 1.4;
-  background: linear-gradient(135deg, rgba(54, 56, 85, 0.5), rgba(26, 28, 44, 0.45));
-  border: 1.5px solid rgba(141, 141, 255, 0.2);
+  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
+  border: 1.5px solid rgb(var(--primary) / 20%);
   border-radius: 0.5rem;
   overflow: hidden;
   width: 90%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
 }
 
 .tl-card-title {
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
-  background: linear-gradient(135deg, rgba(93, 93, 255, 0.25), rgba(141, 141, 255, 0.1));
-  border-bottom: 1.5px solid rgba(141, 141, 255, 0.15);
+  background: linear-gradient(135deg, rgb(var(--primary) / 25%), rgb(var(--primary) / 10%));
+  border-bottom: 1.5px solid rgb(var(--primary) / 15%);
   text-align: center;
   color: #f8f8f2;
 }
@@ -125,15 +125,15 @@ defineProps<{
 }
 
 .tl-item.highlight .tl-dot {
-  background: #50fa7b;
+  background: rgb(var(--success));
   width: 18px;
   height: 18px;
-  box-shadow: 0 0 8px rgba(80, 250, 123, 0.6);
+  box-shadow: 0 0 8px rgb(var(--success) / 60%);
   margin-top: -2px;
 }
 
 .tl-item.highlight .tl-year {
-  color: #50fa7b;
+  color: rgb(var(--success));
   font-size: 1.2rem;
 }
 
@@ -142,24 +142,7 @@ defineProps<{
   font-weight: 600;
 }
 
-html:not(.dark) .tl-dot {
-  border-color: #f0f0f0;
-}
 
-html:not(.dark) .tl-desc {
-  color: #555;
-  background: linear-gradient(135deg, rgba(240, 240, 255, 0.8), rgba(230, 230, 250, 0.6));
-  border-color: rgba(99, 102, 241, 0.2);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
 
-html:not(.dark) .tl-card-title {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.06));
-  border-bottom-color: rgba(99, 102, 241, 0.12);
-  color: #1a1a1a;
-}
 
-html:not(.dark) .tl-item.highlight .tl-desc {
-  color: #1a1a1a;
-}
 </style>
