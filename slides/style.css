@@ -1,44 +1,90 @@
 html:root {
-  --slidev-theme-primary: hsl(244deg 25% 47%);
+  --slidev-theme-primary: #111;
 
   /* Colors are space-separated RGB channels so each can be used at any
      alpha: rgb(var(--primary) / 12%). */
 
   /* Roles */
-  --primary: 99 102 241; /* The Collector and generic cards */
-  --secondary: 96 165 250; /* Outside the Collector: apps, backends, receivers, OTLP */
-  --accent: 245 158 11; /* Semantic conventions, processors, highlights */
+  --primary: 17 17 17; /* The Collector and generic cards */
+  --secondary: 110 110 110; /* Outside the Collector: apps, backends, receivers, OTLP */
+  --accent: 227 6 19; /* Semantic conventions, processors, highlights */
 
-  /* Status */
-  --success: 34 197 94;
+  /* Status — Swiss palette uses a single accent red for every status role */
+  --success: 227 6 19;
   --warning: var(--accent);
-  --danger: 239 68 68;
-  --neutral: 148 163 184;
+  --danger: 227 6 19;
+  --neutral: 140 140 140;
 
-  /* Lighter tints for text on dark backgrounds */
-  --primary-text: 165 180 252;
-  --accent-text: 251 191 36;
-  --danger-text: 248 113 113;
-  --code-text: 226 232 240;
+  /* Text tints */
+  --primary-text: 17 17 17;
+  --accent-text: 200 0 16;
+  --danger-text: 200 0 16;
+  --code-text: 17 17 17;
 
   /* Card backgrounds */
-  --surface: 54 56 85;
-  --surface-deep: 26 28 44;
+  --surface: 255 255 255;
+  --surface-deep: 245 245 245;
 
-  /* Corner radii */
-  --radius-xs: 0.3rem;
-  --radius-sm: 0.4rem;
-  --radius-md: 0.45rem;
-  --radius-lg: 0.75rem;
+  /* Corner radii — Swiss / International Typographic Style is unrounded */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
 
   /* Body text size for lists and prose-like blocks */
   --text-body: 1.4rem;
+
+  /* Dracula theme variable overrides — Swiss light palette */
+  --background: #fff;
+  --current-line: #e5e5e5;
+  --foreground: #111;
+  --comment: #555;
+  --purple: #111; /* headings */
+  --orange: #e30613; /* strong — the red accent carries emphasis */
+  --yellow: #111; /* em — italic ink, no color shift */
+  --cyan: #e30613; /* links, list markers */
+  --green: #111; /* inline code */
 }
 
 /* Theme adds decorative backticks around inline code via ::before/::after; drop them everywhere */
 :not(pre) > code::before,
 :not(pre) > code::after {
   content: none;
+}
+
+/* Swiss decoration: a single solid accent mark per slide, and a hairline
+   rule under every heading. That is the only decoration this theme allows. */
+.slidev-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slidev-layout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background: rgb(var(--accent));
+  z-index: 5;
+}
+
+#app h1::after {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  margin-top: 0.3em;
+  background: #111;
+}
+
+/* Recolor the inline checkmark on the k8sattributes slide to the theme accent */
+#app h1 span[style] {
+  color: rgb(var(--accent)) !important;
 }
 
 .priority-components {
@@ -63,27 +109,18 @@ html:root {
 }
 
 .component-box {
-  padding: 1.9rem 0.54rem;
-  text-align: center;
-  border-radius: 0.88rem;
-  border: 2px solid var(--slidev-theme-primary);
-  background: linear-gradient(135deg, rgb(var(--primary) / 22%), rgb(var(--primary) / 6%));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
-  transition: transform 0.2s;
-}
-
-.component-box:hover {
-  transform: translateY(-2px);
+  padding: 1.9rem 0.9rem;
+  text-align: left;
+  background: var(--surface);
+  border: none;
 }
 
 .component-box.receiver {
-  border-color: rgb(var(--secondary) / 60%);
-  background: linear-gradient(135deg, rgb(var(--secondary) / 18%), rgb(var(--secondary) / 5%));
+  border-left: 8px solid rgb(var(--primary));
 }
 
 .component-box.processor {
-  border-color: rgb(var(--accent-text) / 60%);
-  background: linear-gradient(135deg, rgb(var(--accent) / 18%), rgb(var(--accent) / 5%));
+  border-left: 8px solid rgb(var(--accent));
 }
 
 .component-box code {
@@ -107,16 +144,15 @@ html:root {
 }
 
 /* Intro slide */
-.slidev-layout.intro h1 {
-  font-family: Oswald, sans-serif;
-  font-size: 5.5rem;
-  padding-bottom: 2rem;
-  text-align: center;
-  font-weight: 700;
-  text-transform: uppercase;
-  line-height: 1.1;
-  transform: skewY(-7deg);
-  transform-origin: center center;
+#app .slidev-layout.intro h1 {
+  font-size: 6.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-align: left;
+  text-transform: none;
+  transform: none;
+  padding-bottom: 1.5rem;
 }
 
 .intro-subtitle {
@@ -138,17 +174,21 @@ html:root {
 }
 
 .intro-org {
-  opacity: 0.5;
+  opacity: 0.65;
   font-weight: 400;
 }
 
-/* Global slide centering and list sizing */
-.slidev-layout {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+/* Flush-left throughout: neutralize inherited text-center utility classes */
+.slidev-layout.text-center,
+.slidev-layout.text-center * {
+  text-align: left !important;
 }
+
+.slidev-layout.center {
+  place-content: center start;
+}
+
+/* Global slide centering and list sizing (merged with the decoration rule above) */
 
 .slidev-layout > h1:first-child + * {
   margin-top: auto;
@@ -190,23 +230,23 @@ html:root {
 
 /* Shared info box styles */
 .info-box {
-  border: 1.5px solid rgb(var(--primary) / 35%);
-  border-radius: var(--radius-lg);
+  border: none;
+  border-top: 2px solid #111;
+  border-radius: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  background: var(--surface);
 }
 
-.info-box h3 {
-  background: linear-gradient(135deg, rgb(var(--primary) / 30%), rgb(var(--primary) / 15%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 20%);
-  color: white;
+#app .info-box h3 {
+  background: transparent;
+  border-bottom: 1px solid rgb(var(--primary) / 15%);
+  color: rgb(var(--accent));
   padding: 0.4rem 0.8rem;
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   opacity: 1;
 }
 
@@ -229,7 +269,7 @@ html:root {
 .info-box li {
   margin-left: 0;
   line-height: 2;
-  border-bottom: 1px dashed rgb(var(--primary) / 20%);
+  border-bottom: 1px solid rgb(var(--primary) / 12%);
   padding: 0.3rem 0;
 }
 
@@ -276,7 +316,7 @@ html:root {
 .speaker-pic {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 0;
   object-fit: cover;
 }
 
@@ -297,20 +337,20 @@ html:root {
 /* OTel Ecosystem diagram */
 
 .eco-layer-box {
-  background: rgb(255 255 255 / 7%);
-  border: 1.5px solid rgb(var(--neutral) / 25%);
-  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1.5px solid rgb(var(--neutral) / 55%);
+  border-radius: 0;
   padding: 0.38rem 0.5rem;
   font-size: 0.74rem;
   font-weight: 500;
   text-align: center;
 }
 
-.eco-layer-api { border-color: rgb(var(--secondary) / 40%) !important; }
-.eco-layer-sdk { border-color: rgb(var(--secondary) / 40%) !important; }
+.eco-layer-api { border-color: rgb(var(--secondary) / 75%) !important; }
+.eco-layer-sdk { border-color: rgb(var(--secondary) / 75%) !important; }
 
 .eco-h-arrow-line {
-  --eco-arrow-color: rgb(var(--secondary) / 70%);
+  --eco-arrow-color: rgb(var(--secondary) / 90%);
 
   position: relative;
   width: 100%;
@@ -339,7 +379,7 @@ html:root {
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  opacity: 0.55;
+  opacity: 0.7;
   text-transform: uppercase;
 }
 
@@ -352,9 +392,9 @@ html:root {
 }
 
 .eco-pipe-seg {
-  background: rgb(var(--primary) / 14%);
-  border: 1.5px solid rgb(var(--primary) / 35%);
-  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1.5px solid rgb(var(--primary) / 45%);
+  border-radius: 0;
   padding: 0.28rem 0.45rem;
   font-size: 0.68rem;
   font-weight: 600;
@@ -373,9 +413,9 @@ html:root {
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
-  background: rgb(var(--accent) / 9%);
-  border: 1.5px solid rgb(var(--accent) / 38%);
-  border-radius: 0.6rem;
+  background: var(--surface);
+  border: 1.5px solid rgb(var(--accent) / 55%);
+  border-radius: 0;
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
 }
@@ -385,16 +425,16 @@ html:root {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.55;
+  opacity: 0.7;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .eco-semconv code {
   font-size: 0.68rem !important;
-  background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 28%) !important;
-  border-radius: var(--radius-xs);
+  background: var(--surface-deep) !important;
+  border: 1px solid rgb(var(--accent) / 45%) !important;
+  border-radius: 0;
   padding: 0.08rem 0.32rem !important;
   color: rgb(var(--code-text)) !important;
 }
@@ -405,18 +445,17 @@ html:root {
   letter-spacing: 0.1em;
 }
 
-/* Rendered as an overlay (not a box-shadow on the element itself) so the glow
+/* Rendered as an overlay (not a box-shadow on the element itself) so it
    sits in front of connector arrows anchored inside the same highlighted block. */
 .eco-focus-highlight::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 2px solid rgb(var(--accent) / 80%);
-  box-shadow: 0 0 0 2px rgb(var(--accent) / 70%), 0 0 18px 4px rgb(var(--accent) / 35%);
+  border: 3px solid rgb(var(--accent));
   z-index: 3;
   pointer-events: none;
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: border-color 0.3s ease;
 }
 
 /* Speaker roles list */
@@ -426,7 +465,7 @@ html:root {
   gap: 0.25rem;
   margin-top: 0.5rem;
   font-size: 0.82rem;
-  opacity: 0.65;
+  opacity: 0.72;
   text-align: center;
   line-height: 1.5;
 }
@@ -435,7 +474,7 @@ html:root {
 .pain-scenario-strip {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.6rem;
   margin-bottom: 2.5rem;
 }
@@ -485,27 +524,30 @@ html:root {
 
 .http-old {
   font-size: 1.2rem !important;
-  background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
-  border-radius: var(--radius-xs);
-  padding: 0.12rem 0.58rem !important;
-  color: rgb(var(--primary-text)) !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(var(--secondary) / 70%);
+  border-radius: 0;
+  padding: 0.12rem 0.1rem !important;
+  color: rgb(var(--secondary)) !important;
   justify-self: start;
 }
 
 .http-new {
   font-size: 1.2rem !important;
-  background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 30%) !important;
-  border-radius: var(--radius-xs);
-  padding: 0.12rem 0.58rem !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid rgb(var(--accent));
+  border-radius: 0;
+  padding: 0.12rem 0.1rem !important;
   color: rgb(var(--accent-text)) !important;
+  font-weight: 700;
   justify-self: start;
 }
 
 .http-more {
   font-size: 1.16rem;
-  opacity: 0.45;
+  opacity: 0.6;
   font-style: italic;
   margin-top: 0.15rem;
 }
@@ -531,23 +573,25 @@ html:root {
 
 .pain-step-code {
   font-size: 0.95rem !important;
-  background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
-  border-radius: 0.35rem;
-  padding: 0.12rem 0.5rem !important;
-  color: rgb(var(--primary-text)) !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(var(--secondary) / 70%);
+  border-radius: 0;
+  padding: 0.12rem 0.2rem !important;
+  color: rgb(var(--secondary)) !important;
 }
 
 .pain-step-code-new {
-  background: rgb(var(--accent) / 12%) !important;
-  border-color: rgb(var(--accent) / 30%) !important;
+  border-bottom: 2px solid rgb(var(--accent));
   color: rgb(var(--accent-text)) !important;
+  font-weight: 700;
 }
 
 .pain-step-code-missing {
-  background: rgb(var(--danger) / 10%) !important;
-  border-color: rgb(var(--danger) / 30%) !important;
-  color: rgb(var(--danger-text)) !important;
+  border-bottom: 2px dashed rgb(var(--accent));
+  color: rgb(var(--accent-text)) !important;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .pain-step-arrow {
@@ -556,7 +600,7 @@ html:root {
   padding-bottom: 2.3rem;
 }
 
-/* Two Sides of the Coin */
+/* Two Sides of the Coin (currently unused — kept for parity if re-enabled) */
 .two-sides-grid {
   display: grid;
   grid-template-columns: 1fr 12rem 1fr;
@@ -580,9 +624,9 @@ html:root {
   text-align: center;
   line-height: 1.6;
   border: 1.5px dashed rgb(var(--primary) / 45%);
-  border-radius: 0.65rem;
+  border-radius: 0;
   padding: 0.75rem 0.85rem;
-  background: rgb(var(--primary) / 6%);
+  background: var(--surface);
 }
 
 .side-semconv h3 { color: rgb(var(--accent-text)); }
@@ -603,9 +647,9 @@ html:root {
   grid-template-columns: auto auto 1fr;
   align-items: center;
   gap: 0.6rem 0.75rem;
-  background: rgb(var(--surface) / 40%);
-  border: 1.5px solid rgb(var(--primary) / 20%);
-  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1.5px solid rgb(var(--primary) / 25%);
+  border-radius: 0;
   padding: 1rem 1.25rem;
 }
 
@@ -625,7 +669,7 @@ html:root {
   text-align: left;
   color: rgb(var(--primary-text));
   font-size: 1rem !important;
-  font-family: 'Fira Code', monospace;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .gate-arrow {
@@ -650,8 +694,8 @@ html:root {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  border: 2px solid;
-  border-radius: var(--radius-lg);
+  border: 1px solid;
+  border-radius: 0;
   padding: 1rem 0.75rem 1.3rem;
   text-align: center;
 }
@@ -689,25 +733,38 @@ html:root {
 
 .step-alpha {
   border-color: rgb(var(--neutral));
-  background: rgb(var(--neutral) / 7%);
+  background: var(--surface);
 }
 .step-alpha .step-badge { color: rgb(var(--neutral)); }
 
 .step-beta {
-  border-color: rgb(var(--warning));
-  background: rgb(var(--warning) / 7%);
+  border-color: rgb(var(--primary));
+  background: var(--surface);
+  font-weight: 700;
 }
-.step-beta .step-badge { color: rgb(var(--warning)); }
+.step-beta .step-badge { color: rgb(var(--primary)); }
 
 .step-stable {
-  border-color: rgb(var(--success));
-  background: rgb(var(--success) / 7%);
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent));
 }
-.step-stable .step-badge { color: rgb(var(--success)); }
+
+.step-stable .step-badge {
+  color: #fff;
+}
+
+.step-stable .step-line {
+  color: #fff;
+  opacity: 0.92;
+}
+
+#app .step-stable strong {
+  color: #fff !important;
+}
 
 .migration-note {
   font-size: 0.85rem;
-  opacity: 0.6;
+  opacity: 0.65;
   text-align: center;
 }
 
@@ -740,12 +797,12 @@ html:root {
   font-size: 1.2rem;
   line-height: 1;
   letter-spacing: 0.05em;
-  color: white;
+  color: #111;
 }
 
 /* OTel Ecosystem — clean block-based layout (slide 4) */
 .eco-arch {
-  --eco-block-border-w: 2px;
+  --eco-block-border-w: 1.5px;
 
   display: flex;
   flex-direction: column;
@@ -766,7 +823,7 @@ html:root {
   justify-content: center;
   gap: 0.65rem;
   border: var(--eco-block-border-w) solid;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 0.7rem 0.9rem;
   text-align: center;
 }
@@ -776,7 +833,7 @@ html:root {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.55;
+  opacity: 0.7;
 }
 
 .eco-arch-stack {
@@ -797,19 +854,19 @@ html:root {
 }
 
 .eco-arch-services {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  border-color: rgb(var(--secondary) / 75%);
+  background: var(--surface);
 }
 
 .eco-arch-collector {
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  border-color: rgb(var(--primary));
+  background: var(--surface);
   flex: 1.35;
 }
 
 .eco-arch-backends {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  border-color: rgb(var(--secondary) / 75%);
+  background: var(--surface);
 }
 
 /* Agent directly below Gateway — row 2 col 3 */
@@ -871,8 +928,8 @@ html:root {
   align-self: flex-end;
   background: repeating-linear-gradient(
     to bottom,
-    rgb(var(--secondary) / 70%) 0,
-    rgb(var(--secondary) / 70%) 5px,
+    rgb(var(--secondary) / 90%) 0,
+    rgb(var(--secondary) / 90%) 5px,
     transparent 5px,
     transparent 9px
   );
@@ -887,14 +944,14 @@ html:root {
   left: -3px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 70%);
+  border-bottom: 5px solid rgb(var(--secondary) / 90%);
 }
 
 .eco-agw-label {
   margin-left: 0.35rem;
   font-size: 0.48rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   white-space: nowrap;
   letter-spacing: 0.06em;
 }
@@ -905,7 +962,7 @@ html:root {
   top: 89.5%;
   width: 18.7%;
   height: 0;
-  border-top: 2px dashed rgb(var(--secondary) / 50%);
+  border-top: 2px dashed rgb(var(--secondary) / 70%);
 }
 
 /* Agent → Backends: vertical rising from horizontal level up into Backends */
@@ -914,7 +971,7 @@ html:root {
   top: calc(56.7% + 5px);
   height: calc(32.8% - 5px);
   width: 0;
-  border-left: 2px dashed rgb(var(--secondary) / 50%);
+  border-left: 2px dashed rgb(var(--secondary) / 70%);
 }
 
 .eco-cline-abe-v::before {
@@ -924,7 +981,7 @@ html:root {
   left: -5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 50%);
+  border-bottom: 5px solid rgb(var(--secondary) / 70%);
 }
 
 /* Connector OTLP labels */
@@ -932,7 +989,7 @@ html:root {
   position: absolute;
   font-size: 0.55rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
@@ -970,13 +1027,13 @@ html:root {
 /* Edge / Agent Collector */
 .eco-arch-edge-collector {
   flex: 0.82;
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  border-color: rgb(var(--primary));
+  background: var(--surface);
 }
 
 .eco-arch-subtitle {
   font-size: 0.59rem;
-  opacity: 0.5;
+  opacity: 0.65;
   font-style: italic;
   margin-top: -0.45rem;
   letter-spacing: 0.03em;
@@ -1025,7 +1082,7 @@ html:root {
 }
 
 .eco-vendor-jaeger {
-  color: rgb(var(--secondary));
+  color: rgb(96 165 250) !important;
 }
 
 /* Slide 3 — side-by-side: big icon left, bullets right */
@@ -1048,10 +1105,8 @@ html:root {
 .otel-icon-main {
   width: 8.5rem;
   height: auto;
-  filter: drop-shadow(0 0 18px rgb(var(--secondary) / 25%));
 }
 
 .otel-slide-bullets {
   flex: 1;
 }
-
