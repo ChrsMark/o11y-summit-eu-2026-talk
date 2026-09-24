@@ -1,38 +1,79 @@
 html:root {
-  --slidev-theme-primary: hsl(244deg 25% 47%);
+  /* Risograph print, light: warm paper + navy ink + fluorescent 2-color overprint (blue/pink) plus orange accent. */
+  --slidev-theme-primary: #0078bf;
 
   /* Colors are space-separated RGB channels so each can be used at any
      alpha: rgb(var(--primary) / 12%). */
 
+  /* Ink & paper */
+  --ink: 28 35 64; /* #1C2340 - dark navy "riso black" */
+  --paper: 247 244 238; /* #F7F4EE */
+
   /* Roles */
-  --primary: 99 102 241; /* The Collector and generic cards */
-  --secondary: 96 165 250; /* Outside the Collector: apps, backends, receivers, OTLP */
-  --accent: 245 158 11; /* Semantic conventions, processors, highlights */
+  --primary: 0 120 191; /* riso blue - The Collector and generic cards */
+  --secondary: 255 72 176; /* fluorescent pink - OTLP/dataflow overprint accent */
+  --accent: 255 108 47; /* riso orange - Semantic conventions, processors, highlights */
 
   /* Status */
-  --success: 34 197 94;
+  --success: 0 169 92;
   --warning: var(--accent);
-  --danger: 239 68 68;
-  --neutral: 148 163 184;
+  --danger: 227 0 27;
+  --neutral: 91 99 122;
 
-  /* Lighter tints for text on dark backgrounds */
-  --primary-text: 165 180 252;
-  --accent-text: 251 191 36;
-  --danger-text: 248 113 113;
-  --code-text: 226 232 240;
+  /* Darker tints for text set on light tinted chip/card backgrounds */
+  --primary-text: 0 86 140;
+  --accent-text: 190 70 20;
+  --danger-text: 153 0 20;
+  --code-text: 28 35 64;
 
-  /* Card backgrounds */
-  --surface: 54 56 85;
-  --surface-deep: 26 28 44;
+  /* Card backgrounds (now light, warm off-whites rather than dark navy) */
+  --surface: 255 252 245;
+  --surface-deep: 236 229 214;
 
-  /* Corner radii */
-  --radius-xs: 0.3rem;
-  --radius-sm: 0.4rem;
-  --radius-md: 0.45rem;
-  --radius-lg: 0.75rem;
+  /* Corner radii - soft-but-print-like, not sharp, not fully rounded */
+  --radius-xs: 4px;
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
 
   /* Body text size for lists and prose-like blocks */
   --text-body: 1.4rem;
+
+  /* Dracula theme variable remap: keep dracula's own selectors, retint via its own custom properties */
+  --background: #f7f4ee;
+  --foreground: #1c2340;
+  --comment: #4b5275;
+  --purple: #0078bf; /* headings */
+  --orange: #d1006f; /* strong */
+  --yellow: #0068a8; /* em */
+  --cyan: #0068a8; /* links, list markers */
+  --green: #0068a8; /* inline code */
+}
+
+/* Riso paper grain + halftone-dot corner accent, painted behind all slide content.
+   Kept as a background-image layer (never a foreground overlay) so it never tints
+   logos, speaker photos or the QR code, which paint normally on top. */
+#app .slidev-slide-content,
+#app .print-slide-container {
+  background-color: rgb(var(--paper));
+  background-image:
+    /* halftone dot accent, top-right corner: a fixed-size stamp of a real dot
+       grid (an SVG <pattern>), not a stretched single gradient, so it reads as
+       a print registration block rather than a blur. */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cdefs%3E%3Cpattern id='d' width='13' height='13' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='2.4' cy='2.4' r='1.5' fill='%231C2340' fill-opacity='0.22'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='260' height='260' fill='url(%23d)'/%3E%3C/svg%3E"),
+    /* fine paper grain, tiled subtly across the whole slide */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: top right, top left;
+  background-size: 260px 260px, 180px 180px;
+}
+
+#app .info-box h3 {
+  color: rgb(var(--ink)) !important;
+}
+
+#app h1 span[style] {
+  color: rgb(var(--success)) !important;
 }
 
 /* Theme adds decorative backticks around inline code via ::before/::after; drop them everywhere */
@@ -66,32 +107,46 @@ html:root {
   padding: 1.9rem 0.54rem;
   text-align: center;
   border-radius: 0.88rem;
-  border: 2px solid var(--slidev-theme-primary);
-  background: linear-gradient(135deg, rgb(var(--primary) / 22%), rgb(var(--primary) / 6%));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+  border: 2.5px solid rgb(var(--ink));
+  background: rgb(var(--primary) / 14%);
+  box-shadow: 4px 3px 0 rgb(var(--secondary) / 85%);
   transition: transform 0.2s;
 }
 
 .component-box:hover {
-  transform: translateY(-2px);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 5px 0 rgb(var(--secondary) / 85%);
 }
 
+/* Receiver keeps the blue "outside the Collector" role, distinct from the
+   fluorescent-pink OTLP/dataflow accent that --secondary now carries. */
 .component-box.receiver {
-  border-color: rgb(var(--secondary) / 60%);
-  background: linear-gradient(135deg, rgb(var(--secondary) / 18%), rgb(var(--secondary) / 5%));
+  border-color: rgb(var(--ink));
+  background: rgb(var(--primary) / 16%);
+  box-shadow: 4px 3px 0 rgb(var(--primary) / 70%);
 }
 
 .component-box.processor {
-  border-color: rgb(var(--accent-text) / 60%);
-  background: linear-gradient(135deg, rgb(var(--accent) / 18%), rgb(var(--accent) / 5%));
+  border-color: rgb(var(--ink));
+  background: rgb(var(--accent) / 16%);
+  box-shadow: 4px 3px 0 rgb(var(--accent) / 70%);
+}
+
+.component-box.processor:hover {
+  box-shadow: 6px 5px 0 rgb(var(--accent) / 70%);
+}
+
+.component-box.receiver:hover {
+  box-shadow: 6px 5px 0 rgb(var(--primary) / 70%);
 }
 
 .component-box code {
   background: transparent;
   padding: 0;
-  font-size: 1.1em !important;
+  font-size: 1em !important;
   font-weight: 600;
   color: rgb(var(--code-text)) !important;
+  overflow-wrap: anywhere;
 }
 
 .priority-tracking {
@@ -108,15 +163,15 @@ html:root {
 
 /* Intro slide */
 .slidev-layout.intro h1 {
-  font-family: Oswald, sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 5.5rem;
   padding-bottom: 2rem;
   text-align: center;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   line-height: 1.1;
-  transform: skewY(-7deg);
-  transform-origin: center center;
+  color: rgb(var(--primary));
+  text-shadow: 3px 3px 0 rgb(var(--secondary) / 80%);
 }
 
 .intro-subtitle {
@@ -190,17 +245,18 @@ html:root {
 
 /* Shared info box styles */
 .info-box {
-  border: 1.5px solid rgb(var(--primary) / 35%);
+  position: relative;
+  border: 2.5px solid rgb(var(--ink));
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  background: rgb(var(--surface));
+  box-shadow: 5px 4px 0 rgb(var(--primary) / 55%);
 }
 
 .info-box h3 {
-  background: linear-gradient(135deg, rgb(var(--primary) / 30%), rgb(var(--primary) / 15%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 20%);
-  color: white;
+  background: linear-gradient(120deg, rgb(var(--secondary) / 35%), transparent 65%), rgb(var(--primary));
+  background-blend-mode: multiply, normal;
+  border-bottom: 2.5px solid rgb(var(--ink));
   padding: 0.4rem 0.8rem;
   margin: 0;
   font-size: 1.3rem;
@@ -297,8 +353,8 @@ html:root {
 /* OTel Ecosystem diagram */
 
 .eco-layer-box {
-  background: rgb(255 255 255 / 7%);
-  border: 1.5px solid rgb(var(--neutral) / 25%);
+  background: rgb(var(--ink) / 5%);
+  border: 1.5px solid rgb(var(--neutral) / 45%);
   border-radius: var(--radius-md);
   padding: 0.38rem 0.5rem;
   font-size: 0.74rem;
@@ -373,8 +429,8 @@ html:root {
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
-  background: rgb(var(--accent) / 9%);
-  border: 1.5px solid rgb(var(--accent) / 38%);
+  background: rgb(var(--accent) / 12%);
+  border: 1.5px solid rgb(var(--accent) / 55%);
   border-radius: 0.6rem;
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
@@ -585,8 +641,8 @@ html:root {
   background: rgb(var(--primary) / 6%);
 }
 
-.side-semconv h3 { color: rgb(var(--accent-text)); }
-.side-collector h3 { color: rgb(var(--primary-text)); }
+#app .side-semconv h3 { color: rgb(var(--accent-text)) !important; }
+#app .side-collector h3 { color: rgb(var(--primary-text)) !important; }
 
 /* Migration mechanism */
 .migration-slide {
@@ -603,10 +659,11 @@ html:root {
   grid-template-columns: auto auto 1fr;
   align-items: center;
   gap: 0.6rem 0.75rem;
-  background: rgb(var(--surface) / 40%);
-  border: 1.5px solid rgb(var(--primary) / 20%);
+  background: rgb(var(--surface));
+  border: 2.5px solid rgb(var(--ink));
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;
+  box-shadow: 5px 4px 0 rgb(var(--accent) / 55%);
 }
 
 .gates-title {
@@ -625,7 +682,7 @@ html:root {
   text-align: left;
   color: rgb(var(--primary-text));
   font-size: 1rem !important;
-  font-family: 'Fira Code', monospace;
+  font-family: 'Martian Mono', monospace;
 }
 
 .gate-arrow {
@@ -650,7 +707,7 @@ html:root {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  border: 2px solid;
+  border: 2.5px solid;
   border-radius: var(--radius-lg);
   padding: 1rem 0.75rem 1.3rem;
   text-align: center;
@@ -689,19 +746,22 @@ html:root {
 
 .step-alpha {
   border-color: rgb(var(--neutral));
-  background: rgb(var(--neutral) / 7%);
+  background: rgb(var(--neutral) / 10%);
+  box-shadow: 4px 3px 0 rgb(var(--primary) / 45%);
 }
 .step-alpha .step-badge { color: rgb(var(--neutral)); }
 
 .step-beta {
   border-color: rgb(var(--warning));
-  background: rgb(var(--warning) / 7%);
+  background: rgb(var(--warning) / 12%);
+  box-shadow: 4px 3px 0 rgb(var(--secondary) / 55%);
 }
-.step-beta .step-badge { color: rgb(var(--warning)); }
+.step-beta .step-badge { color: rgb(var(--accent-text)); }
 
 .step-stable {
   border-color: rgb(var(--success));
-  background: rgb(var(--success) / 7%);
+  background: rgb(var(--success) / 12%);
+  box-shadow: 4px -3px 0 rgb(var(--success) / 45%);
 }
 .step-stable .step-badge { color: rgb(var(--success)); }
 
@@ -740,12 +800,12 @@ html:root {
   font-size: 1.2rem;
   line-height: 1;
   letter-spacing: 0.05em;
-  color: white;
+  color: rgb(var(--ink));
 }
 
 /* OTel Ecosystem — clean block-based layout (slide 4) */
 .eco-arch {
-  --eco-block-border-w: 2px;
+  --eco-block-border-w: 2.5px;
 
   display: flex;
   flex-direction: column;
@@ -797,19 +857,19 @@ html:root {
 }
 
 .eco-arch-services {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  border-color: rgb(var(--secondary) / 60%);
+  background: rgb(var(--secondary) / 10%);
 }
 
 .eco-arch-collector {
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  border-color: rgb(var(--primary) / 65%);
+  background: rgb(var(--primary) / 12%);
   flex: 1.35;
 }
 
 .eco-arch-backends {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  border-color: rgb(var(--secondary) / 60%);
+  background: rgb(var(--secondary) / 10%);
 }
 
 /* Agent directly below Gateway — row 2 col 3 */
@@ -894,7 +954,7 @@ html:root {
   margin-left: 0.35rem;
   font-size: 0.48rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   white-space: nowrap;
   letter-spacing: 0.06em;
 }
@@ -905,7 +965,7 @@ html:root {
   top: 89.5%;
   width: 18.7%;
   height: 0;
-  border-top: 2px dashed rgb(var(--secondary) / 50%);
+  border-top: 2px dashed rgb(var(--secondary) / 75%);
 }
 
 /* Agent → Backends: vertical rising from horizontal level up into Backends */
@@ -914,7 +974,7 @@ html:root {
   top: calc(56.7% + 5px);
   height: calc(32.8% - 5px);
   width: 0;
-  border-left: 2px dashed rgb(var(--secondary) / 50%);
+  border-left: 2px dashed rgb(var(--secondary) / 75%);
 }
 
 .eco-cline-abe-v::before {
@@ -924,7 +984,7 @@ html:root {
   left: -5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 50%);
+  border-bottom: 5px solid rgb(var(--secondary) / 75%);
 }
 
 /* Connector OTLP labels */
@@ -932,7 +992,7 @@ html:root {
   position: absolute;
   font-size: 0.55rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
@@ -970,8 +1030,8 @@ html:root {
 /* Edge / Agent Collector */
 .eco-arch-edge-collector {
   flex: 0.82;
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  border-color: rgb(var(--primary) / 65%);
+  background: rgb(var(--primary) / 12%);
 }
 
 .eco-arch-subtitle {
@@ -1025,7 +1085,7 @@ html:root {
 }
 
 .eco-vendor-jaeger {
-  color: rgb(var(--secondary));
+  color: rgb(96 165 250) !important;
 }
 
 /* Slide 3 — side-by-side: big icon left, bullets right */
@@ -1048,7 +1108,7 @@ html:root {
 .otel-icon-main {
   width: 8.5rem;
   height: auto;
-  filter: drop-shadow(0 0 18px rgb(var(--secondary) / 25%));
+  filter: drop-shadow(0 0 18px rgb(96 165 250 / 25%));
 }
 
 .otel-slide-bullets {

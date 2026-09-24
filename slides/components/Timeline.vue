@@ -53,8 +53,13 @@ defineProps<{
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #555 0%, var(--slidev-theme-primary) 100%);
-  border-radius: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgb(var(--ink)) 0,
+    rgb(var(--ink)) 8px,
+    transparent 8px,
+    transparent 14px
+  );
 }
 
 .timeline-items {
@@ -75,17 +80,19 @@ defineProps<{
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--slidev-theme-primary);
-  border: 2px solid #1e1e1e;
+  background: rgb(var(--primary));
+  border: 2px solid rgb(var(--ink));
+  box-shadow: 2px 2px 0 rgb(var(--secondary) / 70%);
   z-index: 1;
   flex-shrink: 0;
 }
 
 .tl-year {
   margin-top: 0.6rem;
+  font-family: 'Martian Mono', monospace;
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--slidev-theme-primary);
+  color: rgb(var(--primary));
   font-variant-numeric: tabular-nums;
   height: 1.8rem;
   display: flex;
@@ -95,24 +102,24 @@ defineProps<{
 .tl-desc {
   margin-top: 0.6rem;
   font-size: 0.85rem;
-  color: #ccc;
+  color: rgb(var(--ink));
   line-height: 1.4;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  border: 1.5px solid rgb(var(--primary) / 20%);
+  background: rgb(var(--surface));
+  border: 2.5px solid rgb(var(--ink));
   border-radius: 0.5rem;
   overflow: hidden;
   width: 90%;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  box-shadow: 4px 3px 0 rgb(var(--primary) / 55%);
 }
 
 .tl-card-title {
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
-  background: linear-gradient(135deg, rgb(var(--primary) / 25%), rgb(var(--primary) / 10%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 15%);
+  background: rgb(var(--primary) / 18%);
+  border-bottom: 2px solid rgb(var(--ink));
   text-align: center;
-  color: #f8f8f2;
+  color: rgb(var(--ink));
 }
 
 .tl-body {
@@ -125,24 +132,26 @@ defineProps<{
 }
 
 .tl-item.highlight .tl-dot {
-  background: rgb(var(--success));
+  background: rgb(var(--accent));
   width: 18px;
   height: 18px;
-  box-shadow: 0 0 8px rgb(var(--success) / 60%);
+  box-shadow: 3px 3px 0 rgb(var(--secondary) / 70%);
   margin-top: -2px;
 }
 
 .tl-item.highlight .tl-year {
-  color: rgb(var(--success));
+  color: rgb(var(--accent-text));
   font-size: 1.2rem;
 }
 
 .tl-item.highlight .tl-desc {
-  color: #f8f8f2;
+  border-color: rgb(var(--accent-text));
+  box-shadow: 4px 3px 0 rgb(var(--accent) / 60%);
   font-weight: 600;
 }
 
-
-
-
+.tl-item.highlight .tl-card-title {
+  background: rgb(var(--accent) / 22%);
+  border-bottom-color: rgb(var(--accent-text));
+}
 </style>
