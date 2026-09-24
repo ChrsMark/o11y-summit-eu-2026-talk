@@ -156,27 +156,27 @@ html:root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.1rem;
+  gap: 1.3rem;
   margin: 1.5rem 0 1rem;
 }
 
 .priority-row {
   display: grid;
-  gap: 1.1rem;
+  gap: 1.3rem;
 }
 
 .priority-row.row-2 {
-  grid-template-columns: repeat(2, minmax(0, 230px));
+  grid-template-columns: repeat(2, minmax(0, 243px));
 }
 
 .priority-row.row-3 {
-  grid-template-columns: repeat(3, minmax(0, 230px));
+  grid-template-columns: repeat(3, minmax(0, 243px));
 }
 
 .component-box {
-  padding: 1.2rem 0.5rem;
+  padding: 1.9rem 0.54rem;
   text-align: center;
-  border-radius: 0.75rem;
+  border-radius: 0.88rem;
   border: 2px solid var(--slidev-theme-primary);
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(99, 102, 241, 0.06));
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -187,11 +187,22 @@ html:root {
   transform: translateY(-2px);
 }
 
+.component-box.receiver {
+  border-color: rgba(96, 165, 250, 0.6);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.05));
+}
+
+.component-box.processor {
+  border-color: rgba(251, 191, 36, 0.6);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(245, 158, 11, 0.05));
+}
+
 .component-box code {
   background: transparent;
   padding: 0;
-  font-size: 1.2rem;
+  font-size: 1.1em !important;
   font-weight: 600;
+  color: #e2e8f0 !important;
 }
 
 .priority-tracking {
@@ -1402,7 +1413,7 @@ html:not(.dark) .eco-semconv {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 0.6rem;
   margin-bottom: 2.5rem;
 }
 
@@ -1410,12 +1421,12 @@ html:not(.dark) .eco-semconv {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  min-width: 9rem;
+  gap: 0.55rem;
+  min-width: 12rem;
 }
 
 .pain-step-icon {
-  font-size: 2.6rem;
+  font-size: 3.6rem;
   color: var(--slidev-theme-primary);
 }
 
@@ -1428,7 +1439,7 @@ html:not(.dark) .eco-semconv {
 }
 
 .pain-step-label {
-  font-size: 0.78rem;
+  font-size: 1rem;
   opacity: 0.7;
   white-space: nowrap;
 }
@@ -1490,7 +1501,7 @@ html:not(.dark) .http-new { color: #166534 !important; background: rgba(34, 197,
 }
 
 .pain-step-rename-arrow {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   opacity: 0.5;
 }
 
@@ -1503,11 +1514,11 @@ html:not(.dark) .http-new { color: #166534 !important; background: rgba(34, 197,
 }
 
 .pain-step-code {
-  font-size: 0.72rem !important;
+  font-size: 0.95rem !important;
   background: rgba(99, 102, 241, 0.12) !important;
   border: 1px solid rgba(99, 102, 241, 0.25) !important;
-  border-radius: 0.3rem;
-  padding: 0.08rem 0.35rem !important;
+  border-radius: 0.35rem;
+  padding: 0.12rem 0.5rem !important;
   color: #a5b4fc !important;
 }
 
@@ -1537,9 +1548,9 @@ html:not(.dark) .pain-step-code-missing {
 }
 
 .pain-step-arrow {
-  font-size: 1.8rem;
+  font-size: 2.4rem;
   opacity: 0.35;
-  padding-bottom: 1.8rem;
+  padding-bottom: 2.3rem;
 }
 
 .pain-quote {
@@ -1605,35 +1616,41 @@ html:not(.dark) .coin-rule {
 }
 
 .migration-gates {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.6rem;
   background: rgba(54, 56, 85, 0.4);
   border: 1.5px solid rgba(141, 141, 255, 0.2);
   border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.gates-title {
+  grid-column: 1 / -1;
+  font-weight: 700;
+  font-size: 1.15rem;
+  opacity: 0.9;
 }
 
 .gate-pair {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  display: contents;
 }
 
 .gate {
-  background: rgba(99, 102, 241, 0.15);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 0.35rem;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.78rem !important;
+  justify-self: stretch;
+  text-align: left;
+  color: #a5b4fc;
+  font-size: 1rem !important;
   font-family: 'Fira Code', monospace;
 }
 
 .gate-arrow { opacity: 0.45; flex-shrink: 0; }
 
 .gate-desc {
-  opacity: 0.75;
-  font-size: 0.88rem;
+  opacity: 0.8;
+  font-size: 1.05rem;
 }
 
 .lifecycle-steps {
@@ -1647,24 +1664,35 @@ html:not(.dark) .coin-rule {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.9rem;
   border: 2px solid;
   border-radius: 0.75rem;
-  padding: 0.65rem 0.5rem;
+  padding: 1rem 0.75rem 1.3rem;
   text-align: center;
 }
 
 .step-badge {
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 
 .step-desc {
-  font-size: 0.78rem;
-  line-height: 1.45;
-  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.step-line {
+  font-size: 1rem;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.step-line strong {
+  opacity: 1;
 }
 
 .lifecycle-arrow {
@@ -1683,9 +1711,6 @@ html:not(.dark) .coin-rule {
 .step-stable { border-color: #22c55e; background: rgba(34, 197, 94, 0.07); }
 .step-stable .step-badge { color: #22c55e; }
 
-.step-removed { border-color: #ef4444; background: rgba(239, 68, 68, 0.07); }
-.step-removed .step-badge { color: #ef4444; }
-
 .migration-note {
   font-size: 0.85rem;
   opacity: 0.6;
@@ -1695,6 +1720,10 @@ html:not(.dark) .coin-rule {
 html:not(.dark) .migration-gates {
   background: rgba(240, 240, 255, 0.7);
   border-color: rgba(99, 102, 241, 0.2);
+}
+
+html:not(.dark) .gate {
+  color: #4338ca;
 }
 
 /* Colored icon variants for status indicators */

@@ -303,17 +303,17 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
 
 <div class="priority-components">
   <div class="priority-row row-2">
-    <div class="component-box"><code>filelog</code></div>
-    <div class="component-box"><code>k8sattributes</code></div>
+    <div class="component-box receiver"><code>filelog</code></div>
+    <div class="component-box processor"><code>k8sattributes</code></div>
   </div>
   <div class="priority-row row-3">
-    <div class="component-box"><code>hostmetrics</code></div>
-    <div class="component-box"><code>prometheus</code></div>
-    <div class="component-box"><code>resourcedetection</code></div>
+    <div class="component-box receiver"><code>hostmetrics</code></div>
+    <div class="component-box receiver"><code>prometheus</code></div>
+    <div class="component-box processor"><code>resourcedetection</code></div>
   </div>
   <div class="priority-row row-2">
-    <div class="component-box"><code>transform</code></div>
-    <div class="component-box"><code>filter</code></div>
+    <div class="component-box processor"><code>transform</code></div>
+    <div class="component-box processor"><code>filter</code></div>
   </div>
 </div>
 
@@ -372,6 +372,7 @@ Let me walk through each side in detail.
 
 <div class="migration-slide">
   <div class="migration-gates">
+    <div class="gates-title">Two feature gates</div>
     <div v-click="1" class="gate-pair">
       <code class="gate">&lt;kind&gt;.&lt;id&gt;.EmitV1&lt;Area&gt;Conventions</code>
       <span class="gate-arrow">→</span>
@@ -386,25 +387,29 @@ Let me walk through each side in detail.
   <div class="lifecycle-steps">
     <div v-click="3" class="lifecycle-step step-alpha">
       <div class="step-badge">Alpha</div>
-      <div class="step-desc">v0 names only. Users opt in to v1 or both.</div>
+      <div class="step-desc">
+        <div class="step-line"><strong>Default:</strong> v0 names only</div>
+        <div class="step-line"><strong>Opt-in:</strong> v1 or double-publish</div>
+      </div>
     </div>
     <span v-click="4" class="lifecycle-arrow">→</span>
     <div v-click="4" class="lifecycle-step step-beta">
       <div class="step-badge">Beta</div>
-      <div class="step-desc">v1 only (opt-in: double-publish). Triggered when semconv reaches stable.</div>
+      <div class="step-desc">
+        <div class="step-line"><strong>Default:</strong> v1 names only</div>
+        <div class="step-line"><strong>Opt-in:</strong> v0 or double-publish</div>
+      </div>
     </div>
     <span v-click="5" class="lifecycle-arrow">→</span>
     <div v-click="5" class="lifecycle-step step-stable">
       <div class="step-badge">Stable</div>
-      <div class="step-desc">v1 names only.</div>
-    </div>
-    <span v-click="6" class="lifecycle-arrow">→</span>
-    <div v-click="6" class="lifecycle-step step-removed">
-      <div class="step-badge">Removed</div>
-      <div class="step-desc">After 4 more minor releases.</div>
+      <div class="step-desc">
+        <div class="step-line"><strong>Default:</strong> v1 names only</div>
+        <div class="step-line">v0 support removed</div>
+      </div>
     </div>
   </div>
-  <p v-click="7" class="migration-note">
+  <p v-click="6" class="migration-note">
     RFC: <a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/rfcs/semconv-feature-gates.md">semconv-feature-gates.md</a>
   </p>
 </div>
@@ -415,15 +420,13 @@ The HTTP semconv migration showed us that a global env var wasn't enough. So we 
 
 Each component gets two paired feature gates. The first lets you opt into the new names early. The second lets you turn off the old names when you're ready. You control each independently — you can run both in parallel during your migration window.
 
-The lifecycle has four stages:
+The lifecycle has three stages:
 
 Alpha: nothing changes by default. You can opt in to test the new names.
 
 Beta: triggered automatically once the associated semconv area reaches stable. The default flips — new names emitted by default. You can still emit both.
 
 Stable: old names are gone. Trying to enable them results in an error.
-
-Removed: the gates themselves are removed after 4 more releases.
 
 Minimum warning window across all stages: 8 minor releases. That's a real runway for users to migrate safely.
 
@@ -437,7 +440,7 @@ Minimum warning window across all stages: 8 minor releases. That's a real runway
   <carbon-kubernetes-ip-address v-click="1" class="icon" />
   <span v-click="1">Described all K8s metrics from the Collector in Semantic Conventions.</span>
   <carbon-group v-click="2" class="icon" />
-  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
+  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on priorities.</span>
   <carbon-idea v-click="3" class="icon" />
   <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>benefits</strong> <code>k8sattributes</code> processor stability.</span>
   <carbon-checkmark v-click="4" class="icon" />
