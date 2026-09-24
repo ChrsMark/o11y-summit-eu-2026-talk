@@ -1379,6 +1379,12 @@ html:not(.dark) .eco-semconv {
   background: rgba(245, 158, 11, 0.06);
 }
 
+.eco-focus-highlight {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.7), 0 0 18px 4px rgba(245, 158, 11, 0.35);
+  border-color: rgba(245, 158, 11, 0.8) !important;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
 /* Speaker roles list */
 .speaker-roles {
   display: flex;

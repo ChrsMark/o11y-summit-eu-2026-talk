@@ -1,3 +1,8 @@
+<script setup>
+import { useSlideContext } from '@slidev/client'
+const { $clicks } = useSlideContext()
+</script>
+
 <template>
   <div class="eco-arch">
     <div class="eco-main-grid">
@@ -22,7 +27,7 @@
         <div class="eco-h-arrow-label">OTLP</div>
       </div>
 
-      <div v-click="2" class="eco-arch-block eco-arch-collector eco-g-gw">
+      <div v-click="2" class="eco-arch-block eco-arch-collector eco-g-gw" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
         <img src="/otel-icon.png" class="eco-otel-icon" />
         <div class="eco-arch-title">Gateway Collector</div>
         <div class="eco-pipeline">
@@ -66,7 +71,7 @@
       </div>
 
       <!-- Row 2: Agent Collector — directly below Gateway -->
-      <div v-click="3" class="eco-arch-block eco-arch-edge-collector eco-g-agent">
+      <div v-click="3" class="eco-arch-block eco-arch-edge-collector eco-g-agent" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
         <!-- Connector lives here so it's anchored to this block, not the container -->
         <div class="eco-agw-connector">
           <div class="eco-agw-line"></div>
@@ -95,7 +100,7 @@
       </div>
     </div>
 
-    <div v-click="5" class="eco-semconv">
+    <div v-click="5" class="eco-semconv" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
       <span class="eco-semconv-title">Semantic Conventions</span>
       <code>system.cpu.time</code>
       <code>host.name</code>

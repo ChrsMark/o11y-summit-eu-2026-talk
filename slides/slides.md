@@ -103,6 +103,8 @@ It's the second-largest CNCF project, with contributions from virtually every ma
 -->
 
 ---
+clicks: 6
+---
 
 # The OpenTelemetry Ecosystem
 
@@ -120,44 +122,7 @@ It's the second-largest CNCF project, with contributions from virtually every ma
 
 <click> Underneath everything — the layer that ties the whole ecosystem together — are Semantic Conventions. Standard names like system.cpu.time, host.name, and k8s.pod.name that every tool in the ecosystem agrees on.
 
-And these two — the Collector and Semantic Conventions — are exactly what today's talk is about.
-
--->
-
----
-
-# Components That Must Be Stable Together (need it?)
-
-<div class="comparison-grid">
-  <div v-click="1" class="info-box focus-semconv-box">
-    <h3>Semantic Conventions</h3>
-    <p>Standard <strong>names</strong> for every telemetry attribute, shared across all vendors and implementations.</p>
-    <div class="focus-codes">
-      <code>system.cpu.time</code>
-      <code>host.name</code>
-      <code>k8s.pod.name</code>
-    </div>
-  </div>
-  <div v-click="2" class="info-box focus-collector-box">
-    <h3>The Collector</h3>
-    <p>The vendor-neutral <strong>pipeline/agent</strong> at the heart of most OTel deployments.</p>
-    <div class="focus-codes">
-      <code>kubeletstats receiver</code>
-      <code>hostmetrics receiver</code>
-      <code>k8sattributes processor</code>
-    </div>
-  </div>
-</div>
-
-<!-- CHRISTOS
-
-The Collector receivers and processors are what actually produce metrics — they emit telemetry attributes using the names defined in Semantic Conventions.
-
-If the Semantic Conventions rename an attribute, every Collector component that emits it has to change too.
-
-And if that change isn't handled carefully, your users silently see different data on the next upgrade.
-
-That's the core challenge. Let me show you what it looks like in practice.
+<click> And these two — the Collector and Semantic Conventions — are exactly what today's talk is about. The Collector receivers and processors emit telemetry attributes using the names defined in Semantic Conventions. If a convention renames an attribute, every Collector component that emits it has to change too — and if that isn't handled carefully, users silently see different data on the next upgrade. That's the core challenge, and it's what we're here to talk about.
 
 -->
 
@@ -167,7 +132,7 @@ That's the core challenge. Let me show you what it looks like in practice.
 
 <div class="icon-grid">
   <carbon-warning-alt v-click="1" class="icon" />
-  <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanosecond</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
+  <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanocore</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
   <carbon-misuse v-click="2" class="icon" />
   <span v-click="2">Real user pain: Silent disappearance on upgrade, no compile error?</span>
   <carbon-time v-click="4" class="icon" />
