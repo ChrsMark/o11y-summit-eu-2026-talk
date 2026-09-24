@@ -128,13 +128,13 @@ clicks: 6
 
 ---
 
-# Story 1 > Kubelet Stats
+# Story 1: Kubelet Stats
 
 <div class="icon-grid">
   <carbon-warning-alt v-click="1" class="icon" />
   <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanocore</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
   <carbon-misuse v-click="2" class="icon" />
-  <span v-click="2">Real user pain: Silent disappearance on upgrade, no compile error?</span>
+  <span v-click="2">Real user pain: Silent disappearance on upgrade</span>
   <carbon-time v-click="4" class="icon" />
   <span v-click="4">Multi-release migration/deprecation process. (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
 </div>
@@ -157,7 +157,7 @@ The responsible fix required over 10 releases. This became one of the canonical 
 
 ---
 
-# Story 2 > HTTP Semantic Conventions
+# Story 2: HTTP Semantic Conventions
 
 <div class="icon-grid">
   <carbon-data-share v-click="1" class="icon" />
@@ -229,11 +229,21 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 
 # Users want stability
 
-  <ul>
-    <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
-    <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
-    <li>Community surveys: what components and what people care about</li>
-  </ul>
+<div class="comparison-grid">
+  <div v-click="1" class="info-box">
+    <h3>User Surveys</h3>
+    <ul>
+      <li>Community surveys: what components and what people care about</li>
+    </ul>
+  </div>
+  <div v-click="2" class="info-box">
+    <h3>OTel Graduation Process</h3>
+    <ul>
+      <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
+      <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
+    </ul>
+  </div>
+</div>
 
 <!-- PABLO
 
@@ -246,35 +256,33 @@ Add slides covering the CNCF ToC feedback:
 -->
 ---
 
-# Defining Stability in OpenTelemetry
+# Defining Stability: Specifications &amp; SemConv
 
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <div class="comparison-grid">
-    <div class="info-box">
-      <h3>Specifications &amp; SemConv</h3>
-      <ul>
-        <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
-        <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
-        <li v-click="3">Users can rely on names never silently changing</li>
-      </ul>
-    </div>
-    <div class="info-box">
-      <h3>Collector Components</h3>
-      <ul>
-        <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
-        <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
-        <li v-click="3">Most heavily-used components are still Beta</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<ul>
+  <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
+  <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
+  <li v-click="3">Users can rely on names never silently changing</li>
+</ul>
 
 <!-- PABLO
 
 The key insight is that "stable" means something specific in OpenTelemetry — and it's different for specs vs. implementations.
 
 For Semantic Conventions: once stable, attribute names are guaranteed not to change. You build dashboards on system.cpu.time and they're there forever.
+
+-->
+
+---
+
+# Defining Stability: Collector Components
+
+<ul>
+  <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
+  <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
+  <li v-click="3">Most heavily-used components are still Beta</li>
+</ul>
+
+<!-- PABLO
 
 For Collector components: stable means configuration won't silently break, and there's a defined migration path for any changes.
 
@@ -569,15 +577,12 @@ Now, back to Pablo for what comes next.
 
 # What's Next and the End Goal
 
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>6 remaining priority components on the path to v1 (target: March 2027)</li>
-    <li>The end goal: "stable by default" — no configuration needed to get stable telemetry on upgrade</li>
-    <li>What the world looks like when all critical Collector components are v1</li>
-    <li>The roadmap for the next major OTel Collector release</li>
-  </ul>
-</div>
+<ul>
+  <li>6 remaining priority components on the path to v1 (target: March 2027)</li>
+  <li>The end goal: "stable by default" — no configuration needed to get stable telemetry on upgrade</li>
+  <li>What the world looks like when all critical Collector components are v1</li>
+  <li>The roadmap for the next major OTel Collector release</li>
+</ul>
 
 <!-- PABLO
 
@@ -593,14 +598,11 @@ Add slides covering the roadmap and end state:
 
 # Other Components Coming Up
 
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>Which other Collector components are in the stabilization queue beyond the 7 priority ones</li>
-    <li>Community effort: how other maintainers are adopting the same RFC and checklist pattern</li>
-    <li>The template is open — any component team can use it</li>
-  </ul>
-</div>
+<ul>
+  <li>Which other Collector components are in the stabilization queue beyond the 7 priority ones</li>
+  <li>Community effort: how other maintainers are adopting the same RFC and checklist pattern</li>
+  <li>The template is open — any component team can use it</li>
+</ul>
 
 <!-- PABLO
 
@@ -615,14 +617,11 @@ Brief slide covering the broader component ecosystem:
 
 # Telemetry Schemas
 
-<div class="pablo-stub">
-  <div class="pablo-stub-badge">PABLO</div>
-  <ul>
-    <li>The OTel Telemetry Schema spec — machine-readable migration definitions</li>
-    <li>How schemas complement the feature gate approach for SemConv migrations</li>
-    <li>Future direction: schema-driven automatic migration in the Collector</li>
-  </ul>
-</div>
+<ul>
+  <li>The OTel Telemetry Schema spec — machine-readable migration definitions</li>
+  <li>How schemas complement the feature gate approach for SemConv migrations</li>
+  <li>Future direction: schema-driven automatic migration in the Collector</li>
+</ul>
 
 <!-- PABLO
 

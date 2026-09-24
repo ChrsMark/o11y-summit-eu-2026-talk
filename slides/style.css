@@ -1336,12 +1336,14 @@ html:not(.dark) .eco-backend-box {
 }
 
 .eco-semconv {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
-  background: rgba(245, 158, 11, 0.07);
-  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  background: rgba(249, 115, 22, 0.09);
+  border: 1.5px solid rgba(249, 115, 22, 0.38);
   border-radius: 0.6rem;
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
@@ -1350,22 +1352,20 @@ html:not(.dark) .eco-backend-box {
 .eco-semconv-title {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .eco-semconv code {
   font-size: 0.68rem !important;
-  background: rgba(245, 158, 11, 0.1) !important;
-  border: 1px solid rgba(245, 158, 11, 0.22) !important;
+  background: rgba(249, 115, 22, 0.12) !important;
+  border: 1px solid rgba(249, 115, 22, 0.28) !important;
   border-radius: 0.3rem;
   padding: 0.08rem 0.32rem !important;
-  color: #fbbf24 !important;
-}
-
-html:not(.dark) .eco-semconv code {
-  color: #92400e !important;
+  color: #e2e8f0 !important;
 }
 
 .eco-semconv-dots {
@@ -1387,12 +1387,20 @@ html:not(.dark) .eco-right {
 }
 
 html:not(.dark) .eco-semconv {
-  background: rgba(245, 158, 11, 0.06);
+  background: rgba(249, 115, 22, 0.07);
 }
 
-.eco-focus-highlight {
+/* Rendered as an overlay (not a box-shadow on the element itself) so the glow
+   sits in front of connector arrows anchored inside the same highlighted block. */
+.eco-focus-highlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(245, 158, 11, 0.8);
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.7), 0 0 18px 4px rgba(245, 158, 11, 0.35);
-  border-color: rgba(245, 158, 11, 0.8) !important;
+  z-index: 3;
+  pointer-events: none;
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
@@ -1781,6 +1789,8 @@ html:not(.dark) .kceu-logo-block {
 }
 
 .eco-arch-block {
+  position: relative;
+  z-index: 1;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2117,58 +2127,6 @@ html:not(.dark) .eco-arch-edge-collector { background: rgba(59, 130, 246, 0.06);
 .focus-codes code {
   font-size: 0.8rem !important;
   opacity: 0.65;
-}
-
-/* Pablo placeholder slides */
-.pablo-stub {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  border: 2px dashed rgba(251, 191, 36, 0.4);
-  border-radius: 0.75rem;
-  padding: 1.4rem 2rem;
-  background: rgba(251, 191, 36, 0.03);
-}
-
-.pablo-stub-badge {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.4);
-  border-radius: 999px;
-  padding: 0.2rem 0.75rem;
-  width: fit-content;
-  margin-bottom: 0.1rem;
-}
-
-.pablo-stub ul {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.pablo-stub li {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 0.75rem !important;
-  font-size: 1.25rem !important;
-  line-height: 1.55 !important;
-  opacity: 0.72;
-  margin-top: 0 !important;
-}
-
-.pablo-stub li::before {
-  content: '→';
-  color: #fbbf24;
-  opacity: 0.5;
-  flex-shrink: 0;
-  margin-top: 0.05rem;
 }
 
 html:not(.dark) .collector-logs-header {
