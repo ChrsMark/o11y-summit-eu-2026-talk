@@ -183,10 +183,31 @@ layout: center
 class: text-center
 ---
 
-<div class="pain-quote">
-  <p>"Breaking changes from semantic conventions are so difficult because</p>
-  <p class="pain-emphasis">a user could upgrade the Collector and not realize it just started emitting new telemetry."</p>
+<div class="pain-scenario-strip">
+  <div class="pain-step">
+    <carbon-document-multiple-01 class="pain-step-icon" />
+    <span class="pain-step-label">SemConv ships rename</span>
+    <div class="pain-step-rename">
+      <code class="pain-step-code">http.method</code>
+      <span class="pain-step-rename-arrow">→</span>
+      <code class="pain-step-code pain-step-code-new">http.request.method</code>
+    </div>
+  </div>
+  <div class="pain-step-arrow">→</div>
+  <div class="pain-step">
+    <carbon-settings-adjust class="pain-step-icon pain-step-collector" />
+    <span class="pain-step-label">Collector implements it</span>
+    <code class="pain-step-code pain-step-code-new">http.request.method</code>
+  </div>
+  <div class="pain-step-arrow">→</div>
+  <div class="pain-step">
+    <carbon-chart-multitype class="pain-step-icon pain-step-bad" />
+    <span class="pain-step-label">Your dashboards break</span>
+    <code class="pain-step-code pain-step-code-missing">http.method = ?</code>
+  </div>
 </div>
+
+<p class="pain-tagline">Schema changes surfaced in implementation &nbsp;=&nbsp; big impact</p>
 
 <!-- CHRISTOS
 
