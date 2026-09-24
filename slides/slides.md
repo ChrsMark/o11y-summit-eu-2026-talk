@@ -326,7 +326,7 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
 
 -->
 
----
+<!-- ---
 
 # Two Sides of the Same Coin
 
@@ -350,7 +350,7 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
       <li>7 priority components for first-wave stabilization</li>
     </ul>
   </div>
-</div>
+</div> -->
 
 <!-- CHRISTOS
 
