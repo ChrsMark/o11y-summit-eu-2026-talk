@@ -1445,53 +1445,50 @@ html:not(.dark) .eco-semconv {
 }
 
 .http-rename-table {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  align-items: center;
+  column-gap: 1.01rem;
+  row-gap: 0.67rem;
 }
 
 .http-rename-row {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  display: contents;
 }
 
 .http-rename-row span {
   opacity: 0.4;
-  font-size: 0.9rem;
+  font-size: 1.32rem;
 }
 
 .http-old {
-  font-size: 0.82rem !important;
-  background: rgba(148, 163, 184, 0.1) !important;
-  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  font-size: 1.2rem !important;
+  background: rgba(99, 102, 241, 0.12) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
   border-radius: 0.3rem;
-  padding: 0.08rem 0.4rem !important;
-  color: rgba(148, 163, 184, 0.8) !important;
-  min-width: 12rem;
-  text-align: left;
+  padding: 0.12rem 0.58rem !important;
+  color: #a5b4fc !important;
+  justify-self: start;
 }
 
 .http-new {
-  font-size: 0.82rem !important;
-  background: rgba(34, 197, 94, 0.1) !important;
-  border: 1px solid rgba(34, 197, 94, 0.25) !important;
+  font-size: 1.2rem !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
   border-radius: 0.3rem;
-  padding: 0.08rem 0.4rem !important;
-  color: #4ade80 !important;
+  padding: 0.12rem 0.58rem !important;
+  color: #fbbf24 !important;
+  justify-self: start;
 }
 
-html:not(.dark) .http-old { color: rgba(100, 116, 139, 0.9) !important; }
-html:not(.dark) .http-new { color: #166534 !important; background: rgba(34, 197, 94, 0.08) !important; }
-
-.http-rename-more {
-  margin-top: 0.15rem;
-}
+html:not(.dark) .http-old { color: #4338ca !important; background: rgba(99, 102, 241, 0.08) !important; }
+html:not(.dark) .http-new { color: #92400e !important; }
 
 .http-more {
-  font-size: 0.78rem;
+  font-size: 1.16rem;
   opacity: 0.45;
   font-style: italic;
+  margin-top: 0.15rem;
 }
 
 .pain-step-rename {
