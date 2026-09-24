@@ -536,10 +536,10 @@ If you're on v0.161.0 or later, you have access to stable Kubernetes attribute e
 <Timeline :items="[
   { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><ul><li>K8s SIG completes K8s metrics in Semantic Conventions</li></ul>' },
   { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><ul><li>Collector SIG + K8s SIG align on stabilization priorities</li></ul>' },
-  { year: 'Apr 2026', desc: '<div class=tl-card-title>hostmetrics Decision</div><ul><li>Dual-schema @ notation decision; PR #15309 merged</li></ul>' },
-  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><ul><li>semconv v1.42.0 released — 33 metrics promoted to RC</li></ul>', highlight: true },
+  { year: 'Apr 2026', desc: '<div class=tl-card-title>Migration Process</div><ul><li>Feature gate pair RFC adopted; per-component migration process defined</li></ul>' },
+  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><ul><li>semconv v1.42.0 released </li></ul>', highlight: true },
   { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1 ✓</div><ul><li>First Collector component ships as v1</li></ul>', highlight: true },
-  { year: 'Mar 2027', desc: '<div class=tl-card-title>Target: Wave 1 Complete</div><ul><li>Remaining 6 priority components ship as v1</li></ul>' },
+  { year: '2027', desc: '<div class=tl-card-title>More to Come</div><ul><li>More components and stability updates coming!</li></ul>' },
 ]" />
 
 <!-- CHRISTOS
@@ -550,13 +550,13 @@ October 2025: K8s SIG finishes the K8s metrics spec work.
 
 November 2025: After KubeCon NA, the two SIGs align on priorities.
 
-April 2026: The hostmetrics team makes a key technical decision on schema notation.
+April 2026: The feature gate pair RFC is adopted and the per-component migration process is defined.
 
 June 2026: K8s attributes reach stable in semconv v1.42.0 — 33 metrics promoted.
 
 September 2026 — this month — k8sattributes ships as v1. First Collector component to complete the full journey.
 
-Target: all 7 priority components at v1 by March 2027.
+Target: remaining priority components at v1 by 2027.
 
 Now, back to Pablo for what comes next.
 
