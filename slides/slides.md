@@ -6,9 +6,12 @@ class: text-center
 transition: slide-left
 mdc: true
 layout: intro
+colorSchema: dark
 fonts:
-  sans: 'Inter'
-  mono: 'Fira Code'
+  sans: 'Space Grotesk'
+  mono: 'JetBrains Mono'
+  weights: '400,500,700'
+  custom: 'Inter'
 ---
 
 # From Schema to Shipping Data

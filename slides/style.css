@@ -1,38 +1,76 @@
-html:root {
-  --slidev-theme-primary: hsl(244deg 25% 47%);
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
 
-  /* Colors are space-separated RGB channels so each can be used at any
-     alpha: rgb(var(--primary) / 12%). */
+html:root {
+  --slidev-theme-primary: rgb(255 46 136);
+
+  /* Neobrutalist dark palette. Colors are space-separated RGB channels so
+     each can be used at any alpha: rgb(var(--primary) / 12%). */
 
   /* Roles */
-  --primary: 99 102 241; /* The Collector and generic cards */
-  --secondary: 96 165 250; /* Outside the Collector: apps, backends, receivers, OTLP */
-  --accent: 245 158 11; /* Semantic conventions, processors, highlights */
+  --primary: 255 46 136; /* magenta - The Collector and generic cards */
+  --secondary: 0 229 255; /* cyan - Outside the Collector: apps, backends, receivers, OTLP */
+  --accent: 255 230 0; /* yellow - Semantic conventions, processors, highlights */
 
   /* Status */
-  --success: 34 197 94;
+  --success: 198 255 0; /* lime */
   --warning: var(--accent);
-  --danger: 239 68 68;
-  --neutral: 148 163 184;
+  --danger: 255 59 48;
+  --neutral: 154 154 154;
 
   /* Lighter tints for text on dark backgrounds */
-  --primary-text: 165 180 252;
-  --accent-text: 251 191 36;
-  --danger-text: 248 113 113;
-  --code-text: 226 232 240;
+  --primary-text: 255 122 182;
+  --accent-text: 255 230 0;
+  --danger-text: 255 59 48;
+  --code-text: 242 240 230;
 
   /* Card backgrounds */
-  --surface: 54 56 85;
-  --surface-deep: 26 28 44;
+  --surface: 26 26 26;
+  --surface-deep: 14 14 14;
 
-  /* Corner radii */
-  --radius-xs: 0.3rem;
-  --radius-sm: 0.4rem;
-  --radius-md: 0.45rem;
-  --radius-lg: 0.75rem;
+  /* Ink / page, as RGB triplets for alpha-blended use (rgb(var(--ink) / 8%)) */
+  --ink: 242 240 230;
+  --page: 14 14 14;
+
+  /* Corner radii — brutalist: sharp corners everywhere */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
 
   /* Body text size for lists and prose-like blocks */
   --text-body: 1.4rem;
+
+  /* Dracula theme palette remap (see slidev-theme-dracula/styles/layout.css) */
+  --background: #0e0e0e;
+  --foreground: #f2f0e6;
+  --comment: #b8b5a8;
+  --purple: #f2f0e6; /* headings: loud via weight/size/case/underline, not hue */
+  --orange: #c6ff00; /* strong -> lime */
+  --yellow: #ffe600; /* em -> accent yellow */
+  --cyan: #00e5ff; /* links, list markers */
+  --green: #c6ff00; /* inline code -> lime */
+}
+
+/* Hazard-stripe corner accent — title slide only, decorative, non-interactive */
+.slidev-layout.intro {
+  position: relative;
+}
+
+.slidev-layout.intro::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 260px;
+  background: repeating-linear-gradient(
+    45deg,
+    #0e0e0e 0 22px,
+    #ffe600 22px 44px
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Theme adds decorative backticks around inline code via ::before/::after; drop them everywhere */
@@ -65,10 +103,10 @@ html:root {
 .component-box {
   padding: 1.9rem 0.54rem;
   text-align: center;
-  border-radius: 0.88rem;
-  border: 2px solid var(--slidev-theme-primary);
-  background: linear-gradient(135deg, rgb(var(--primary) / 22%), rgb(var(--primary) / 6%));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+  border-radius: 0;
+  border: 3px solid rgb(var(--ink));
+  background: rgb(var(--primary) / 16%);
+  box-shadow: 6px 6px 0 rgb(var(--primary));
   transition: transform 0.2s;
 }
 
@@ -77,13 +115,13 @@ html:root {
 }
 
 .component-box.receiver {
-  border-color: rgb(var(--secondary) / 60%);
-  background: linear-gradient(135deg, rgb(var(--secondary) / 18%), rgb(var(--secondary) / 5%));
+  background: rgb(var(--secondary) / 14%);
+  box-shadow: 6px 6px 0 rgb(var(--secondary));
 }
 
 .component-box.processor {
-  border-color: rgb(var(--accent-text) / 60%);
-  background: linear-gradient(135deg, rgb(var(--accent) / 18%), rgb(var(--accent) / 5%));
+  background: rgb(var(--accent) / 14%);
+  box-shadow: 6px 6px 0 rgb(var(--accent));
 }
 
 .component-box code {
@@ -108,26 +146,37 @@ html:root {
 
 /* Intro slide */
 .slidev-layout.intro h1 {
-  font-family: Oswald, sans-serif;
+  position: relative;
+  z-index: 1;
+  font-family: 'Archivo Black', sans-serif;
   font-size: 5.5rem;
-  padding-bottom: 2rem;
+  font-weight: 400;
   text-align: center;
-  font-weight: 700;
   text-transform: uppercase;
-  line-height: 1.1;
-  transform: skewY(-7deg);
-  transform-origin: center center;
+  line-height: 1.15;
+  width: fit-content;
+  max-width: 92%;
+  margin: 0 auto 2rem;
+  padding: 0.3em 0.55em;
+  color: rgb(var(--page)) !important;
+  background: rgb(var(--success));
+  border: 3px solid rgb(var(--page));
+  box-shadow: 12px 12px 0 rgb(var(--primary));
 }
 
 .intro-subtitle {
+  position: relative;
+  z-index: 1;
   font-size: 1.6rem;
   font-weight: 400;
-  opacity: 0.7;
+  opacity: 0.9;
   margin-top: 0.5rem;
   letter-spacing: 0.01em;
 }
 
 .intro-meta {
+  position: relative;
+  z-index: 1;
   margin-top: 2rem;
 }
 
@@ -142,12 +191,15 @@ html:root {
   font-weight: 400;
 }
 
-/* Global slide centering and list sizing */
+/* Global slide centering and list sizing; the radial-gradient is a subtle
+   dot-grid backdrop behind every slide's content */
 .slidev-layout {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  background-image: radial-gradient(rgb(var(--ink) / 14%) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
 }
 
 .slidev-layout > h1:first-child + * {
@@ -174,6 +226,22 @@ html:root {
   letter-spacing: -0.05em;
 }
 
+/* Other slide headings: loud via case + a thick lime underline (title slide
+   handled separately above) */
+.slidev-layout:not(.intro) h1 {
+  display: inline-block;
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.2;
+  text-transform: uppercase;
+  padding-bottom: 0.25rem;
+  border-bottom: 6px solid rgb(var(--success));
+}
+
+/* k8sattributes slide: recolor the inline checkmark to match the palette */
+#app h1 span[style] {
+  color: rgb(var(--success)) !important;
+}
+
 /* Icon + text column layout */
 .icon-grid {
   display: grid;
@@ -190,17 +258,18 @@ html:root {
 
 /* Shared info box styles */
 .info-box {
-  border: 1.5px solid rgb(var(--primary) / 35%);
-  border-radius: var(--radius-lg);
+  border: 3px solid rgb(var(--ink));
+  border-radius: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  background: rgb(var(--surface));
+  box-shadow: 8px 8px 0 rgb(var(--primary));
 }
 
-.info-box h3 {
-  background: linear-gradient(135deg, rgb(var(--primary) / 30%), rgb(var(--primary) / 15%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 20%);
-  color: white;
+/* #app beats dracula's h1-h6 color rule; colors are inverted here on purpose */
+#app .info-box h3 {
+  background: rgb(var(--ink));
+  border-bottom: 3px solid rgb(var(--page));
+  color: rgb(var(--page));
   padding: 0.4rem 0.8rem;
   margin: 0;
   font-size: 1.3rem;
@@ -229,7 +298,7 @@ html:root {
 .info-box li {
   margin-left: 0;
   line-height: 2;
-  border-bottom: 1px dashed rgb(var(--primary) / 20%);
+  border-bottom: 2px dashed rgb(var(--ink) / 30%);
   padding: 0.3rem 0;
 }
 
@@ -276,8 +345,14 @@ html:root {
 .speaker-pic {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 0;
   object-fit: cover;
+  border: 3px solid rgb(var(--ink));
+  box-shadow: 8px 8px 0 rgb(var(--secondary));
+}
+
+.speaker:nth-child(2) .speaker-pic {
+  box-shadow: 8px 8px 0 rgb(var(--primary));
 }
 
 .speaker-name {
@@ -298,19 +373,19 @@ html:root {
 
 .eco-layer-box {
   background: rgb(255 255 255 / 7%);
-  border: 1.5px solid rgb(var(--neutral) / 25%);
-  border-radius: var(--radius-md);
+  border: 1.5px solid rgb(var(--ink) / 35%);
+  border-radius: 0;
   padding: 0.38rem 0.5rem;
   font-size: 0.74rem;
   font-weight: 500;
   text-align: center;
 }
 
-.eco-layer-api { border-color: rgb(var(--secondary) / 40%) !important; }
-.eco-layer-sdk { border-color: rgb(var(--secondary) / 40%) !important; }
+.eco-layer-api { border-color: rgb(var(--secondary) / 65%) !important; }
+.eco-layer-sdk { border-color: rgb(var(--secondary) / 65%) !important; }
 
 .eco-h-arrow-line {
-  --eco-arrow-color: rgb(var(--secondary) / 70%);
+  --eco-arrow-color: rgb(var(--secondary) / 90%);
 
   position: relative;
   width: 100%;
@@ -353,8 +428,8 @@ html:root {
 
 .eco-pipe-seg {
   background: rgb(var(--primary) / 14%);
-  border: 1.5px solid rgb(var(--primary) / 35%);
-  border-radius: var(--radius-sm);
+  border: 1.5px solid rgb(var(--primary) / 55%);
+  border-radius: 0;
   padding: 0.28rem 0.45rem;
   font-size: 0.68rem;
   font-weight: 600;
@@ -374,8 +449,8 @@ html:root {
   gap: 0.65rem;
   flex-wrap: wrap;
   background: rgb(var(--accent) / 9%);
-  border: 1.5px solid rgb(var(--accent) / 38%);
-  border-radius: 0.6rem;
+  border: 1.5px solid rgb(var(--accent) / 65%);
+  border-radius: 0;
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
 }
@@ -393,7 +468,7 @@ html:root {
 .eco-semconv code {
   font-size: 0.68rem !important;
   background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 28%) !important;
+  border: 1px solid rgb(var(--accent) / 55%) !important;
   border-radius: var(--radius-xs);
   padding: 0.08rem 0.32rem !important;
   color: rgb(var(--code-text)) !important;
@@ -405,15 +480,16 @@ html:root {
   letter-spacing: 0.1em;
 }
 
-/* Rendered as an overlay (not a box-shadow on the element itself) so the glow
-   sits in front of connector arrows anchored inside the same highlighted block. */
+/* Rendered as an overlay (not a box-shadow on the element itself) so the
+   highlight sits in front of connector arrows anchored inside the same
+   block. Hard offset shadow, no blur/glow, per the brutalist palette. */
 .eco-focus-highlight::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 2px solid rgb(var(--accent) / 80%);
-  box-shadow: 0 0 0 2px rgb(var(--accent) / 70%), 0 0 18px 4px rgb(var(--accent) / 35%);
+  border: 3px solid rgb(var(--primary));
+  box-shadow: 6px 6px 0 rgb(var(--primary));
   z-index: 3;
   pointer-events: none;
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
@@ -485,8 +561,8 @@ html:root {
 
 .http-old {
   font-size: 1.2rem !important;
-  background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
+  background: rgb(var(--primary) / 14%) !important;
+  border: 1px solid rgb(var(--primary) / 60%) !important;
   border-radius: var(--radius-xs);
   padding: 0.12rem 0.58rem !important;
   color: rgb(var(--primary-text)) !important;
@@ -495,8 +571,8 @@ html:root {
 
 .http-new {
   font-size: 1.2rem !important;
-  background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 30%) !important;
+  background: rgb(var(--accent) / 14%) !important;
+  border: 1px solid rgb(var(--accent) / 60%) !important;
   border-radius: var(--radius-xs);
   padding: 0.12rem 0.58rem !important;
   color: rgb(var(--accent-text)) !important;
@@ -531,22 +607,22 @@ html:root {
 
 .pain-step-code {
   font-size: 0.95rem !important;
-  background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
-  border-radius: 0.35rem;
+  background: rgb(var(--primary) / 14%) !important;
+  border: 1px solid rgb(var(--primary) / 60%) !important;
+  border-radius: 0;
   padding: 0.12rem 0.5rem !important;
   color: rgb(var(--primary-text)) !important;
 }
 
 .pain-step-code-new {
-  background: rgb(var(--accent) / 12%) !important;
-  border-color: rgb(var(--accent) / 30%) !important;
+  background: rgb(var(--accent) / 14%) !important;
+  border-color: rgb(var(--accent) / 60%) !important;
   color: rgb(var(--accent-text)) !important;
 }
 
 .pain-step-code-missing {
-  background: rgb(var(--danger) / 10%) !important;
-  border-color: rgb(var(--danger) / 30%) !important;
+  background: rgb(var(--danger) / 12%) !important;
+  border-color: rgb(var(--danger) / 60%) !important;
   color: rgb(var(--danger-text)) !important;
 }
 
@@ -579,8 +655,8 @@ html:root {
   font-size: 0.9rem;
   text-align: center;
   line-height: 1.6;
-  border: 1.5px dashed rgb(var(--primary) / 45%);
-  border-radius: 0.65rem;
+  border: 1.5px dashed rgb(var(--primary) / 60%);
+  border-radius: 0;
   padding: 0.75rem 0.85rem;
   background: rgb(var(--primary) / 6%);
 }
@@ -603,10 +679,11 @@ html:root {
   grid-template-columns: auto auto 1fr;
   align-items: center;
   gap: 0.6rem 0.75rem;
-  background: rgb(var(--surface) / 40%);
-  border: 1.5px solid rgb(var(--primary) / 20%);
-  border-radius: var(--radius-lg);
+  background: rgb(var(--surface));
+  border: 3px solid rgb(var(--ink));
+  border-radius: 0;
   padding: 1rem 1.25rem;
+  box-shadow: 6px 6px 0 rgb(var(--secondary));
 }
 
 .gates-title {
@@ -625,7 +702,7 @@ html:root {
   text-align: left;
   color: rgb(var(--primary-text));
   font-size: 1rem !important;
-  font-family: 'Fira Code', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .gate-arrow {
@@ -650,17 +727,20 @@ html:root {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  border: 2px solid;
-  border-radius: var(--radius-lg);
+  border: 3px solid;
+  border-radius: 0;
   padding: 1rem 0.75rem 1.3rem;
   text-align: center;
 }
 
 .step-badge {
+  display: inline-block;
   font-weight: 700;
   font-size: 1.05rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
+  padding: 0.2rem 0.9rem;
+  border: 2px solid rgb(var(--page));
 }
 
 .step-desc {
@@ -689,21 +769,36 @@ html:root {
 
 .step-alpha {
   border-color: rgb(var(--neutral));
-  background: rgb(var(--neutral) / 7%);
+  background: rgb(var(--neutral) / 10%);
+  box-shadow: 6px 6px 0 rgb(var(--neutral));
 }
-.step-alpha .step-badge { color: rgb(var(--neutral)); }
+
+.step-alpha .step-badge {
+  background: rgb(var(--neutral));
+  color: rgb(var(--page));
+}
 
 .step-beta {
   border-color: rgb(var(--warning));
-  background: rgb(var(--warning) / 7%);
+  background: rgb(var(--warning) / 10%);
+  box-shadow: 6px 6px 0 rgb(var(--warning));
 }
-.step-beta .step-badge { color: rgb(var(--warning)); }
+
+.step-beta .step-badge {
+  background: rgb(var(--warning));
+  color: rgb(var(--page));
+}
 
 .step-stable {
   border-color: rgb(var(--success));
-  background: rgb(var(--success) / 7%);
+  background: rgb(var(--success) / 10%);
+  box-shadow: 6px 6px 0 rgb(var(--success));
 }
-.step-stable .step-badge { color: rgb(var(--success)); }
+
+.step-stable .step-badge {
+  background: rgb(var(--success));
+  color: rgb(var(--page));
+}
 
 .migration-note {
   font-size: 0.85rem;
@@ -745,7 +840,7 @@ html:root {
 
 /* OTel Ecosystem — clean block-based layout (slide 4) */
 .eco-arch {
-  --eco-block-border-w: 2px;
+  --eco-block-border-w: 3px;
 
   display: flex;
   flex-direction: column;
@@ -797,19 +892,22 @@ html:root {
 }
 
 .eco-arch-services {
-  border-color: rgb(var(--secondary) / 45%);
+  border-color: rgb(var(--secondary) / 75%);
   background: rgb(var(--secondary) / 7%);
+  box-shadow: 4px 4px 0 rgb(var(--secondary) / 55%);
 }
 
 .eco-arch-collector {
-  border-color: rgb(var(--primary) / 50%);
+  border-color: rgb(var(--primary) / 80%);
   background: rgb(var(--primary) / 9%);
+  box-shadow: 4px 4px 0 rgb(var(--primary) / 55%);
   flex: 1.35;
 }
 
 .eco-arch-backends {
-  border-color: rgb(var(--secondary) / 45%);
+  border-color: rgb(var(--secondary) / 75%);
   background: rgb(var(--secondary) / 7%);
+  box-shadow: 4px 4px 0 rgb(var(--secondary) / 55%);
 }
 
 /* Agent directly below Gateway — row 2 col 3 */
@@ -871,8 +969,8 @@ html:root {
   align-self: flex-end;
   background: repeating-linear-gradient(
     to bottom,
-    rgb(var(--secondary) / 70%) 0,
-    rgb(var(--secondary) / 70%) 5px,
+    rgb(var(--secondary) / 85%) 0,
+    rgb(var(--secondary) / 85%) 5px,
     transparent 5px,
     transparent 9px
   );
@@ -887,7 +985,7 @@ html:root {
   left: -3px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 70%);
+  border-bottom: 5px solid rgb(var(--secondary) / 85%);
 }
 
 .eco-agw-label {
@@ -905,7 +1003,7 @@ html:root {
   top: 89.5%;
   width: 18.7%;
   height: 0;
-  border-top: 2px dashed rgb(var(--secondary) / 50%);
+  border-top: 2px dashed rgb(var(--secondary) / 70%);
 }
 
 /* Agent → Backends: vertical rising from horizontal level up into Backends */
@@ -914,7 +1012,7 @@ html:root {
   top: calc(56.7% + 5px);
   height: calc(32.8% - 5px);
   width: 0;
-  border-left: 2px dashed rgb(var(--secondary) / 50%);
+  border-left: 2px dashed rgb(var(--secondary) / 70%);
 }
 
 .eco-cline-abe-v::before {
@@ -924,7 +1022,7 @@ html:root {
   left: -5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 50%);
+  border-bottom: 5px solid rgb(var(--secondary) / 70%);
 }
 
 /* Connector OTLP labels */
@@ -970,8 +1068,9 @@ html:root {
 /* Edge / Agent Collector */
 .eco-arch-edge-collector {
   flex: 0.82;
-  border-color: rgb(var(--primary) / 50%);
+  border-color: rgb(var(--primary) / 80%);
   background: rgb(var(--primary) / 9%);
+  box-shadow: 4px 4px 0 rgb(var(--primary) / 55%);
 }
 
 .eco-arch-subtitle {
@@ -1025,7 +1124,7 @@ html:root {
 }
 
 .eco-vendor-jaeger {
-  color: rgb(var(--secondary));
+  color: rgb(96 165 250) !important;
 }
 
 /* Slide 3 — side-by-side: big icon left, bullets right */
@@ -1048,7 +1147,7 @@ html:root {
 .otel-icon-main {
   width: 8.5rem;
   height: auto;
-  filter: drop-shadow(0 0 18px rgb(var(--secondary) / 25%));
+  filter: drop-shadow(0 0 18px rgb(96 165 250 / 25%));
 }
 
 .otel-slide-bullets {
