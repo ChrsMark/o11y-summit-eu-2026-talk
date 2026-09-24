@@ -49,12 +49,12 @@ defineProps<{
 
 .timeline-track {
   position: absolute;
-  top: calc(0.5rem + 7px - 1.5px);
+  top: calc(0.5rem + 7px - 2px);
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #555 0%, var(--slidev-theme-primary) 100%);
-  border-radius: 2px;
+  height: 4px;
+  background: #151515;
+  border-radius: 0;
 }
 
 .timeline-items {
@@ -75,8 +75,8 @@ defineProps<{
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--slidev-theme-primary);
-  border: 2px solid #1e1e1e;
+  background: #151515;
+  border: 2px solid #151515;
   z-index: 1;
   flex-shrink: 0;
 }
@@ -85,7 +85,7 @@ defineProps<{
   margin-top: 0.6rem;
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--slidev-theme-primary);
+  color: #151515;
   font-variant-numeric: tabular-nums;
   height: 1.8rem;
   display: flex;
@@ -95,24 +95,37 @@ defineProps<{
 .tl-desc {
   margin-top: 0.6rem;
   font-size: 0.85rem;
-  color: #ccc;
+  color: #151515;
   line-height: 1.4;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  border: 1.5px solid rgb(var(--primary) / 20%);
-  border-radius: 0.5rem;
+  background: rgb(var(--surface));
+  border: 3px solid #151515;
+  border-radius: 0;
   overflow: hidden;
   width: 90%;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+}
+
+/* Cycle the card-title band through the three primary Bauhaus colors */
+.tl-item:nth-child(3n+1) .tl-card-title {
+  background: rgb(var(--secondary));
+  color: rgb(var(--surface));
+}
+
+.tl-item:nth-child(3n+2) .tl-card-title {
+  background: rgb(var(--primary));
+  color: rgb(var(--surface));
+}
+
+.tl-item:nth-child(3n+3) .tl-card-title {
+  background: rgb(var(--accent));
+  color: #151515;
 }
 
 .tl-card-title {
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
-  background: linear-gradient(135deg, rgb(var(--primary) / 25%), rgb(var(--primary) / 10%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 15%);
+  border-bottom: 3px solid #151515;
   text-align: center;
-  color: #f8f8f2;
 }
 
 .tl-body {
@@ -126,9 +139,9 @@ defineProps<{
 
 .tl-item.highlight .tl-dot {
   background: rgb(var(--success));
+  border-color: #151515;
   width: 18px;
   height: 18px;
-  box-shadow: 0 0 8px rgb(var(--success) / 60%);
   margin-top: -2px;
 }
 
@@ -138,11 +151,7 @@ defineProps<{
 }
 
 .tl-item.highlight .tl-desc {
-  color: #f8f8f2;
+  border-width: 4px;
   font-weight: 600;
 }
-
-
-
-
 </style>

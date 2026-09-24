@@ -1,44 +1,110 @@
 html:root {
-  --slidev-theme-primary: hsl(244deg 25% 47%);
+  --slidev-theme-primary: #1F4EA3;
 
   /* Colors are space-separated RGB channels so each can be used at any
      alpha: rgb(var(--primary) / 12%). */
 
   /* Roles */
-  --primary: 99 102 241; /* The Collector and generic cards */
-  --secondary: 96 165 250; /* Outside the Collector: apps, backends, receivers, OTLP */
-  --accent: 245 158 11; /* Semantic conventions, processors, highlights */
+  --primary: 31 78 163; /* The Collector and generic cards */
+  --secondary: 200 32 26; /* Outside the Collector: apps, backends, receivers, OTLP */
+  --accent: 242 183 5; /* Semantic conventions, processors, highlights */
 
   /* Status */
-  --success: 34 197 94;
+  --success: 30 125 70;
   --warning: var(--accent);
-  --danger: 239 68 68;
-  --neutral: 148 163 184;
+  --danger: 170 25 20;
+  --neutral: 110 105 98;
 
-  /* Lighter tints for text on dark backgrounds */
-  --primary-text: 165 180 252;
-  --accent-text: 251 191 36;
-  --danger-text: 248 113 113;
-  --code-text: 226 232 240;
+  /* Darker, text-safe tints for use on light backgrounds */
+  --primary-text: 31 78 163;
+  --accent-text: 125 90 0;
+  --danger-text: 170 25 20;
+  --code-text: 21 21 21;
 
   /* Card backgrounds */
-  --surface: 54 56 85;
-  --surface-deep: 26 28 44;
+  --surface: 250 246 236;
+  --surface-deep: 228 218 196;
 
-  /* Corner radii */
-  --radius-xs: 0.3rem;
-  --radius-sm: 0.4rem;
-  --radius-md: 0.45rem;
-  --radius-lg: 0.75rem;
+  /* Corner radii — Bauhaus is sharp-cornered everywhere except a few
+     deliberate circular exceptions (dots, photo crops, one pill button) */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
 
   /* Body text size for lists and prose-like blocks */
   --text-body: 1.4rem;
+
+  /* Dracula base theme remap — light Bauhaus palette */
+  --background: #EFE6D2;
+  --foreground: #151515;
+  --comment: #4A4540;
+  --current-line: #E4DAC4;
+  --purple: #151515; /* headings */
+  --orange: rgb(200 32 26); /* strong */
+  --yellow: rgb(31 78 163); /* em */
+  --cyan: rgb(31 78 163); /* links, list markers */
+  --green: rgb(31 78 163); /* inline code */
+  --red: rgb(200 32 26);
+  --pink: rgb(200 32 26);
 }
 
 /* Theme adds decorative backticks around inline code via ::before/::after; drop them everywhere */
 :not(pre) > code::before,
 :not(pre) > code::after {
   content: none;
+}
+
+/* Decorative Bauhaus background geometry — behind content, non-interactive,
+   no text. Corner-anchored and low-opacity so it never competes with slide
+   content; overflow:hidden on .slidev-layout clips any off-canvas bleed. */
+.slidev-layout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle at 100% 0%, rgb(var(--secondary) / 34%) 0 6.5rem, transparent 6.55rem),
+    linear-gradient(rgb(var(--primary) / 42%), rgb(var(--primary) / 42%)),
+    linear-gradient(135deg, transparent 50%, rgb(var(--accent) / 38%) 50%);
+  background-position:
+    top right,
+    bottom -1.4rem left -1.4rem,
+    bottom right;
+  background-size:
+    6.5rem 6.5rem,
+    4rem 4rem,
+    4.5rem 4.5rem;
+}
+
+/* Bigger, bolder version of the same composition for the title/intro layout */
+.slidev-layout.intro::before {
+  background-image:
+    radial-gradient(circle at 100% 0%, rgb(var(--secondary) / 50%) 0 13rem, transparent 13.05rem),
+    linear-gradient(rgb(var(--primary) / 55%), rgb(var(--primary) / 55%)),
+    linear-gradient(135deg, transparent 50%, rgb(var(--accent) / 48%) 50%);
+  background-position:
+    top right,
+    bottom -2.4rem left -2.4rem,
+    bottom right;
+  background-size:
+    13rem 13rem,
+    7rem 7rem,
+    8.5rem 8.5rem;
+}
+
+.slidev-layout.intro::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(-45deg, transparent 50%, rgb(var(--primary) / 30%) 50%);
+  background-position: top -3.5rem left -3.5rem;
+  background-size: 9rem 9rem;
 }
 
 .priority-components {
@@ -65,10 +131,9 @@ html:root {
 .component-box {
   padding: 1.9rem 0.54rem;
   text-align: center;
-  border-radius: 0.88rem;
-  border: 2px solid var(--slidev-theme-primary);
-  background: linear-gradient(135deg, rgb(var(--primary) / 22%), rgb(var(--primary) / 6%));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+  border-radius: 0;
+  border: 3px solid rgb(21 21 21);
+  background: rgb(var(--surface));
   transition: transform 0.2s;
 }
 
@@ -77,13 +142,13 @@ html:root {
 }
 
 .component-box.receiver {
-  border-color: rgb(var(--secondary) / 60%);
-  background: linear-gradient(135deg, rgb(var(--secondary) / 18%), rgb(var(--secondary) / 5%));
+  border-radius: 999px;
+  background: rgb(var(--secondary));
 }
 
 .component-box.processor {
-  border-color: rgb(var(--accent-text) / 60%);
-  background: linear-gradient(135deg, rgb(var(--accent) / 18%), rgb(var(--accent) / 5%));
+  border-radius: 0;
+  background: rgb(var(--accent));
 }
 
 .component-box code {
@@ -92,6 +157,14 @@ html:root {
   font-size: 1.1em !important;
   font-weight: 600;
   color: rgb(var(--code-text)) !important;
+}
+
+.component-box.receiver code {
+  color: rgb(var(--surface)) !important;
+}
+
+.component-box.processor code {
+  color: rgb(21 21 21) !important;
 }
 
 .priority-tracking {
@@ -108,15 +181,25 @@ html:root {
 
 /* Intro slide */
 .slidev-layout.intro h1 {
-  font-family: Oswald, sans-serif;
+  position: relative;
+  font-family: Jost, sans-serif;
   font-size: 5.5rem;
   padding-bottom: 2rem;
   text-align: center;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   line-height: 1.1;
-  transform: skewY(-7deg);
-  transform-origin: center center;
+}
+
+.slidev-layout.intro h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8rem;
+  height: 0.5rem;
+  background: rgb(var(--secondary));
 }
 
 .intro-subtitle {
@@ -144,6 +227,8 @@ html:root {
 
 /* Global slide centering and list sizing */
 .slidev-layout {
+  position: relative;
+  z-index: 0;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -174,6 +259,10 @@ html:root {
   letter-spacing: -0.05em;
 }
 
+#app h1 span[style] {
+  color: rgb(var(--success)) !important;
+}
+
 /* Icon + text column layout */
 .icon-grid {
   display: grid;
@@ -190,17 +279,16 @@ html:root {
 
 /* Shared info box styles */
 .info-box {
-  border: 1.5px solid rgb(var(--primary) / 35%);
+  border: 3px solid rgb(21 21 21);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(135deg, rgb(var(--surface) / 50%), rgb(var(--surface-deep) / 45%));
-  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+  background: rgb(var(--surface));
 }
 
-.info-box h3 {
-  background: linear-gradient(135deg, rgb(var(--primary) / 30%), rgb(var(--primary) / 15%));
-  border-bottom: 1.5px solid rgb(var(--primary) / 20%);
-  color: white;
+#app .info-box h3 {
+  background: rgb(var(--secondary));
+  border-bottom: 3px solid rgb(21 21 21);
+  color: rgb(var(--surface));
   padding: 0.4rem 0.8rem;
   margin: 0;
   font-size: 1.3rem;
@@ -229,7 +317,7 @@ html:root {
 .info-box li {
   margin-left: 0;
   line-height: 2;
-  border-bottom: 1px dashed rgb(var(--primary) / 20%);
+  border-bottom: 1px dashed rgb(var(--primary) / 30%);
   padding: 0.3rem 0;
 }
 
@@ -278,6 +366,8 @@ html:root {
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
+  border: 6px solid #151515;
+  box-shadow: 12px 12px 0 rgb(var(--accent));
 }
 
 .speaker-name {
@@ -297,8 +387,8 @@ html:root {
 /* OTel Ecosystem diagram */
 
 .eco-layer-box {
-  background: rgb(255 255 255 / 7%);
-  border: 1.5px solid rgb(var(--neutral) / 25%);
+  background: rgb(21 21 21 / 5%);
+  border: 1.5px solid rgb(21 21 21 / 45%);
   border-radius: var(--radius-md);
   padding: 0.38rem 0.5rem;
   font-size: 0.74rem;
@@ -306,11 +396,11 @@ html:root {
   text-align: center;
 }
 
-.eco-layer-api { border-color: rgb(var(--secondary) / 40%) !important; }
-.eco-layer-sdk { border-color: rgb(var(--secondary) / 40%) !important; }
+.eco-layer-api { border-color: rgb(var(--secondary) / 70%) !important; }
+.eco-layer-sdk { border-color: rgb(var(--secondary) / 70%) !important; }
 
 .eco-h-arrow-line {
-  --eco-arrow-color: rgb(var(--secondary) / 70%);
+  --eco-arrow-color: rgb(var(--secondary) / 80%);
 
   position: relative;
   width: 100%;
@@ -352,8 +442,9 @@ html:root {
 }
 
 .eco-pipe-seg {
-  background: rgb(var(--primary) / 14%);
-  border: 1.5px solid rgb(var(--primary) / 35%);
+  background: rgb(var(--primary));
+  color: rgb(var(--surface));
+  border: 1.5px solid rgb(21 21 21);
   border-radius: var(--radius-sm);
   padding: 0.28rem 0.45rem;
   font-size: 0.68rem;
@@ -373,9 +464,9 @@ html:root {
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
-  background: rgb(var(--accent) / 9%);
-  border: 1.5px solid rgb(var(--accent) / 38%);
-  border-radius: 0.6rem;
+  background: rgb(var(--accent));
+  border: 1.5px solid rgb(21 21 21);
+  border-radius: 0;
   padding: 0.45rem 0.9rem;
   flex-shrink: 0;
 }
@@ -385,22 +476,24 @@ html:root {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.55;
+  color: rgb(21 21 21);
+  opacity: 0.75;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .eco-semconv code {
   font-size: 0.68rem !important;
-  background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 28%) !important;
+  background: rgb(21 21 21) !important;
+  border: 1px solid rgb(21 21 21) !important;
   border-radius: var(--radius-xs);
   padding: 0.08rem 0.32rem !important;
-  color: rgb(var(--code-text)) !important;
+  color: rgb(var(--accent)) !important;
 }
 
 .eco-semconv-dots {
-  opacity: 0.45;
+  opacity: 0.55;
+  color: rgb(21 21 21);
   font-size: 0.8rem;
   letter-spacing: 0.1em;
 }
@@ -412,11 +505,10 @@ html:root {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 2px solid rgb(var(--accent) / 80%);
-  box-shadow: 0 0 0 2px rgb(var(--accent) / 70%), 0 0 18px 4px rgb(var(--accent) / 35%);
+  border: 4px solid rgb(var(--secondary));
   z-index: 3;
   pointer-events: none;
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: border-color 0.4s ease;
 }
 
 /* Speaker roles list */
@@ -486,7 +578,7 @@ html:root {
 .http-old {
   font-size: 1.2rem !important;
   background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
+  border: 1.5px solid rgb(var(--primary) / 55%) !important;
   border-radius: var(--radius-xs);
   padding: 0.12rem 0.58rem !important;
   color: rgb(var(--primary-text)) !important;
@@ -495,8 +587,8 @@ html:root {
 
 .http-new {
   font-size: 1.2rem !important;
-  background: rgb(var(--accent) / 12%) !important;
-  border: 1px solid rgb(var(--accent) / 30%) !important;
+  background: rgb(var(--accent) / 18%) !important;
+  border: 1.5px solid rgb(var(--accent-text) / 55%) !important;
   border-radius: var(--radius-xs);
   padding: 0.12rem 0.58rem !important;
   color: rgb(var(--accent-text)) !important;
@@ -532,21 +624,21 @@ html:root {
 .pain-step-code {
   font-size: 0.95rem !important;
   background: rgb(var(--primary) / 12%) !important;
-  border: 1px solid rgb(var(--primary) / 25%) !important;
-  border-radius: 0.35rem;
+  border: 1.5px solid rgb(var(--primary) / 55%) !important;
+  border-radius: 0;
   padding: 0.12rem 0.5rem !important;
   color: rgb(var(--primary-text)) !important;
 }
 
 .pain-step-code-new {
-  background: rgb(var(--accent) / 12%) !important;
-  border-color: rgb(var(--accent) / 30%) !important;
+  background: rgb(var(--accent) / 18%) !important;
+  border-color: rgb(var(--accent-text) / 55%) !important;
   color: rgb(var(--accent-text)) !important;
 }
 
 .pain-step-code-missing {
-  background: rgb(var(--danger) / 10%) !important;
-  border-color: rgb(var(--danger) / 30%) !important;
+  background: rgb(var(--danger) / 12%) !important;
+  border-color: rgb(var(--danger) / 55%) !important;
   color: rgb(var(--danger-text)) !important;
 }
 
@@ -579,10 +671,10 @@ html:root {
   font-size: 0.9rem;
   text-align: center;
   line-height: 1.6;
-  border: 1.5px dashed rgb(var(--primary) / 45%);
-  border-radius: 0.65rem;
+  border: 1.5px dashed rgb(21 21 21 / 55%);
+  border-radius: 0;
   padding: 0.75rem 0.85rem;
-  background: rgb(var(--primary) / 6%);
+  background: rgb(var(--primary) / 8%);
 }
 
 .side-semconv h3 { color: rgb(var(--accent-text)); }
@@ -603,8 +695,8 @@ html:root {
   grid-template-columns: auto auto 1fr;
   align-items: center;
   gap: 0.6rem 0.75rem;
-  background: rgb(var(--surface) / 40%);
-  border: 1.5px solid rgb(var(--primary) / 20%);
+  background: rgb(var(--surface));
+  border: 3px solid rgb(21 21 21);
   border-radius: var(--radius-lg);
   padding: 1rem 1.25rem;
 }
@@ -625,7 +717,7 @@ html:root {
   text-align: left;
   color: rgb(var(--primary-text));
   font-size: 1rem !important;
-  font-family: 'Fira Code', monospace;
+  font-family: 'Chivo Mono', monospace;
 }
 
 .gate-arrow {
@@ -650,7 +742,7 @@ html:root {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-  border: 2px solid;
+  border: 3px solid rgb(21 21 21);
   border-radius: var(--radius-lg);
   padding: 1rem 0.75rem 1.3rem;
   text-align: center;
@@ -688,22 +780,22 @@ html:root {
 }
 
 .step-alpha {
-  border-color: rgb(var(--neutral));
-  background: rgb(var(--neutral) / 7%);
+  background: rgb(var(--neutral));
+  color: rgb(var(--surface));
 }
-.step-alpha .step-badge { color: rgb(var(--neutral)); }
+.step-alpha .step-badge { color: rgb(var(--surface)); }
 
 .step-beta {
-  border-color: rgb(var(--warning));
-  background: rgb(var(--warning) / 7%);
+  background: rgb(var(--accent));
+  color: rgb(21 21 21);
 }
-.step-beta .step-badge { color: rgb(var(--warning)); }
+.step-beta .step-badge { color: rgb(21 21 21); }
 
 .step-stable {
-  border-color: rgb(var(--success));
-  background: rgb(var(--success) / 7%);
+  background: rgb(var(--success));
+  color: rgb(var(--surface));
 }
-.step-stable .step-badge { color: rgb(var(--success)); }
+.step-stable .step-badge { color: rgb(var(--surface)); }
 
 .migration-note {
   font-size: 0.85rem;
@@ -713,10 +805,11 @@ html:root {
 
 /* Colored icon variants for status indicators */
 .icon-stable { color: rgb(var(--success)) !important; }
-.icon-rc     { color: rgb(var(--warning)) !important; }
+.icon-rc     { color: rgb(var(--accent-text)) !important; }
 .icon-progress { color: var(--slidev-theme-primary) !important; }
 
-/* KubeCon EU logo on title slide */
+/* KubeCon EU logo on title slide — uses the black-fill logo variant so it
+   reads correctly on this light theme, no backing plate needed. */
 .kceu-logo-block {
   position: absolute;
   bottom: 2rem;
@@ -745,7 +838,7 @@ html:root {
 
 /* OTel Ecosystem — clean block-based layout (slide 4) */
 .eco-arch {
-  --eco-block-border-w: 2px;
+  --eco-block-border-w: 3px;
 
   display: flex;
   flex-direction: column;
@@ -765,7 +858,7 @@ html:root {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  border: var(--eco-block-border-w) solid;
+  border: var(--eco-block-border-w) solid rgb(21 21 21);
   border-radius: var(--radius-lg);
   padding: 0.7rem 0.9rem;
   text-align: center;
@@ -797,19 +890,16 @@ html:root {
 }
 
 .eco-arch-services {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  background: rgb(var(--secondary) / 9%);
 }
 
 .eco-arch-collector {
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  background: rgb(var(--primary) / 12%);
   flex: 1.35;
 }
 
 .eco-arch-backends {
-  border-color: rgb(var(--secondary) / 45%);
-  background: rgb(var(--secondary) / 7%);
+  background: rgb(var(--secondary) / 9%);
 }
 
 /* Agent directly below Gateway — row 2 col 3 */
@@ -871,8 +961,8 @@ html:root {
   align-self: flex-end;
   background: repeating-linear-gradient(
     to bottom,
-    rgb(var(--secondary) / 70%) 0,
-    rgb(var(--secondary) / 70%) 5px,
+    rgb(var(--secondary) / 80%) 0,
+    rgb(var(--secondary) / 80%) 5px,
     transparent 5px,
     transparent 9px
   );
@@ -887,14 +977,14 @@ html:root {
   left: -3px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 70%);
+  border-bottom: 5px solid rgb(var(--secondary) / 80%);
 }
 
 .eco-agw-label {
   margin-left: 0.35rem;
   font-size: 0.48rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   white-space: nowrap;
   letter-spacing: 0.06em;
 }
@@ -905,7 +995,7 @@ html:root {
   top: 89.5%;
   width: 18.7%;
   height: 0;
-  border-top: 2px dashed rgb(var(--secondary) / 50%);
+  border-top: 2px dashed rgb(var(--secondary) / 65%);
 }
 
 /* Agent → Backends: vertical rising from horizontal level up into Backends */
@@ -914,7 +1004,7 @@ html:root {
   top: calc(56.7% + 5px);
   height: calc(32.8% - 5px);
   width: 0;
-  border-left: 2px dashed rgb(var(--secondary) / 50%);
+  border-left: 2px dashed rgb(var(--secondary) / 65%);
 }
 
 .eco-cline-abe-v::before {
@@ -924,7 +1014,7 @@ html:root {
   left: -5px;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 5px solid rgb(var(--secondary) / 50%);
+  border-bottom: 5px solid rgb(var(--secondary) / 65%);
 }
 
 /* Connector OTLP labels */
@@ -932,7 +1022,7 @@ html:root {
   position: absolute;
   font-size: 0.55rem;
   font-weight: 700;
-  color: rgb(var(--secondary) / 90%);
+  color: rgb(var(--secondary));
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
@@ -970,8 +1060,7 @@ html:root {
 /* Edge / Agent Collector */
 .eco-arch-edge-collector {
   flex: 0.82;
-  border-color: rgb(var(--primary) / 50%);
-  background: rgb(var(--primary) / 9%);
+  background: rgb(var(--primary) / 12%);
 }
 
 .eco-arch-subtitle {
@@ -1025,7 +1114,7 @@ html:root {
 }
 
 .eco-vendor-jaeger {
-  color: rgb(var(--secondary));
+  color: rgb(96 165 250) !important;
 }
 
 /* Slide 3 — side-by-side: big icon left, bullets right */
@@ -1048,10 +1137,8 @@ html:root {
 .otel-icon-main {
   width: 8.5rem;
   height: auto;
-  filter: drop-shadow(0 0 18px rgb(var(--secondary) / 25%));
 }
 
 .otel-slide-bullets {
   flex: 1;
 }
-
