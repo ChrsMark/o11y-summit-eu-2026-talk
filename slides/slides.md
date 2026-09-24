@@ -161,9 +161,15 @@ The responsible fix required over 10 releases. This became one of the canonical 
 
 <div class="icon-grid">
   <carbon-data-share v-click="1" class="icon" />
-  <span v-click="1">Massive rename: <code>http.method</code> → <code>http.request.method</code>, <code>http.url</code> → <code>url.full</code>, <code>http.status_code</code> → <code>http.response.status_code</code>, <code>net.peer.name</code> → <code>server.address</code>, and more.</span>
+  <div v-click="1" class="http-rename-table">
+    <div class="http-rename-row"><code class="http-old">http.method</code><span>→</span><code class="http-new">http.request.method</code></div>
+    <div class="http-rename-row"><code class="http-old">http.url</code><span>→</span><code class="http-new">url.full</code></div>
+    <div class="http-rename-row"><code class="http-old">http.status_code</code><span>→</span><code class="http-new">http.response.status_code</code></div>
+    <div class="http-rename-row"><code class="http-old">net.peer.name</code><span>→</span><code class="http-new">server.address</code></div>
+    <div class="http-rename-row http-rename-more"><span class="http-more">+ more</span></div>
+  </div>
   <carbon-scales v-click="2" class="icon" />
-  <span v-click="2">Not one receiver: every HTTP library, every Collector component, every downstream dashboard hit simultaneously.</span>
+  <span v-click="2">Affected every OTel implementation: Collector components, language SDKs, telemetry pipelines, etc.</span>
 </div>
 
 <!-- CHRISTOS
