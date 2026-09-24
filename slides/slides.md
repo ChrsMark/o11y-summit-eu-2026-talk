@@ -368,51 +368,7 @@ Let me walk through each side in detail.
 
 ---
 
-# K8s SemConv SIG
-
-<div class="icon-grid">
-  <carbon-kubernetes-ip-address v-click="1" class="icon" />
-  <span v-click="1">Described all K8s metrics from the Collector in Semantic Conventions.</span>
-  <carbon-group v-click="2" class="icon" />
-  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
-  <carbon-idea v-click="3" class="icon" />
-  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>unblocks</strong> <code>k8sattributes</code> processor stability.</span>
-  <carbon-checkmark v-click="4" class="icon" />
-  <span v-click="4">First target: Stabilize K8s <strong>attributes</strong>.</span>
-</div>
-
-<!-- CHRISTOS
-
-On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
-
-At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
-
-K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
-
--->
-
----
-
-# System SemConv SIG
-
-<div class="icon-grid">
-  <carbon-function v-click="1" class="icon" />
-  <span v-click="1">SIG had been working on system metrics stabilization for <strong>over a year</strong> already.</span>
-  <carbon-collaborate v-click="2" class="icon" />
-  <span v-click="2">More focused now: tightly aligned with the <code>hostmetrics</code> receiver stability goal.</span>
-</div>
-
-<!-- CHRISTOS
-
-The System SemConv SIG had already been working on stabilizing system metrics for over a year.
-
-After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
-
--->
-
----
-
-# The Migration Mechanism
+# From Schema to Shipping Data
 
 <div class="migration-slide">
   <div class="migration-gates">
@@ -450,8 +406,6 @@ After our alignment with the Collector SIG, the effort became more focused: ever
   </div>
   <p v-click="7" class="migration-note">
     RFC: <a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/rfcs/semconv-feature-gates.md">semconv-feature-gates.md</a>
-    &nbsp;·&nbsp; minimum 8 minor releases of warning
-    &nbsp;·&nbsp; shaped by <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/45592">collector-contrib#45592</a>
   </p>
 </div>
 
@@ -472,6 +426,50 @@ Stable: old names are gone. Trying to enable them results in an error.
 Removed: the gates themselves are removed after 4 more releases.
 
 Minimum warning window across all stages: 8 minor releases. That's a real runway for users to migrate safely.
+
+-->
+
+---
+
+# K8s SemConv SIG
+
+<div class="icon-grid">
+  <carbon-kubernetes-ip-address v-click="1" class="icon" />
+  <span v-click="1">Described all K8s metrics from the Collector in Semantic Conventions.</span>
+  <carbon-group v-click="2" class="icon" />
+  <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on stabilization priorities.</span>
+  <carbon-idea v-click="3" class="icon" />
+  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>benefits</strong> <code>k8sattributes</code> processor stability.</span>
+  <carbon-checkmark v-click="4" class="icon" />
+  <span v-click="4">First target: Stabilize K8s <strong>attributes</strong>.</span>
+</div>
+
+<!-- CHRISTOS
+
+On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
+
+At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
+
+K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
+
+-->
+
+---
+
+# System SemConv SIG
+
+<div class="icon-grid">
+  <carbon-function v-click="1" class="icon" />
+  <span v-click="1">SIG had been working on system metrics stabilization already.</span>
+  <carbon-collaborate v-click="2" class="icon" />
+  <span v-click="2">More focused now: tightly aligned with the <code>hostmetrics</code> receiver stability goal.</span>
+</div>
+
+<!-- CHRISTOS
+
+The System SemConv SIG had already been working on stabilizing system metrics for over a year.
+
+After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
 
 -->
 
