@@ -169,7 +169,7 @@ html:root {
 
 /* QR code sits beside the title instead of under the speakers */
 .slidev-layout.intro .qr-arrow-container {
-  inset: 12rem 4rem auto auto;
+  inset: 16rem 2rem auto auto;
 }
 
 .intro-speakers {
