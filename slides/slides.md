@@ -6,9 +6,12 @@ class: text-center
 transition: slide-left
 mdc: true
 layout: intro
+colorSchema: light
 fonts:
-  sans: 'Inter'
-  mono: 'Fira Code'
+  sans: 'Inter Tight'
+  mono: 'IBM Plex Mono'
+  weights: '400,500,700'
+  custom: 'Inter'
 ---
 
 # From Schema to Shipping Data
@@ -22,7 +25,7 @@ fonts:
 <QrArrow />
 
 <div class="kceu-logo-block">
-  <img src="/observability-summit-eu-logo-color-2.svg" class="kceu-logo" />
+  <img src="/observability-summit-eu-logo-color-2-black.svg" class="kceu-logo" />
   <span class="kceu-logo-year">2026</span>
 </div>
 
@@ -641,7 +644,7 @@ layout: center
 <QrArrow />
 
 <div class="kceu-logo-block">
-  <img src="/observability-summit-eu-logo-color-2.svg" class="kceu-logo" />
+  <img src="/observability-summit-eu-logo-color-2-black.svg" class="kceu-logo" />
   <span class="kceu-logo-year">2026</span>
 </div>
 
