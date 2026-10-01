@@ -51,7 +51,7 @@ I'm Pablo, and this is Christos. Let us introduce ourselves.
     <div class="speaker-name"><a href="https://github.com/ChrsMark">Christos Markou</a></div>
     <div class="speaker-org">Elastic</div>
     <div class="speaker-roles">
-      <span>Principal Software Engineer</span>
+      <span>Principal Software Engineer I</span>
       <span>OTel Collector Contrib Maintainer</span>
       <span>SemConv Approver (system, k8s, containers)</span>
       <span>CNCF Ambassador</span>
@@ -499,7 +499,7 @@ After our alignment with the Collector SIG, the effort became more focused: ever
   <carbon-in-progress v-click="3" class="icon icon-rc" />
   <span v-click="3"><code>system</code> metrics → RC in progress (<a href="https://github.com/open-telemetry/semantic-conventions/pull/4055">PR #4055</a>)</span>
   <carbon-progress-bar v-click="4" class="icon icon-progress" />
-  <span v-click="4">K8s and container metrics → RC, <strong>33 metrics</strong> already promoted</span>
+  <span v-click="4">K8s and container metrics → RC, <strong>34 metrics</strong> already promoted</span>
 </div>
 
 <!-- CHRISTOS
