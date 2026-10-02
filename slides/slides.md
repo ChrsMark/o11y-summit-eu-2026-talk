@@ -248,7 +248,7 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 
 We know this is important for our end users from multiple sources.
 
-First, we have been doing community OpenTelemetry Collector surveys. Both the 2024 and 2025 surveys show that X% of users find stability as one of their top concerns.
+First, we have been doing community OpenTelemetry Collector surveys. Both the 2024 and 2025 surveys show that 52% of users find stability as one of their top concerns.
 
 We also know from them which are the most used components in which we can focus on to have the most impact.
 
@@ -280,18 +280,26 @@ But, the question remains, with so many moving pieces, how do we understand stab
 
 For one, there's the stability of the semantics. This is independent from specific implementations, and roughly means "the names and well-known values of attributes and metrics won't change".
 
-This is one of the most important aspects that users care about. There are many namespaces that are stable today: TODO mention list, but many important ones remain unstable.
+This is one of the most important aspects that users care about. There are many namespaces that are stable today but many important ones remain unstable.
 
 -->
 
 ---
+class: top-aligned
+---
 
 # Defining Stability: Collector Components
 
-<ul>
-  <li v-click="1">Development → Alpha → Beta → <strong>Stable</strong></li>
-  <li v-click="2">Stable = configuration compatibility + no silent breakage on upgrade</li>
-  <li v-click="3">Most heavily-used components are still Beta</li>
+<p class="stable-namespaces-text">Collector component stability considers:</p>
+
+<ul class="stability-areas">
+  <li>Configuration</li>
+  <li>Testing</li>
+  <li>Documentation</li>
+  <li>Observability</li>
+  <li>Maintenance</li>
+  <li>Go API</li>
+  <li>Adoption</li>
 </ul>
 
 <!-- PABLO

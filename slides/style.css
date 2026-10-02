@@ -1194,3 +1194,38 @@ html:root {
   font-size: 1.6rem;
   margin-left: 0.15rem;
 }
+
+/* Stability areas in "Defining Stability: Collector Components" slide.
+   8-column grid: top row items start offset by one column so each sits
+   centered over the gap between two bottom-row items. */
+/* Opt-out of the global vertical centering: content starts below the title */
+.slidev-layout.top-aligned > h1:first-child + * {
+  margin-top: 1.5rem;
+}
+
+.slidev-layout ul.stability-areas {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2.5rem 1rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 3rem;
+  line-height: 1.15;
+}
+
+.slidev-layout ul.stability-areas li {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 1.75rem 0.75rem;
+  border-left: 8px solid rgb(var(--primary));
+  background: rgb(var(--primary) / 6%);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.slidev-layout ul.stability-areas li:nth-child(1) {
+  grid-column: 2 / span 2;
+}
