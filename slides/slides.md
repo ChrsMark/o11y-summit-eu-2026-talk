@@ -664,6 +664,7 @@ This will require observability backends support to fully leverage its capabilit
 
 ---
 layout: center
+class: qa
 ---
 
 <h1 class="qa-title">Q&A</h1>

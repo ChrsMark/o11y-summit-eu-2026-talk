@@ -167,8 +167,9 @@ html:root {
   margin-top: 2rem;
 }
 
-/* QR code sits beside the title instead of under the speakers */
-.slidev-layout.intro .qr-arrow-container {
+/* QR code sits beside the title instead of under the speakers (also on Q&A) */
+.slidev-layout.intro .qr-arrow-container,
+.slidev-layout.qa .qr-arrow-container {
   inset: 16rem 2rem auto auto;
 }
 
