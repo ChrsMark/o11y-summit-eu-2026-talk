@@ -7,7 +7,7 @@ const { $clicks } = useSlideContext()
   <div class="eco-arch">
     <div class="eco-main-grid">
       <!-- Row 1: Applications → Gateway Collector → Backends -->
-      <div v-click="1" class="eco-arch-block eco-arch-services eco-g-svc">
+      <div class="eco-arch-block eco-arch-services eco-g-svc">
         <div class="eco-arch-title">Your Applications</div>
         <div class="eco-lang-icons">
           <logos-go class="eco-lang-icon" />
@@ -22,12 +22,12 @@ const { $clicks } = useSlideContext()
         </div>
       </div>
 
-      <div v-click="2" class="eco-arch-arrow eco-g-ar-sg">
+      <div v-click="1" class="eco-arch-arrow eco-g-ar-sg">
         <div class="eco-h-arrow-line"></div>
         <div class="eco-h-arrow-label">OTLP</div>
       </div>
 
-      <div v-click="2" class="eco-arch-block eco-arch-collector eco-g-gw" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
+      <div v-click="1" class="eco-arch-block eco-arch-collector eco-g-gw" :class="{ 'eco-focus-highlight': $clicks >= 5 }">
         <img src="/otel-icon.png" class="eco-otel-icon" />
         <div class="eco-arch-title">Gateway Collector</div>
         <div class="eco-pipeline">
@@ -39,12 +39,12 @@ const { $clicks } = useSlideContext()
         </div>
       </div>
 
-      <div v-click="4" class="eco-arch-arrow eco-g-ar-gb">
+      <div v-click="3" class="eco-arch-arrow eco-g-ar-gb">
         <div class="eco-h-arrow-line"></div>
         <div class="eco-h-arrow-label">OTLP</div>
       </div>
 
-      <div v-click="4" class="eco-arch-block eco-arch-backends eco-g-be">
+      <div v-click="3" class="eco-arch-block eco-arch-backends eco-g-be">
         <div class="eco-arch-title">Observability Backends</div>
         <div class="eco-vendor-grid">
           <div class="eco-vendor-item">
@@ -71,7 +71,7 @@ const { $clicks } = useSlideContext()
       </div>
 
       <!-- Row 2: Agent Collector — directly below Gateway -->
-      <div v-click="3" class="eco-arch-block eco-arch-edge-collector eco-g-agent" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
+      <div v-click="2" class="eco-arch-block eco-arch-edge-collector eco-g-agent" :class="{ 'eco-focus-highlight': $clicks >= 5 }">
         <!-- Connector lives here so it's anchored to this block, not the container -->
         <div class="eco-agw-connector">
           <div class="eco-agw-line"></div>
@@ -90,7 +90,7 @@ const { $clicks } = useSlideContext()
       </div>
 
       <!-- Connectors: Agent→Backends L-shape (Agent→Gateway handled inside Agent block) -->
-      <div v-click="4" class="eco-connections">
+      <div v-click="3" class="eco-connections">
         <!-- Agent → Backends: horizontal right from Agent edge -->
         <div class="eco-cline eco-cline-abe-h">
           <span class="eco-clabel eco-clabel-h">OTLP</span>
@@ -100,7 +100,7 @@ const { $clicks } = useSlideContext()
       </div>
     </div>
 
-    <div v-click="5" class="eco-semconv" :class="{ 'eco-focus-highlight': $clicks >= 6 }">
+    <div v-click="4" class="eco-semconv" :class="{ 'eco-focus-highlight': $clicks >= 5 }">
       <span class="eco-semconv-title">Semantic Conventions</span>
       <code>system.cpu.time</code>
       <code>host.name</code>

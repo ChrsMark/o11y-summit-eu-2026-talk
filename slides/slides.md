@@ -100,7 +100,7 @@ It's the second-largest CNCF project, with contributions from virtually every ma
 -->
 
 ---
-clicks: 6
+clicks: 5
 ---
 
 # The OpenTelemetry Ecosystem
@@ -109,11 +109,11 @@ clicks: 6
 
 <!-- CHRISTOS
 
-<click> The four signals: traces, metrics, logs, and profiles.
-
-<click> Your application connects via auto-instrumentation agents or the OTel SDK and API.
+The four signals: traces, metrics, logs, and profiles. Your application connects via auto-instrumentation agents or the OTel SDK and API.
 
 <click> Everything flows to the OTel Collector — a vendor-neutral pipeline that receives, processes, and exports your telemetry.
+
+<click> Collectors can also run as agents, close to the workload on each VM, pod, or Kubernetes node.
 
 <click> And the Collector forwards to your observability backends.
 
@@ -414,35 +414,35 @@ Let me walk through each side in detail.
 <div class="migration-slide">
   <div class="migration-gates">
     <div class="gates-title">Two feature gates</div>
-    <div v-click="1" class="gate-pair">
+    <div class="gate-pair">
       <code class="gate">&lt;kind&gt;.&lt;id&gt;.EmitV1&lt;Area&gt;Conventions</code>
       <span class="gate-arrow">→</span>
       <span class="gate-desc">opt into new names</span>
     </div>
-    <div v-click="2" class="gate-pair">
+    <div class="gate-pair">
       <code class="gate">&lt;kind&gt;.&lt;id&gt;.DontEmitV0&lt;Area&gt;Conventions</code>
       <span class="gate-arrow">→</span>
       <span class="gate-desc">stop emitting old names</span>
     </div>
   </div>
   <div class="lifecycle-steps">
-    <div v-click="3" class="lifecycle-step step-alpha">
+    <div v-click="1" class="lifecycle-step step-alpha">
       <div class="step-badge">Alpha</div>
       <div class="step-desc">
         <div class="step-line"><strong>Default:</strong> v0 names only</div>
         <div class="step-line"><strong>Opt-in:</strong> v1 or double-publish</div>
       </div>
     </div>
-    <span v-click="4" class="lifecycle-arrow">→</span>
-    <div v-click="4" class="lifecycle-step step-beta">
+    <span v-click="2" class="lifecycle-arrow">→</span>
+    <div v-click="2" class="lifecycle-step step-beta">
       <div class="step-badge">Beta</div>
       <div class="step-desc">
         <div class="step-line"><strong>Default:</strong> v1 names only</div>
         <div class="step-line"><strong>Opt-in:</strong> v0 or double-publish</div>
       </div>
     </div>
-    <span v-click="5" class="lifecycle-arrow">→</span>
-    <div v-click="5" class="lifecycle-step step-stable">
+    <span v-click="3" class="lifecycle-arrow">→</span>
+    <div v-click="3" class="lifecycle-step step-stable">
       <div class="step-badge">Stable</div>
       <div class="step-desc">
         <div class="step-line"><strong>Default:</strong> v1 names only</div>
@@ -450,7 +450,7 @@ Let me walk through each side in detail.
       </div>
     </div>
   </div>
-  <p v-click="6" class="migration-note">
+  <p class="migration-note">
     RFC: <a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/rfcs/semconv-feature-gates.md">semconv-feature-gates.md</a>
   </p>
 </div>
