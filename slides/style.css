@@ -155,6 +155,12 @@ html:root {
   padding: 1.5rem;
   border-left: 8px solid rgb(var(--primary));
   background: rgb(var(--primary) / 6%);
+  font-size: 1.5rem;
+}
+
+.component-details h3 {
+  font-size: 2rem;
+  padding-bottom: 1rem;
 }
 
 .priority-tracking {

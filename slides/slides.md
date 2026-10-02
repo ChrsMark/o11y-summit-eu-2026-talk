@@ -29,7 +29,7 @@ fonts:
   <span class="kceu-logo-year">2026</span>
 </div>
 
-<!-- PABLO
+<!-- CHRISTOS
 
 Thanks for joining. Use the QR code to follow along and open the links on the slides.
 
@@ -65,7 +65,7 @@ Thanks for joining. Use the QR code to follow along and open the links on the sl
 
 <!-- PABLO/CHRISTOS
 
-[PABLO] I'm Pablo, a Senior Software Engineer at Datadog. I maintain the OpenTelemetry Collector and serve on the Governance Committee.
+[PABLO] I'm Pablo, a Senior Software Engineer at Datadog. I maintain the OpenTelemetry Collector and I am currently a member on the Governance Committee. I have been contributing to the project since 2020.
 
 [CHRISTOS] I'm Christos, a Principal Software Engineer at Elastic. I maintain Collector Contrib and I'm a Semantic Conventions Approver for system, Kubernetes, and container metrics. I'm also a CNCF Ambassador.
 
@@ -109,17 +109,17 @@ clicks: 5
 
 <!-- CHRISTOS
 
-There are four signals: traces, metrics, logs, and profiles. Your application emits them through auto-instrumentation agents or the OTel SDK and API.
+Your application emits telemetry through auto-instrumentation or through the OTel SDK and API.
 
 <click> The data goes to the OTel Collector, a vendor-neutral pipeline that receives, processes, and exports telemetry.
 
-<click> Collectors can also run as agents, close to the workload on each VM, pod, or Kubernetes node.
+<click> Collectors can also run close to the workload on each VM, pod, or Kubernetes node.
 
 <click> The Collector forwards data to your observability backends.
 
-<click> Underneath all of this are Semantic Conventions: standard names like system.cpu.time, host.name, and k8s.pod.name that every tool agrees on.
+<click> Underneath all of this are Semantic Conventions: standard metric, attribute and attribute values names that every tool agrees on.
 
-<click> This talk is about the Collector and Semantic Conventions. Collector receivers and processors emit attributes using the names defined in Semantic Conventions. If a convention renames an attribute, every Collector component that emits it has to change too. If we don't handle that carefully, users see different data after an upgrade without noticing.
+<click> This talk focuses on the Collector and Semantic Conventions. Collector receivers and processors emit attributes using the names defined in Semantic Conventions. If a convention renames an attribute, every Collector component that emits it has to change too. If we don't handle that carefully, users see different data after an upgrade without noticing.
 
 -->
 
@@ -138,7 +138,7 @@ There are four signals: traces, metrics, logs, and profiles. Your application em
 
 <!-- CHRISTOS
 
-The kubeletstats receiver emitted metrics with "utilization" in their names. In semantic conventions, "utilization" means a ratio between 0 and 1, but these metrics were raw nanosecond CPU values. The names were wrong.
+The kubeletstats receiver emitted metrics with "utilization" in their names. In semantic conventions, "utilization" means a ratio between 0 and 1, but these metrics were raw nanocore CPU values. The names were wrong.
 
 The fix was to rename them to "usage."
 
@@ -172,8 +172,6 @@ Doing this fix properly took over 10 releases. It became one of the main example
 The HTTP semantic convention migration was harder because of its scope.
 
 Renaming http.method, http.url, and http.status_code touched HTTP instrumentation libraries and Collector components, and broke dashboards users had built.
-
-The first attempt was a global environment variable. It worked, but you couldn't control it per component or roll back.
 
 That experience shaped what we'll show next.
 
@@ -250,8 +248,8 @@ First, our community Collector surveys. In both the 2024 and 2025 surveys, 52% o
 
 The surveys also tell us which components are most used, so we know where to focus for the most impact.
 
-Second, during OpenTelemetry's graduation, the CNCF interviewed adopters extensively and we had access to their feedback.
-Users are generally happy with the Collector, but they raised concerns about beta stability (TODO: look into quotes?).
+Second, during OpenTelemetry's graduation, the CNCF interviewed adopters and we had access to their feedback.
+Users are generally happy with the Collector, but they raised concerns about beta stability.
 
 With so many moving pieces, how do we define stability?
 
@@ -266,13 +264,12 @@ With so many moving pieces, how do we define stability?
   <li><code>jvm</code></li>
   <li><code>db</code></li>
   <li><code>cicd</code></li>
-  <li><code>vcs</code></li>
   <li><code>http</code></li>
   <li><code>exception</code></li>
   <li><code>k8s</code></li>
 </ul>
 
-<p class="stable-namespaces-text">The names and well-known values of attributes and metrics of stable conventions won't change.</p>
+<p class="stable-namespaces-text">The names and values of attributes and metrics of stable conventions won't change.</p>
 
 <!-- PABLO
 
@@ -304,8 +301,6 @@ class: top-aligned
 
 For Collector components, stability covers more than telemetry.
 
-TODO: Add items for each of the areas of stability
-
 -->
 
 ---
@@ -313,13 +308,13 @@ TODO: Add items for each of the areas of stability
 # Coming up with a plan
 
 <div class="icon-grid">
-  <carbon-function v-click="1" class="icon" />
-  <span v-click="1">Since 2024, the Collector SIG has worked on stabilizing core libraries and APIs.</span>
-  <carbon-idea v-click="2" class="icon" />
-  <span v-click="2">But what about specific components?</span>
+  <carbon-function class="icon" />
+  <span>Since 2024, the Collector SIG has worked on stabilizing core libraries and APIs.</span>
+  <carbon-idea v-click="1" class="icon" />
+  <span v-click="1">But what about specific components?</span>
 </div>
 
-<div v-click="1" class="flex justify-center mt-8">
+<div class="flex justify-center mt-8">
   <img src="/collector-v1-roadmap.png" class="max-h-40" />
 </div>
 
@@ -362,44 +357,6 @@ Last year, based on the graduation feedback, we decided to refocus on specific w
 We combined survey data with input from several vendors to pick 7 components to focus on.
 
 Stabilizing some of these components meant breaking changes like the ones Christos described, so we had to agree on mechanisms to make the transition as smooth as possible.
-
--->
-
-<!-- ---
-
-# Two Sides of the Same Coin
-
-<div class="two-sides-grid">
-  <div v-click="1" class="info-box side-semconv">
-    <h3>Schema Side</h3>
-    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">System &amp; K8s SemConv SIGs</p>
-    <ul>
-      <li>Rigorous promotion criteria before declaring stable</li>
-      <li>System &amp; process metrics stabilization</li>
-    </ul>
-  </div>
-  <div v-click="2" class="coin-bridge">
-    <div class="coin-rule">A convention is not<br>called <strong>stable</strong> until<br>the Collector has a<br><strong>migration path ready</strong></div>
-  </div>
-  <div v-click="3" class="info-box side-collector">
-    <h3>Implementation Side</h3>
-    <p style="opacity:0.7; font-size:0.9rem; padding-bottom:0">Collector SIG</p>
-    <ul>
-      <li>Per-component feature gates for safe migration</li>
-      <li>7 priority components for first-wave stabilization</li>
-    </ul>
-  </div>
-</div> -->
-
-<!-- CHRISTOS
-
-We worked on this from two sides in parallel.
-
-On the schema side, the System and K8s SemConv SIGs adopted strict promotion criteria. A metric can't be called stable until it's been reviewed and approved.
-
-On the implementation side, the Collector SIG wrote an RFC for per-component feature gates. Each component gets a pair of gates, so users migrate on their own timeline.
-
-The two are linked: we don't call a convention "stable" until the Collector has a migration path ready.
 
 -->
 
@@ -451,21 +408,15 @@ The two are linked: we don't call a convention "stable" until the Collector has 
   </p>
 </div>
 
-<!-- CHRISTOS
+<!-- PABLO
 
-The HTTP migration showed that a global env var wasn't enough, so we designed a per-component mechanism.
+One of the first problems to solve to make the transition was to ensure a smooth migration.
 
-Each component gets two paired feature gates. The first opts you into the new names early. The second turns off the old names when you're ready. You control them independently, so you can emit both during your migration.
+While OpenTelemetry defined a migration strategy using environment variables, this did not feel native to the Collector and had some drawbacks such as not being customizable per component.
 
-There are three stages:
+We designed a migration with two feature gates <describe stages>. As it happens with instrumentations, you can choose to double publish v0 and v1 conventions.
 
-Alpha: nothing changes by default. You can opt in to test the new names.
-
-Beta: starts automatically once the semconv area reaches stable. New names are emitted by default, and you can still emit both.
-
-Stable: old names are gone. Enabling them results in an error.
-
-Across all stages, users get at least 8 minor releases of warning.
+This way, users can migrate at their own pace, all at once or on a per component basis.
 
 -->
 
@@ -479,7 +430,7 @@ Across all stages, users get at least 8 minor releases of warning.
   <carbon-group v-click="2" class="icon" />
   <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on priorities.</span>
   <carbon-idea v-click="3" class="icon" />
-  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>benefits</strong> <code>k8sattributes</code> processor, <code>resourcedetection</code> processor and <code>filelog</code> receiver stability.</span>
+  <span v-click="3">Key insight: stabilizing K8s semconv <strong>benefits</strong> <code>k8sattributes</code> processor, <code>resourcedetection</code> processor and <code>filelog</code> receiver stability.</span>
   <carbon-checkmark v-click="4" class="icon" />
   <span v-click="4">First target: Stabilize K8s <strong>attributes</strong>.</span>
 </div>
@@ -550,7 +501,7 @@ System metrics are on their way to RC.
   <carbon-plug v-click="2" class="icon" />
   <span v-click="2">Feature gates shipped in <code>v0.147.0</code>:<br><code>processor.k8sattributes.EmitV1K8sConventions</code><br><code>processor.k8sattributes.DontEmitV0K8sConventions</code></span>
   <carbon-rocket v-click="3" class="icon icon-stable" />
-  <span v-click="3">Shipped as <strong>v1</strong> on September 15th — part of <code>v0.161.0</code> contrib distro.</span>
+  <span v-click="3">Shipped as <strong>v1</strong> on September 15th; part of <code>v0.161.0</code> contrib distro.</span>
   <carbon-link v-click="4" class="icon" />
   <span v-click="4">Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44483">#44483</a></span>
 </div>
@@ -570,11 +521,11 @@ On v0.161.0 or later, Kubernetes attribute enrichment is stable.
 # Timeline
 
 <Timeline :items="[
-  { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><p class=tl-body>K8s SIG completes K8s metrics in Semantic Conventions</p>' },
-  { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><p class=tl-body>Collector SIG + K8s SIG align on stabilization priorities</p>' },
-  { year: 'Apr 2026', desc: '<div class=tl-card-title>Migration Process</div><p class=tl-body>Feature gate pair RFC adopted; per-component migration process defined</p>' },
-  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable ✓</div><p class=tl-body>semconv v1.42.0 released</p>', highlight: true },
-  { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1 ✓</div><p class=tl-body>First Collector component ships as v1</p>', highlight: true },
+  { year: 'Oct 2025', desc: '<div class=tl-card-title>K8s Metrics in SemConv</div><p class=tl-body>SIG adds K8s metrics to Semantic Conventions</p>' },
+  { year: 'Nov 2025', desc: '<div class=tl-card-title>SIG Alignment at KubeCon NA</div><p class=tl-body>Collector and K8s SIG align on priorities</p>' },
+  { year: 'Apr 2026', desc: '<div class=tl-card-title>Migration Process</div><p class=tl-body>RFC on feature gate pair for migration approved</p>' },
+  { year: 'Jun 2026', desc: '<div class=tl-card-title>K8s Attributes Stable</div><p class=tl-body>SemConv v1.42.0 released</p>', highlight: true },
+  { year: 'Sep 2026', desc: '<div class=tl-card-title>k8sattributes v1</div><p class=tl-body>First contrib component to ship as v1</p>', highlight: true },
   { year: '2027', desc: '<div class=tl-card-title>More to Come</div><p class=tl-body>More components and stability updates coming!</p>' },
 ]" />
 
@@ -609,16 +560,16 @@ clicks: 2
     <li :class="{ active: $clicks === 2 }"><code>transform</code> and <code>filter</code></li>
   </ul>
   <div v-if="$clicks === 0" class="component-details">
-    <h3><code>hostmetrics</code> and <code>resourcedetection</code></h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <h2><code>hostmetrics</code> and <code>resourcedetection</code></h2>
+    <p><code>process</code> namespace shipped as release candidate. Working on prioritization for <code>resourcedetection</code> detectors.</p>
   </div>
   <div v-if="$clicks === 1" class="component-details">
     <h3><code>prometheus</code> receiver</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <p>Prometheus interoperability SIG is working on the Prometheus to OpenTelemetry spec. Only one major question remains!</p>
   </div>
   <div v-if="$clicks === 2" class="component-details">
     <h3><code>transform</code> and <code>filter</code></h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <p>OTTL, the DSL used by these components, is seeking feedback for reaching v1. Components will follow suit.</p>
   </div>
 </div>
 
@@ -632,9 +583,9 @@ clicks: 2
 
 <!-- PABLO
 
-There's still a lot to do to deliver on stability, and we're discussing next steps.
+A couple of weeks ago we started discussing an RFC that would allow us to clarify the requirements to mark the Collector itself as v1 as well as what is the minimum feature baseline for these components.
 
-A couple of weeks ago we started discussing an RFC that would allow us
+Discussion is ongoing and appreciate your feedback on it (link at the end).
 
 -->
 
@@ -652,11 +603,9 @@ A couple of weeks ago we started discussing an RFC that would allow us
 
 We're also discussing how to make component stability easy for users to understand.
 
-Today, logs and metadata mark component stability. As we stabilize more components and prepare for Collector v1, we think the default experience should be stable.
+We're discussing a mechanism such as a "--stability-level" CLI flag that prevents using components and features below your preferred stability level.
 
-So we're discussing a mechanism such as a "--stability-level" CLI flag that prevents using components and features below your preferred stability level.
-
-Please share your feedback on how this should work on the linked issue.
+You can share your feedback on how this should work on the linked issue.
 
 -->
 
@@ -670,7 +619,7 @@ Please share your feedback on how this should work on the linked issue.
 
 <!-- PABLO
 
-Finally, outside the Collector, the community is working on telemetry schemas: a machine-readable manifest that declares a telemetry schema and lets you programmatically migrate between its versions.
+Outside the Collector, the community is working on telemetry schemas: a machine-readable manifest that declares a telemetry schema and lets you programmatically migrate between its versions.
 
 Backends will need to support it to get the full benefit, but we hope it will also help with telemetry migrations.
 
@@ -678,6 +627,56 @@ Backends will need to support it to get the full benefit, but we hope it will al
 ---
 
 # How you can help
+
+<div class="help-cols grid grid-cols-2 gap-12">
+<div>
+
+### Share your feedback:
+
+- [v1 core distro RFC](https://github.com/open-telemetry/opentelemetry-collector/pull/16037)
+- [Priority components for stabilization](https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130)
+- [Opt-in for unstable components](https://github.com/open-telemetry/opentelemetry-collector/issues/14064)
+
+</div>
+<div>
+
+### Join the community:
+
+- [Collector SIG](https://github.com/open-telemetry/community/blob/main/sigs.md#collector)
+- [System SemConv SIG](https://github.com/open-telemetry/community/blob/main/sigs.md#semantic-conventions-system-metrics)
+- [K8s SemConv SIG](https://github.com/open-telemetry/community/blob/main/sigs.md#semantic-conventions-k8s)
+
+</div>
+</div>
+
+<style>
+.help-cols {
+  flex: 1;
+  align-content: start;
+  padding-top: 1.5rem;
+}
+
+.help-cols h3 {
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.help-cols ul {
+  margin-top: 0;
+}
+
+.help-cols li {
+  padding-top: 1.5rem;
+}
+</style>
+
+<!-- PABLO
+
+It's very important for us to have feedback, specially from end users, on these items.
+
+If you want to help or just give your opinion, here are some links.
+
+-->
 
 ---
 layout: center
@@ -694,13 +693,6 @@ class: qa
 </div>
 
 <!-- BOTH
-
-Thanks! Happy to take questions.
-
-If you want to get involved:
-- Collector SIG: every other Thursday (check the OTel community calendar)
-- SemConv SIG: weekly on Fridays
-- GitHub: open-telemetry/semantic-conventions and open-telemetry/opentelemetry-collector-contrib
 
 The slides, with all the links, are available via the QR code.
 
