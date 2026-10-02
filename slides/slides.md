@@ -31,13 +31,7 @@ fonts:
 
 <!-- PABLO
 
-Welcome everyone, and thank you for joining this session.
-
-Today we're going to talk about one of the most impactful challenges in the OpenTelemetry project right now: how do you make a project this large, this widely deployed, truly stable by default?
-
-Not just "stable as in the project won't crash" — but stable as in: your users can upgrade with confidence that nothing will silently break.
-
-I'm Pablo, and this is Christos. Let us introduce ourselves.
+Thank you for joining this session. You may use the QR code to follow along and click on any links on the slides.
 
 -->
 
@@ -235,26 +229,33 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 <div class="comparison-grid">
   <div v-click="1" class="info-box">
     <h3>User Surveys</h3>
-    <ul>
-      <li>Community surveys: what components and what people care about</li>
-    </ul>
+    <p class="survey-stat">
+      On the <a href="https://opentelemetry.io/blog/2026/otel-collector-follow-up-survey-analysis/" target="_blank">2025 Collector survey</a>,
+      <span class="survey-stat-number">~52%</span>
+      of users have stability as a top concern.
+    </p>
   </div>
   <div v-click="2" class="info-box">
     <h3>OTel Graduation Process</h3>
-    <ul>
-      <li>OTel's graduation from CNCF comes with an adopter feedback process</li>
-      <li>CNCF Technical Oversight Committee flagged: critical components still Beta, breaking changes too frequent</li>
-    </ul>
+    <blockquote class="info-quote">
+      "Initial adopter interviews highlighted confusion regarding stability expectations of OTel distributions."
+      <a href="https://github.com/cncf/toc/blob/main/projects/open-telemetry/otel-graduation-dd.md" target="_blank">— CNCF TOC OpenTelemetry Due Diligence</a>
+    </blockquote>
   </div>
 </div>
 
 <!-- PABLO
 
-Add slides covering the CNCF ToC feedback:
-- When it happened and what was specifically said
-- The concerns raised (Beta components in production, SemConv churn)
-- How the community received it and what changed as a result
-- Why external accountability matters for a project at this scale
+We know this is important for our end users from multiple sources.
+
+First, we have been doing community OpenTelemetry Collector surveys. Both the 2024 and 2025 surveys show that X% of users find stability as one of their top concerns.
+
+We also know from them which are the most used components in which we can focus on to have the most impact.
+
+Second, during the graduation process for OpenTelemetry we had access to feedback from OpenTelemetry adopters which the CNCF extensively interviewed.
+While users are generally happy with the Collector, they also surfaced concerns related to beta stability (TODO: look into quotes?).
+
+But, the question remains, with so many moving pieces, how do we understand stability?
 
 -->
 ---
@@ -269,9 +270,9 @@ Add slides covering the CNCF ToC feedback:
 
 <!-- PABLO
 
-The key insight is that "stable" means something specific in OpenTelemetry — and it's different for specs vs. implementations.
+For one, there's the stability of the semantics. This is independent from specific implementations, and roughly means "the names and well-known values of attributes and metrics won't change".
 
-For Semantic Conventions: once stable, attribute names are guaranteed not to change. You build dashboards on system.cpu.time and they're there forever.
+This is one of the most important aspects that users care about. There are many namespaces that are stable today: TODO mention list, but many important ones remain unstable.
 
 -->
 
@@ -287,9 +288,9 @@ For Semantic Conventions: once stable, attribute names are guaranteed not to cha
 
 <!-- PABLO
 
-For Collector components: stable means configuration won't silently break, and there's a defined migration path for any changes.
+But there's more to it than telemetry stability for Collector components.
 
-The problem: most of the most heavily-used components — kubeletstats, hostmetrics — are still Beta. Even though they're running in production at thousands of companies.
+TODO: Add items for each of the areas of stability
 
 -->
 
@@ -304,8 +305,13 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
   <span v-click="2">What about the components that collect the telemetry?</span>
 </div>
 
-<!-- CHRISTOS
+<!-- PABLO
 
+Having defined this, how do we get to stability and what do we focus on first?
+
+Well, historically, the Collector has been (TODO: screenshot of Alex's blogpost?) focusing on stabilizing the foundational pieces of it, including the libraries that developers use to build components.
+
+Last year, after carefully considering the feedback related to graduation, we decided we had to re-focus our efforts into specific widely used components to have a more direct impact.
 -->
 
 ---
@@ -333,7 +339,11 @@ The problem: most of the most heavily-used components — kubeletstats, hostmetr
   Tracking issue: <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44130">opentelemetry-collector-contrib#44130</a>
 </p>
 
-<!-- CHRISTOS
+<!-- PABLO
+
+We considered survey data, combined with expertise from various vendors to come up with a list of 7 components to focus on.
+
+Stability on some of these components meant breakage in some of the ways Christos mentioned, so we had to discuss what mechanisms to use to make sure this transition was as smooth as possible.
 
 -->
 
@@ -578,41 +588,31 @@ Now, back to Pablo for what comes next.
 
 ---
 
-# What's Next and the End Goal
+# What's Next -- RFC
 
-<ul>
-  <li>6 remaining priority components on the path to v1 (target: March 2027)</li>
-  <li>The end goal: "stable by default" — no configuration needed to get stable telemetry on upgrade</li>
-  <li>What the world looks like when all critical Collector components are v1</li>
-  <li>The roadmap for the next major OTel Collector release</li>
-</ul>
 
 <!-- PABLO
 
-Add slides covering the roadmap and end state:
-- The remaining 6 components and expected timelines
-- What "stable by default" looks like for end users
-- How this connects to the next major Collector release
-- The broader vision: every widely-used component is v1
+There's still a lot to do to deliver on the stability promise and we are actively discussing next steps.
+
+A couple of weeks ago we started discussing an RFC that would allow us
 
 -->
 
 ---
 
-# Other Components Coming Up
+# What's Next -- Minimum stability
 
-<ul>
-  <li>Which other Collector components are in the stabilization queue beyond the 7 priority ones</li>
-  <li>Community effort: how other maintainers are adopting the same RFC and checklist pattern</li>
-  <li>The template is open — any component team can use it</li>
-</ul>
 
 <!-- PABLO
 
-Brief slide covering the broader component ecosystem:
-- Components beyond the 7 priority ones
-- How the RFC and checklist pattern scales across the full contrib repo
-- Invitation for other component maintainers to adopt the process
+Another aspect we are actively discussing is how to make sure users easily understand stability of various components.
+
+Today we provide you with logs and metadata that mark component stability, but, as we stabilize more components and we prepare for a v1 version of the Collector, we think it's important that the default experience is stable. 
+
+This is why we are discussing some mechanism such as a "--stability-level" CLI flag that prevents users from using components and features below their preferred stability level.
+
+We welcome your feedback on how you would like this mechanism to work on the linked issue.
 
 -->
 
@@ -628,10 +628,9 @@ Brief slide covering the broader component ecosystem:
 
 <!-- PABLO
 
-Brief slide on Telemetry Schemas:
-- What they are and how they relate to SemConv stability
-- Current state of the schema spec
-- How they enable tooling to help users migrate automatically
+Lastly, outside of the Collector, the OpenTelemetry community is also working on telemetry schemas: a machine-readable manifest that declares a telemetry schema and allows to programatically migrate between different versions of it.
+
+This will require observability backends support to fully leverage its capabilities, but it is a promising feature that we also hope will help in telemetry migrations.
 
 -->
 

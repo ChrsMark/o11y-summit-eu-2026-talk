@@ -286,6 +286,40 @@ html:root {
   margin-top: 0;
 }
 
+/* Survey stat in "Users want stability" slide */
+.info-box p.survey-stat {
+  line-height: 1.5;
+}
+
+.survey-stat-number {
+  display: block;
+  font-size: 7.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin: 2.8rem 0;
+  letter-spacing: -0.04em;
+  color: rgb(var(--accent));
+}
+
+/* Quote inside an info box */
+.info-box blockquote.info-quote {
+  margin: 0.6rem 1.2rem 1rem;
+  padding: 0.6rem 1rem;
+  border-left: 4px solid rgb(var(--accent));
+  background: rgb(var(--primary) / 5%);
+  font-size: 1.8rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.info-quote a {
+  display: block;
+  width: fit-content;
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  font-style: normal;
+}
+
 /* Grid layouts using info boxes */
 .comparison-grid {
   display: grid;
