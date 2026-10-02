@@ -111,16 +111,17 @@ html:root {
 .component-box {
   padding: 1.9rem 0.9rem;
   text-align: left;
-  background: var(--surface);
   border: none;
 }
 
 .component-box.receiver {
   border-left: 8px solid rgb(var(--primary));
+  background: rgb(var(--primary) / 6%);
 }
 
 .component-box.processor {
   border-left: 8px solid rgb(var(--accent));
+  background: rgb(var(--accent) / 6%);
 }
 
 .component-box code {
@@ -1168,8 +1169,9 @@ html:root {
 
 .slidev-layout ul.stable-namespaces li {
   margin: 0;
-  padding-left: 1rem;
+  padding: 0.5rem 1rem;
   border-left: 8px solid rgb(var(--primary));
+  background: rgb(var(--primary) / 6%);
 }
 
 .stable-namespaces code {

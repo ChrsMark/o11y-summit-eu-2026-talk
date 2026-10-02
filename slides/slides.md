@@ -262,13 +262,13 @@ But, the question remains, with so many moving pieces, how do we understand stab
 
 # Defining Stability: Specifications &amp; SemConv
 
-<p class="stable-namespaces-text">Some namespaces are already mostly stable:</p>
+<p class="stable-namespaces-text">Some namespaces are already stable or release candidate:</p>
 
 <ul class="stable-namespaces">
   <li><code>jvm</code></li>
-  <li><code>db</code> <span class="stable-namespace-note">spans</span></li>
-  <li><code>cicd</code><sup>*</sup></li>
-  <li><code>vcs</code><sup>*</sup></li>
+  <li><code>db</code></li>
+  <li><code>cicd</code></li>
+  <li><code>vcs</code></li>
   <li><code>http</code></li>
   <li><code>exception</code></li>
   <li><code>k8s</code></li>
