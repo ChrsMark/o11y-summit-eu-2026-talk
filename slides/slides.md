@@ -606,6 +606,9 @@ Now, back to Pablo for what comes next.
 
 # What's Next -- RFC
 
+<div class="flex justify-center items-center h-[80%]">
+  <img src="/rfc.png" class="max-h-full max-w-full" />
+</div>
 
 <!-- PABLO
 
