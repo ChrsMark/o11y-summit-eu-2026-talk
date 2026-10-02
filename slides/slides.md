@@ -138,8 +138,8 @@ clicks: 6
   <span v-click="1"><code>k8s.node.cpu.utilization</code> > "utilization" in OTel semconv means a ratio (0–1). These were actually raw <strong>nanocore</strong> values. Fix: rename to <code>k8s.node.cpu.usage</code>.</span>
   <carbon-misuse v-click="2" class="icon" />
   <span v-click="2">Real user pain: Silent disappearance on upgrade</span>
-  <carbon-time v-click="4" class="icon" />
-  <span v-click="4">Multi-release migration/deprecation process. (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
+  <carbon-time v-click="3" class="icon" />
+  <span v-click="3">Multi-release migration/deprecation process. (Oct 2024): 10+ releases before gate reached beta. <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/27885">#27885</a></span>
 </div>
 
 <!-- CHRISTOS
@@ -453,7 +453,7 @@ Minimum warning window across all stages: 8 minor releases. That's a real runway
   <carbon-group v-click="2" class="icon" />
   <span v-click="2">KubeCon NA 2025: Collector SIG + K8s SIG aligned on priorities.</span>
   <carbon-idea v-click="3" class="icon" />
-  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>benefits</strong> <code>k8sattributes</code> processor stability.</span>
+  <span v-click="3">Key insight: stabilizing K8s semconv directly <strong>benefits</strong> <code>k8sattributes</code> processor, <code>resourcedetection</code> processor and <code>filelog</code> receiver stability.</span>
   <carbon-checkmark v-click="4" class="icon" />
   <span v-click="4">First target: Stabilize K8s <strong>attributes</strong>.</span>
 </div>

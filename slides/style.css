@@ -665,8 +665,12 @@ html:root {
   opacity: 0.9;
 }
 
+/* Not `display: contents`: v-click hides via opacity, which needs a box */
 .gate-pair {
-  display: contents;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
 }
 
 .gate {
