@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "kceu-2026-wasm-talk",
+  "name": "stable-by-default-2026",
   "compatibility_date": "2026-01-20",
-  "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "dist",
 }

@@ -12,7 +12,7 @@ const { currentPage } = useNav()
 const qrLight = ref('')
 const qrDark = ref('')
 
-const baseUrl = 'https://kceu-2026-wasm-talk.pages.dev/'
+const baseUrl = 'https://stable-by-default-2026.pages.dev/'
 const url = computed(() => {
   const page = props.slide ?? String(currentPage.value)
   return `${baseUrl}${page}`
