@@ -608,6 +608,12 @@ Now, back to Pablo for what comes next.
 
 ---
 
+# What's next -- Priority components
+
+This slide will be filled in later
+
+---
+
 # What's Next -- RFC
 
 <div class="flex justify-center items-center h-[80%]">
