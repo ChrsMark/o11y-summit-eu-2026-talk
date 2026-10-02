@@ -316,16 +316,20 @@ TODO: Add items for each of the areas of stability
 
 <div class="icon-grid">
   <carbon-function v-click="1" class="icon" />
-  <span v-click="1">Collector was already stabilizing core libraries and APIs.</span>
+  <span v-click="1">Since 2024, the Collector SIG has worked on stabilizing core libraries and APIs.</span>
   <carbon-idea v-click="2" class="icon" />
-  <span v-click="2">What about the components that collect the telemetry?</span>
+  <span v-click="2">But what about specific components?</span>
+</div>
+
+<div v-click="1" class="flex justify-center mt-8">
+  <img src="/collector-v1-roadmap.png" class="max-h-40" />
 </div>
 
 <!-- PABLO
 
 Having defined this, how do we get to stability and what do we focus on first?
 
-Well, historically, the Collector has been (TODO: screenshot of Alex's blogpost?) focusing on stabilizing the foundational pieces of it, including the libraries that developers use to build components.
+Well, historically, the Collector has been focusing on stabilizing the foundational pieces of it, including the libraries that developers use to build components.
 
 Last year, after carefully considering the feedback related to graduation, we decided we had to re-focus our efforts into specific widely used components to have a more direct impact.
 -->
@@ -622,6 +626,11 @@ A couple of weeks ago we started discussing an RFC that would allow us
 
 # What's Next -- Minimum stability
 
+<p class="stable-namespaces-text">We are discussing how to make the default Collector experience stable.</p>
+
+<div class="absolute inset-0 flex justify-center items-center pointer-events-none">
+  <span class="font-mono text-6xl font-bold">--stability-level<span style="color: rgb(var(--accent))">?</span></span>
+</div>
 
 <!-- PABLO
 
