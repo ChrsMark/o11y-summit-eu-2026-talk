@@ -597,10 +597,30 @@ Back to Pablo.
 -->
 
 ---
+clicks: 2
+---
 
-# What's next -- Priority components
+# What's next -- Other priority components
 
-This slide will be filled in later
+<div class="priority-split">
+  <ul class="priority-list">
+    <li :class="{ active: $clicks === 0 }"><code>hostmetrics</code> and <code>resourcedetection</code></li>
+    <li :class="{ active: $clicks === 1 }"><code>prometheus</code> receiver</li>
+    <li :class="{ active: $clicks === 2 }"><code>transform</code> and <code>filter</code></li>
+  </ul>
+  <div v-if="$clicks === 0" class="component-details">
+    <h3><code>hostmetrics</code> and <code>resourcedetection</code></h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  </div>
+  <div v-if="$clicks === 1" class="component-details">
+    <h3><code>prometheus</code> receiver</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  </div>
+  <div v-if="$clicks === 2" class="component-details">
+    <h3><code>transform</code> and <code>filter</code></h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  </div>
+</div>
 
 ---
 
@@ -644,11 +664,9 @@ Please share your feedback on how this should work on the linked issue.
 
 # Telemetry Schemas
 
-<ul>
-  <li>The OTel Telemetry Schema spec — machine-readable migration definitions</li>
-  <li>How schemas complement the feature gate approach for SemConv migrations</li>
-  <li>Future direction: schema-driven automatic migration in the Collector</li>
-</ul>
+<div class="flex justify-center items-center h-[80%]">
+  <img src="/telemetry-schemas.png" class="max-h-full max-w-full" />
+</div>
 
 <!-- PABLO
 
@@ -657,6 +675,9 @@ Finally, outside the Collector, the community is working on telemetry schemas: a
 Backends will need to support it to get the full benefit, but we hope it will also help with telemetry migrations.
 
 -->
+---
+
+# How you can help
 
 ---
 layout: center

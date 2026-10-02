@@ -132,6 +132,31 @@ html:root {
   color: rgb(var(--code-text)) !important;
 }
 
+.priority-split {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr;
+  align-items: start;
+  gap: 3rem;
+  margin-top: 1.5rem;
+}
+
+.priority-list li {
+  font-weight: 600;
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+
+.priority-list li.active {
+  opacity: 1;
+}
+
+.component-details {
+  min-height: 15rem;
+  padding: 1.5rem;
+  border-left: 8px solid rgb(var(--primary));
+  background: rgb(var(--primary) / 6%);
+}
+
 .priority-tracking {
   text-align: center;
   font-size: 1.1rem;
