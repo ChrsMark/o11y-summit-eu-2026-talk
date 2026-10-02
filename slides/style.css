@@ -1153,3 +1153,44 @@ html:root {
 .otel-slide-bullets {
   flex: 1;
 }
+
+/* Stable semconv namespaces in "Defining Stability: Specifications & SemConv" slide */
+.slidev-layout ul.stable-namespaces {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem 2.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  line-height: 1.2;
+}
+
+.slidev-layout ul.stable-namespaces li {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 8px solid rgb(var(--primary));
+}
+
+.stable-namespaces code {
+  font-size: 3rem !important;
+  font-weight: 700;
+  background: transparent;
+  padding: 0;
+}
+
+.stable-namespace-note {
+  font-size: 1.4rem;
+  color: rgb(var(--secondary));
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.slidev-layout p.stable-namespaces-text {
+  font-size: var(--text-body);
+  line-height: 1.4;
+}
+
+.stable-namespaces sup {
+  font-size: 1.6rem;
+  margin-left: 0.15rem;
+}

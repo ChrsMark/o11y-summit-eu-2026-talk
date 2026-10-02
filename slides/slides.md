@@ -262,11 +262,19 @@ But, the question remains, with so many moving pieces, how do we understand stab
 
 # Defining Stability: Specifications &amp; SemConv
 
-<ul>
-  <li v-click="1">Development → Experimental → <strong>Stable</strong></li>
-  <li v-click="2">Stable = guaranteed backwards compatibility for attribute names</li>
-  <li v-click="3">Users can rely on names never silently changing</li>
+<p class="stable-namespaces-text">Some namespaces are already mostly stable:</p>
+
+<ul class="stable-namespaces">
+  <li><code>jvm</code></li>
+  <li><code>db</code> <span class="stable-namespace-note">spans</span></li>
+  <li><code>cicd</code><sup>*</sup></li>
+  <li><code>vcs</code><sup>*</sup></li>
+  <li><code>http</code></li>
+  <li><code>exception</code></li>
+  <li><code>k8s</code></li>
 </ul>
+
+<p class="stable-namespaces-text">The names and well-known values of attributes and metrics of stable conventions won't change.</p>
 
 <!-- PABLO
 
