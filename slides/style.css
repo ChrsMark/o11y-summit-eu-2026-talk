@@ -174,6 +174,12 @@ html:root {
   inset: 16rem 2rem auto auto;
 }
 
+.slidev-layout.intro .qr-code,
+.slidev-layout.qa .qr-code {
+  width: 127px;
+  height: 127px;
+}
+
 .intro-speakers {
   font-size: 1.3rem;
   font-weight: 500;

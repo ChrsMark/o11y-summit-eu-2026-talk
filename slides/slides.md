@@ -31,7 +31,7 @@ fonts:
 
 <!-- PABLO
 
-Thank you for joining this session. You may use the QR code to follow along and click on any links on the slides.
+Thanks for joining. Use the QR code to follow along and open the links on the slides.
 
 -->
 
@@ -65,9 +65,9 @@ Thank you for joining this session. You may use the QR code to follow along and 
 
 <!-- PABLO/CHRISTOS
 
-[PABLO] I'm Pablo — Senior Software Engineer at Datadog. I maintain the OpenTelemetry Collector and serve on the Governance Committee.
+[PABLO] I'm Pablo, a Senior Software Engineer at Datadog. I maintain the OpenTelemetry Collector and serve on the Governance Committee.
 
-[CHRISTOS] And I'm Christos — Principal Software Engineer at Elastic. I maintain the Collector Contrib project and serve as a Semantic Conventions Approver for system, Kubernetes, and container metrics. I'm also a CNCF Ambassador.
+[CHRISTOS] I'm Christos, a Principal Software Engineer at Elastic. I maintain Collector Contrib and I'm a Semantic Conventions Approver for system, Kubernetes, and container metrics. I'm also a CNCF Ambassador.
 
 -->
 
@@ -91,11 +91,11 @@ Thank you for joining this session. You may use the QR code to follow along and 
 
 <!-- CHRISTOS
 
-I'll start with a quick two-minute overview — most of you know what OpenTelemetry is, so I'll keep it brief.
+Most of you know OpenTelemetry, so this is a quick overview.
 
-OpenTelemetry is the open standard for observability. It defines how applications emit telemetry data — traces, metrics, logs, and profiles — and how that data flows to your observability tools.
+OpenTelemetry is the open standard for observability. It defines how applications emit telemetry and how that data gets to your observability tools.
 
-It's the second-largest CNCF project, with contributions from virtually every major vendor in the space. And as a graduated project, it's considered production-ready by the foundation.
+It's the second-largest CNCF project, with contributions from most major vendors. It's a graduated project, so the CNCF considers it production-ready.
 
 -->
 
@@ -109,17 +109,17 @@ clicks: 5
 
 <!-- CHRISTOS
 
-The four signals: traces, metrics, logs, and profiles. Your application connects via auto-instrumentation agents or the OTel SDK and API.
+There are four signals: traces, metrics, logs, and profiles. Your application emits them through auto-instrumentation agents or the OTel SDK and API.
 
-<click> Everything flows to the OTel Collector — a vendor-neutral pipeline that receives, processes, and exports your telemetry.
+<click> The data goes to the OTel Collector, a vendor-neutral pipeline that receives, processes, and exports telemetry.
 
 <click> Collectors can also run as agents, close to the workload on each VM, pod, or Kubernetes node.
 
-<click> And the Collector forwards to your observability backends.
+<click> The Collector forwards data to your observability backends.
 
-<click> Underneath everything — the layer that ties the whole ecosystem together — are Semantic Conventions. Standard names like system.cpu.time, host.name, and k8s.pod.name that every tool in the ecosystem agrees on.
+<click> Underneath all of this are Semantic Conventions: standard names like system.cpu.time, host.name, and k8s.pod.name that every tool agrees on.
 
-<click> And these two — the Collector and Semantic Conventions — are exactly what today's talk is about. The Collector receivers and processors emit telemetry attributes using the names defined in Semantic Conventions. If a convention renames an attribute, every Collector component that emits it has to change too — and if that isn't handled carefully, users silently see different data on the next upgrade. That's the core challenge, and it's what we're here to talk about.
+<click> This talk is about the Collector and Semantic Conventions. Collector receivers and processors emit attributes using the names defined in Semantic Conventions. If a convention renames an attribute, every Collector component that emits it has to change too. If we don't handle that carefully, users see different data after an upgrade without noticing.
 
 -->
 
@@ -138,17 +138,15 @@ The four signals: traces, metrics, logs, and profiles. Your application connects
 
 <!-- CHRISTOS
 
-Let me start with a concrete story.
+The kubeletstats receiver emitted metrics with "utilization" in their names. In semantic conventions, "utilization" means a ratio between 0 and 1, but these metrics were raw nanosecond CPU values. The names were wrong.
 
-The kubeletstats receiver had been emitting metrics with "utilization" in their names. In OpenTelemetry's semantic conventions, "utilization" means a ratio between 0 and 1. But these metrics were actually raw nanosecond CPU values. The names were semantically wrong.
+The fix was to rename them to "usage."
 
-The fix was to rename them to "usage." But here's where it gets painful.
+When users upgraded their Collector, the old metric names disappeared without any warning or error.
 
-When users upgraded their Collector, the old metric names silently disappeared. No warning, no error — just gone.
+Some users were mid-migration: they had removed the old dashboard panels but hadn't added the new ones yet, so they had no data.
 
-Some users were mid-migration: they had removed the old dashboard panels but hadn't added the new ones yet. A real observability gap.
-
-The responsible fix required over 10 releases. This became one of the canonical examples for why we needed a proper migration system.
+Doing this fix properly took over 10 releases. It became one of the main examples of why we needed a proper migration system.
 
 -->
 
@@ -171,13 +169,13 @@ The responsible fix required over 10 releases. This became one of the canonical 
 
 <!-- CHRISTOS
 
-The HTTP semantic convention migration was even more painful because of its scope.
+The HTTP semantic convention migration was harder because of its scope.
 
-This wasn't one receiver. Renaming http.method, http.url, and http.status_code touched every HTTP instrumentation library, every Collector component, and every dashboard users had built.
+Renaming http.method, http.url, and http.status_code touched HTTP instrumentation libraries and Collector components, and broke dashboards users had built.
 
-The first attempt was a global environment variable. It worked — barely — but it was blunt: you couldn't control it per-component, you couldn't roll back, and it wasn't native to the Collector's config model.
+The first attempt was a global environment variable. It worked, but you couldn't control it per component or roll back.
 
-This experience proved that the old approach wasn't enough — and directly shaped what we'll talk about next.
+That experience shaped what we'll show next.
 
 -->
 
@@ -214,11 +212,11 @@ class: text-center
 
 <!-- CHRISTOS
 
-This is the core of the problem. There's no compile-time check. No test failure. No alert.
+No test or alert catches this.
 
-A user upgrades their Collector on a Tuesday, and their dashboards quietly start showing different data — or nothing at all.
+A user upgrades their Collector, and their dashboards start showing different data or nothing at all.
 
-This is what we set out to fix. And before I show you what we did, let me hand over to Pablo to explain the framework we're working within.
+That's what we set out to fix. First, Pablo will explain the framework we work within.
 
 -->
 
@@ -246,16 +244,16 @@ This is what we set out to fix. And before I show you what we did, let me hand o
 
 <!-- PABLO
 
-We know this is important for our end users from multiple sources.
+We know this matters to users from a few sources.
 
-First, we have been doing community OpenTelemetry Collector surveys. Both the 2024 and 2025 surveys show that 52% of users find stability as one of their top concerns.
+First, our community Collector surveys. In both the 2024 and 2025 surveys, 52% of users list stability as a top concern.
 
-We also know from them which are the most used components in which we can focus on to have the most impact.
+The surveys also tell us which components are most used, so we know where to focus for the most impact.
 
-Second, during the graduation process for OpenTelemetry we had access to feedback from OpenTelemetry adopters which the CNCF extensively interviewed.
-While users are generally happy with the Collector, they also surfaced concerns related to beta stability (TODO: look into quotes?).
+Second, during OpenTelemetry's graduation, the CNCF interviewed adopters extensively and we had access to their feedback.
+Users are generally happy with the Collector, but they raised concerns about beta stability (TODO: look into quotes?).
 
-But, the question remains, with so many moving pieces, how do we understand stability?
+With so many moving pieces, how do we define stability?
 
 -->
 ---
@@ -278,9 +276,9 @@ But, the question remains, with so many moving pieces, how do we understand stab
 
 <!-- PABLO
 
-For one, there's the stability of the semantics. This is independent from specific implementations, and roughly means "the names and well-known values of attributes and metrics won't change".
+First, there's stability of the semantics. This is independent of any implementation, and roughly means "the names and well-known values of attributes and metrics won't change".
 
-This is one of the most important aspects that users care about. There are many namespaces that are stable today but many important ones remain unstable.
+Users care about this a lot. Many namespaces are stable today, but many important ones are still unstable.
 
 -->
 
@@ -304,7 +302,7 @@ class: top-aligned
 
 <!-- PABLO
 
-But there's more to it than telemetry stability for Collector components.
+For Collector components, stability covers more than telemetry.
 
 TODO: Add items for each of the areas of stability
 
@@ -327,11 +325,11 @@ TODO: Add items for each of the areas of stability
 
 <!-- PABLO
 
-Having defined this, how do we get to stability and what do we focus on first?
+So how do we get to stability, and what do we focus on first?
 
-Well, historically, the Collector has been focusing on stabilizing the foundational pieces of it, including the libraries that developers use to build components.
+Historically, the Collector focused on stabilizing its foundational pieces, including the libraries developers use to build components.
 
-Last year, after carefully considering the feedback related to graduation, we decided we had to re-focus our efforts into specific widely used components to have a more direct impact.
+Last year, based on the graduation feedback, we decided to refocus on specific widely used components to have a more direct impact.
 -->
 
 ---
@@ -361,9 +359,9 @@ Last year, after carefully considering the feedback related to graduation, we de
 
 <!-- PABLO
 
-We considered survey data, combined with expertise from various vendors to come up with a list of 7 components to focus on.
+We combined survey data with input from several vendors to pick 7 components to focus on.
 
-Stability on some of these components meant breakage in some of the ways Christos mentioned, so we had to discuss what mechanisms to use to make sure this transition was as smooth as possible.
+Stabilizing some of these components meant breaking changes like the ones Christos described, so we had to agree on mechanisms to make the transition as smooth as possible.
 
 -->
 
@@ -395,15 +393,13 @@ Stability on some of these components meant breakage in some of the ways Christo
 
 <!-- CHRISTOS
 
-Here's how the community responded. Two parallel efforts, working in lockstep.
+We worked on this from two sides in parallel.
 
-On the schema side: the System and K8s SemConv SIGs adopted rigorous promotion criteria. A metric can't be called stable until it's been reviewed, tested, and approved.
+On the schema side, the System and K8s SemConv SIGs adopted strict promotion criteria. A metric can't be called stable until it's been reviewed and approved.
 
-On the implementation side: the Collector SIG created an RFC for per-component feature gates. Each component gets a pair of gates — users migrate on their own timeline.
+On the implementation side, the Collector SIG wrote an RFC for per-component feature gates. Each component gets a pair of gates, so users migrate on their own timeline.
 
-The key constraint that ties these together: we don't call a convention "stable" until the Collector has a migration path ready. Schema stability and implementation stability are coupled.
-
-Let me walk through each side in detail.
+The two are linked: we don't call a convention "stable" until the Collector has a migration path ready.
 
 -->
 
@@ -457,19 +453,19 @@ Let me walk through each side in detail.
 
 <!-- CHRISTOS
 
-The HTTP semconv migration showed us that a global env var wasn't enough. So we designed a proper, per-component mechanism.
+The HTTP migration showed that a global env var wasn't enough, so we designed a per-component mechanism.
 
-Each component gets two paired feature gates. The first lets you opt into the new names early. The second lets you turn off the old names when you're ready. You control each independently — you can run both in parallel during your migration window.
+Each component gets two paired feature gates. The first opts you into the new names early. The second turns off the old names when you're ready. You control them independently, so you can emit both during your migration.
 
-The lifecycle has three stages:
+There are three stages:
 
 Alpha: nothing changes by default. You can opt in to test the new names.
 
-Beta: triggered automatically once the associated semconv area reaches stable. The default flips — new names emitted by default. You can still emit both.
+Beta: starts automatically once the semconv area reaches stable. New names are emitted by default, and you can still emit both.
 
-Stable: old names are gone. Trying to enable them results in an error.
+Stable: old names are gone. Enabling them results in an error.
 
-Minimum warning window across all stages: 8 minor releases. That's a real runway for users to migrate safely.
+Across all stages, users get at least 8 minor releases of warning.
 
 -->
 
@@ -490,11 +486,11 @@ Minimum warning window across all stages: 8 minor releases. That's a real runway
 
 <!-- CHRISTOS
 
-On the schema side: the K8s SemConv SIG had just finished formally defining all K8s metrics into the spec.
+On the schema side, the K8s SemConv SIG had just finished defining all K8s metrics in the spec.
 
-At KubeCon NA 2025, we aligned with the Collector SIG on priorities. We realized early: stabilize K8s semantic conventions first, and we directly unblock k8sattributes — one of the seven priority components.
+At KubeCon NA 2025, we aligned with the Collector SIG on priorities. Stabilizing K8s semantic conventions first would unblock k8sattributes, one of the seven priority components.
 
-K8s attributes became our first target. Get that to stable, and k8sattributes can ship as v1.
+So K8s attributes became our first target. Once they're stable, k8sattributes can ship as v1.
 
 -->
 
@@ -511,9 +507,9 @@ K8s attributes became our first target. Get that to stable, and k8sattributes ca
 
 <!-- CHRISTOS
 
-The System SemConv SIG had already been working on stabilizing system metrics for over a year.
+The System SemConv SIG had been working on stabilizing system metrics for over a year.
 
-After our alignment with the Collector SIG, the effort became more focused: everything we do here is coordinated with the hostmetrics receiver stability goal.
+After aligning with the Collector SIG, we coordinate this work with the goal of a stable hostmetrics receiver.
 
 -->
 
@@ -534,15 +530,13 @@ After our alignment with the Collector SIG, the effort became more focused: ever
 
 <!-- CHRISTOS
 
-Here's the current state of the SemConv work.
+K8s attributes are stable since June, in semconv v1.42.0.
 
-K8s attributes: done — stable since June in semconv v1.42.0.
+Process metrics are a Release Candidate.
 
-Process metrics: Release Candidate.
+System metrics are on their way to RC.
 
-System metrics: on their way to RC.
-
-33 K8s and container metrics already promoted to RC.
+33 K8s and container metrics are already RC.
 
 -->
 
@@ -563,13 +557,11 @@ System metrics: on their way to RC.
 
 <!-- CHRISTOS
 
-And we have our first finish line.
+The k8sattributes processor shipped as stable v1 on September 15th, in the v0.161.0 Collector contrib release.
 
-The k8sattributes processor shipped as v1 — stable — on September 15th, as part of the v0.161.0 Collector contrib release.
+It had to meet two checklists: the standard Collector component stability criteria and a new K8s SemConv compatibility checklist. It's the first component to complete both.
 
-It required satisfying two checklists: the standard Collector component stability criteria, and a new K8s SemConv compatibility checklist. First component to complete both.
-
-If you're on v0.161.0 or later, you have access to stable Kubernetes attribute enrichment — guaranteed not to break silently on the next upgrade.
+On v0.161.0 or later, Kubernetes attribute enrichment is stable.
 
 -->
 
@@ -588,21 +580,19 @@ If you're on v0.161.0 or later, you have access to stable Kubernetes attribute e
 
 <!-- CHRISTOS
 
-Here's the journey and where we're heading.
+October 2025: K8s SIG finishes the K8s metrics spec.
 
-October 2025: K8s SIG finishes the K8s metrics spec work.
+November 2025: after KubeCon NA, the two SIGs align on priorities.
 
-November 2025: After KubeCon NA, the two SIGs align on priorities.
+April 2026: the feature gate pair RFC is adopted.
 
-April 2026: The feature gate pair RFC is adopted and the per-component migration process is defined.
+June 2026: K8s attributes are stable in semconv v1.42.0, and 33 metrics are promoted.
 
-June 2026: K8s attributes reach stable in semconv v1.42.0 — 33 metrics promoted.
+September 2026: k8sattributes ships as v1, the first Collector component to go through the whole process.
 
-September 2026 — this month — k8sattributes ships as v1. First Collector component to complete the full journey.
+Target: the remaining priority components at v1 by 2027.
 
-Target: remaining priority components at v1 by 2027.
-
-Now, back to Pablo for what comes next.
+Back to Pablo.
 
 -->
 
@@ -622,7 +612,7 @@ This slide will be filled in later
 
 <!-- PABLO
 
-There's still a lot to do to deliver on the stability promise and we are actively discussing next steps.
+There's still a lot to do to deliver on stability, and we're discussing next steps.
 
 A couple of weeks ago we started discussing an RFC that would allow us
 
@@ -640,13 +630,13 @@ A couple of weeks ago we started discussing an RFC that would allow us
 
 <!-- PABLO
 
-Another aspect we are actively discussing is how to make sure users easily understand stability of various components.
+We're also discussing how to make component stability easy for users to understand.
 
-Today we provide you with logs and metadata that mark component stability, but, as we stabilize more components and we prepare for a v1 version of the Collector, we think it's important that the default experience is stable. 
+Today, logs and metadata mark component stability. As we stabilize more components and prepare for Collector v1, we think the default experience should be stable.
 
-This is why we are discussing some mechanism such as a "--stability-level" CLI flag that prevents users from using components and features below their preferred stability level.
+So we're discussing a mechanism such as a "--stability-level" CLI flag that prevents using components and features below your preferred stability level.
 
-We welcome your feedback on how you would like this mechanism to work on the linked issue.
+Please share your feedback on how this should work on the linked issue.
 
 -->
 
@@ -662,9 +652,9 @@ We welcome your feedback on how you would like this mechanism to work on the lin
 
 <!-- PABLO
 
-Lastly, outside of the Collector, the OpenTelemetry community is also working on telemetry schemas: a machine-readable manifest that declares a telemetry schema and allows to programatically migrate between different versions of it.
+Finally, outside the Collector, the community is working on telemetry schemas: a machine-readable manifest that declares a telemetry schema and lets you programmatically migrate between its versions.
 
-This will require observability backends support to fully leverage its capabilities, but it is a promising feature that we also hope will help in telemetry migrations.
+Backends will need to support it to get the full benefit, but we hope it will also help with telemetry migrations.
 
 -->
 
@@ -684,13 +674,13 @@ class: qa
 
 <!-- BOTH
 
-Thank you! Happy to take questions.
+Thanks! Happy to take questions.
 
 If you want to get involved:
 - Collector SIG: every other Thursday (check the OTel community calendar)
 - SemConv SIG: weekly on Fridays
 - GitHub: open-telemetry/semantic-conventions and open-telemetry/opentelemetry-collector-contrib
 
-The slides are available via the QR code — includes all links referenced today.
+The slides, with all the links, are available via the QR code.
 
 -->
